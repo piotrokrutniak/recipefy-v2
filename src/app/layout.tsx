@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/navbar/Navbar";
 import { PageLayout } from "@/components/layouts/PageLayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
   description: "Recipify your life with Recipefy", // xdddd
 };
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,6 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <QueryClientProvider client={queryClient}></QueryClientProvider>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
