@@ -1,18 +1,28 @@
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { TextH2 } from "../typography/TextH2";
+import { LinkButton } from "../generic/LinkButton";
 
 export const Navbar = () => {
   return (
     <nav className="w-full p-3 flex h-fit justify-center fixed">
       <div className="max-w-7xl flex flex-1 justify-between">
-      <TextH2>Recipefy</TextH2>
-      <section className="flex relative gap-2">
-        <NavbarButtons/>
-        <Button variant={"outline"}>Sign In</Button>
-        <Button>Sign Up</Button>
-      </section>
+        <Link href="/" passHref>
+          <TextH2>Recipefy</TextH2>
+        </Link>
+        <section className="flex relative gap-2">
+          <NavbarButtons />
+          <LinkButton href={"/auth"} variant={"outline"}>
+            Sign In
+          </LinkButton>
+          <LinkButton href={"/"}>Sign Up</LinkButton>
+        </section>
       </div>
     </nav>
   );
@@ -25,7 +35,7 @@ const NavbarButtons = () => {
         <NavigationLinkButton />
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 };
 
 const NavigationLinkButton = () => (
