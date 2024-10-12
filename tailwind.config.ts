@@ -77,7 +77,38 @@ const config: Config = {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+  		},
+			height:{
+        'screen-1/2': '50vh',
+        'screen-1/4': '25vh',
+        'screen-3/4': '75vh',
+        'screen-2/3': '66vh',
+        'screen-1/3': '33vh',
+        '112': '28rem',
+        '128': '32rem',
+      },
+      minHeight:{
+        'screen-1/2': '50vh',
+        'screen-1/4': '25vh',
+        'screen-3/4': '75vh',
+        'screen-2/3': '66vh',
+        'screen-1/3': '33vh',
+        '112': '28rem',
+        '128': '32rem',
+      },
+      maxHeight:{
+        'screen-1/2': '50vh',
+        'screen-1/4': '25vh',
+        'screen-3/4': '75vh',
+        'screen-2/3': '66vh',
+        'screen-1/3': '33vh',
+        '112': '28rem',
+        '128': '32rem',
+      },
+      width:{
+        '112': '28rem',
+        '128': '32rem',
+      }
   	}
   },
   plugins: [require("tailwindcss-animate")],
