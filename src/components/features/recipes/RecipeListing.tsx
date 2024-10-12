@@ -33,7 +33,7 @@ export const RecipeListing = () => {
           <Link href={`/recipes/${rawData.id}`}>
             <TextLarge className="line-clamp-1">{rawData.title}</TextLarge>
           </Link>
-          <Button className="w-10" variant={"ghost"}>
+          <Button className="w-9" variant={"ghost"}>
             <HeartIcon className="w-6 h-6 text-red-500 flex-shrink-0" />
           </Button>
         </div>
