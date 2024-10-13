@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { TextH1 } from "../typography/TextH1";
@@ -21,13 +21,14 @@ type RecipeSlide = typeof rawData;
 export const HighlightedRecipesCarousel = () => {
   
 
-  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true, }));
 
   return (
     <Carousel
       plugins={[plugin.current]}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
+
       className="w-full h-screen-2/3 min-h-96 max-h-screen"
     >
       <CarouselContent>
@@ -35,6 +36,8 @@ export const HighlightedRecipesCarousel = () => {
         <Slide data={rawData} />
         <Slide data={rawData} />
       </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext/>
     </Carousel>
   );
 };
