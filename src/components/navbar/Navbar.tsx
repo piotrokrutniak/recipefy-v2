@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { TextH2 } from "../typography/TextH2";
-import { LinkButton } from "../generic/LinkButton";
+import { DynamicNavbarContent } from "./DynamicNavbarContent";
 
 export const Navbar = () => {
   return (
@@ -18,10 +18,7 @@ export const Navbar = () => {
         </Link>
         <section className="flex relative gap-2">
           <NavbarButtons />
-          <LinkButton href={"/auth"} variant={"outline"}>
-            Sign In
-          </LinkButton>
-          <LinkButton href={"/"}>Sign Up</LinkButton>
+          <DynamicNavbarContent />
         </section>
       </div>
     </nav>
