@@ -2,6 +2,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Setup environment variables
+
+Google OAuth
+-GOOGLE_CLIENT_ID
+-GOOGLE_CLIENT_SECRET
+
+Postgres DB connection string
+-DATABASE_URL
+
 First, run the development server:
 
 ```bash

@@ -5,7 +5,7 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 export default function LoginPage() {
   return (
     <PageContentLayout>
-      <div className="flex justify-center w-full">
+      <div className="flex flex-1 justify-center w-full">
         <Login />
       </div>
     </PageContentLayout>
