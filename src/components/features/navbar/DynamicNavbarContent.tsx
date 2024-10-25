@@ -8,20 +8,24 @@ export const DynamicNavbarContent = async () => {
   const session = await getServerSession(authOptions);
 
   return session?.user ? (
-        <>
-          <LinkButton href={"/profile"} variant={"outline"}>
-            Profile
-          </LinkButton>
-          <Avatar>
-            <AvatarImage src={session.user.image ?? undefined} referrerPolicy={'no-referrer'} alt={session.user.name ?? 'avatar'} />
-          </Avatar>
-        </>
-      ) : (
-        <>
-          <LinkButton href={"/auth"} variant={"outline"}>
-            Sign In
-          </LinkButton>
-          <LinkButton href={"/"}>Sign Up</LinkButton>
-        </>
-      )
-  };
+    <>
+      <LinkButton href={"/profile"} variant={"outline"}>
+        Profile
+      </LinkButton>
+      <Avatar>
+        <AvatarImage
+          src={session.user.image ?? undefined}
+          referrerPolicy={"no-referrer"}
+          alt={session.user.name ?? "avatar"}
+        />
+      </Avatar>
+    </>
+  ) : (
+    <>
+      <LinkButton href={"/auth"} variant={"outline"}>
+        Sign In
+      </LinkButton>
+      <LinkButton href={"/"}>Sign Up</LinkButton>
+    </>
+  );
+};

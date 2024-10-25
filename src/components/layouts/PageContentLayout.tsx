@@ -3,7 +3,7 @@ import clsx from "clsx";
 const sizes = {
   full: "w-full",
   lg: "w-full max-w-7xl",
-}
+};
 
 export const PageContentLayout = ({
   children,
@@ -14,10 +14,15 @@ export const PageContentLayout = ({
   className?: string;
   size?: keyof typeof sizes;
 }) => {
-
   return (
-    <div className={clsx(["relative gap-8 flex flex-col flex-1 items-center", className, sizes[size]])}>
-        {children}
+    <div
+      className={clsx([
+        "relative gap-8 flex flex-col flex-1 items-center",
+        className,
+        sizes[size],
+      ])}
+    >
+      {children}
     </div>
   );
 };

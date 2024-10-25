@@ -1,4 +1,8 @@
-export const PageContentSidebarLayout = ({ children }: { children: React.ReactNode }) => {
+export const PageContentSidebarLayout = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <section className="flex flex-1 gap-16 mx-auto w-full min-h-screen pt-16 max-w-7xl">
       {children}

@@ -9,7 +9,7 @@ import { PageContentSidebarLayout } from "@/components/layouts/PageContentSideba
 export const ProfilePage = async () => {
   return (
     <PageContentSidebarLayout>
-      <PageContentLayout className="flex-grow-0" >
+      <PageContentLayout className="flex-grow-0">
         <ProfileSideBarHeader />
         <ProfileSideBarNavigation />
       </PageContentLayout>

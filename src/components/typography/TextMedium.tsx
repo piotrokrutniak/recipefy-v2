@@ -9,7 +9,10 @@ export const TextMedium = ({
   HTMLParagraphElement
 >) => {
   return (
-    <p {...rest} className={clsx(["text-base leading-6 font-medium", rest.className])}>
+    <p
+      {...rest}
+      className={clsx(["text-base leading-6 font-medium", rest.className])}
+    >
       {children}
     </p>
   );
