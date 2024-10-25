@@ -6,7 +6,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
-import { TextH2 } from "../typography/TextH2";
+import { TextH2 } from "../../typography/TextH2";
 import { DynamicNavbarContent } from "./DynamicNavbarContent";
 
 export const Navbar = () => {

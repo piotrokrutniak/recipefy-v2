@@ -1,13 +1,23 @@
+import clsx from "clsx";
+
+const sizes = {
+  full: "w-full",
+  lg: "w-full max-w-7xl",
+}
+
 export const PageContentLayout = ({
   children,
+  className,
+  size = "lg",
 }: {
   children?: React.ReactNode;
+  className?: string;
+  size?: keyof typeof sizes;
 }) => {
+
   return (
-    <div className="relative flex flex-col flex-1 w-full items-center">
-      <section className="flex flex-1 flex-col gap-10 w-full max-w-7xl">
+    <div className={clsx(["relative gap-8 flex flex-col flex-1 items-center", className, sizes[size]])}>
         {children}
-      </section>
     </div>
   );
 };

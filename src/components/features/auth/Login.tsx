@@ -1,10 +1,12 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Button } from "../ui/button";
-import { TextLead } from "../typography/TextLead";
-import { LinkButton } from "../generic/LinkButton";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { LinkButton } from "@/components/generic/LinkButton";
+import { TextLead } from "@/components/typography/TextLead";
+import { Button } from "@/components/ui/button";
+import { getServerSession } from "next-auth";
+import { signIn } from "next-auth/react";
 
 export const Login = () => {
-  const { data: session } = useSession();
+  // const session = await getServerSession(authOptions);
 
   // if (session && session.user) {
   //   return (
