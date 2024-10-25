@@ -1,5 +1,5 @@
 "use client";
-import { Login } from "@/components/auth/Login";
+import { Login } from "@/components/features/auth/Login";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 
 export default function LoginPage() {

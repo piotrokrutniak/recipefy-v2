@@ -3,7 +3,18 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+let prisma;
+// https://github.com/prisma/prisma/issues/1983
+// TODO: https://github.com/prisma/prisma/issues/1983#issuecomment-686742774
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+
+  prisma = global.prisma;
+}
 
 // TODO: https://github.com/nextauthjs/next-auth/pull/6777
 export const authOptions: AuthOptions = {
@@ -17,7 +28,7 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "database",
   },
-}
+};
 
 const handler = NextAuth(authOptions);
 
