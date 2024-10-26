@@ -37,9 +37,13 @@ export const PUT = async (req: NextRequest) => {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const body = await req.json();
+
   const updatedUser = await prisma.user.update({
     where: { id: user.id },
-    data: req.body as UpdateUserDto,
+    data: {
+      ...body,
+    } as UpdateUserDto,
   });
 
   return NextResponse.json(updatedUser, { status: 200 });
