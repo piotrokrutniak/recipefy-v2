@@ -5,20 +5,23 @@ import { RecipeSuggestionsSection } from "@/components/features/profile/RecipeSu
 import { TeamsSection } from "@/components/features/profile/TeamsSection";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
+import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 
-export const ProfilePage = async () => {
+export const ProfilePage = () => {
   return (
-    <PageContentSidebarLayout>
-      <PageContentLayout className="flex-grow-0">
-        <ProfileSideBarHeader />
-        <ProfileSideBarNavigation />
-      </PageContentLayout>
-      <PageContentLayout>
-        <AccountDetailsSection />
-        <RecipeSuggestionsSection />
-        <TeamsSection />
-      </PageContentLayout>
-    </PageContentSidebarLayout>
+    <ClientProvidersWrapper>
+      <PageContentSidebarLayout>
+        <PageContentLayout className="flex-grow-0">
+          <ProfileSideBarHeader />
+          <ProfileSideBarNavigation />
+        </PageContentLayout>
+        <PageContentLayout>
+          <AccountDetailsSection />
+          <RecipeSuggestionsSection />
+          <TeamsSection />
+        </PageContentLayout>
+      </PageContentSidebarLayout>
+    </ClientProvidersWrapper>
   );
 };
 

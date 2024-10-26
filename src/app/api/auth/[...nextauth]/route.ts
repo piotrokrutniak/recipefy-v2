@@ -1,20 +1,22 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import DBClient from "@/persistence/DBClient";
 
-let prisma;
-// https://github.com/prisma/prisma/issues/1983
-// TODO: https://github.com/prisma/prisma/issues/1983#issuecomment-686742774
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
+// let prisma;
+// // https://github.com/prisma/prisma/issues/1983
+// if (process.env.NODE_ENV === "production") {
+//   prisma = new PrismaClient();
+// } else {
+//   if (!global.prisma) {
+//     global.prisma = new PrismaClient();
+//   }
 
-  prisma = global.prisma;
-}
+//   prisma = global.prisma;
+// }
+
+// https://github.com/prisma/prisma/issues/1983#issuecomment-686742774
+const prisma = DBClient.getInstance().prisma;
 
 // TODO: https://github.com/nextauthjs/next-auth/pull/6777
 export const authOptions: AuthOptions = {

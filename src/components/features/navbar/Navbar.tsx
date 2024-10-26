@@ -16,7 +16,7 @@ export const Navbar = () => {
         <Link href="/" passHref>
           <TextH2>Recipefy</TextH2>
         </Link>
-        <section className="flex relative gap-2">
+        <section className="flex relative gap-2 items-center">
           <NavbarButtons />
           <DynamicNavbarContent />
         </section>
