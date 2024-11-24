@@ -7,7 +7,7 @@ export const TextH2 = ({
 }: {
   children: React.ReactNode;
   withUnderline?: boolean;
-  className?: boolean;
+  className?: string;
 }) => {
   return (
     <h2

@@ -37,7 +37,7 @@ const NavbarButtons = () => {
 
 const NavigationLinkButton = () => (
   <NavigationMenuItem>
-    <Link href="/docs" legacyBehavior passHref>
+    <Link href="/recipes" legacyBehavior passHref>
       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
         Recipes
       </NavigationMenuLink>

@@ -3,13 +3,14 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import DBClient from "@/persistence/DBClient";
 import { NextRequest, NextResponse } from "next/server";
 import { UpdateUserDto } from "@/types/api";
+import { UnauthorizedNextResponse } from "@/lib/api";
 
 const prisma = DBClient.getInstance().prisma;
 
 export const getCurrentUser = async () => {
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.user) {
+  if (!session || !session.user?.email) {
     return null;
   }
 
@@ -24,7 +25,7 @@ export const GET = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return UnauthorizedNextResponse;
   }
 
   return NextResponse.json(user, { status: 200 });
