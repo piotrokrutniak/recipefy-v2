@@ -13,9 +13,12 @@ class DBClient {
     if (process.env.NODE_ENV === "production") {
       this.prisma = new PrismaClient();
     } else {
-      // Use globalThis in development to prevent multiple instances
       if (!global.prismaGlobal) {
         global.prismaGlobal = new PrismaClient();
+        // Disconnect Prisma Client on Node.js process termination
+        process.on("beforeExit", async () => {
+          await global.prismaGlobal?.$disconnect();
+        });
       }
       this.prisma = global.prismaGlobal;
     }
@@ -27,6 +30,11 @@ class DBClient {
     }
     return DBClient.instance;
   };
+
+  // Add method to explicitly disconnect
+  public async disconnect() {
+    await this.prisma.$disconnect();
+  }
 }
 
 export default DBClient;

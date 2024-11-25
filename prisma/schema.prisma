@@ -149,7 +149,8 @@ model RecipeIngredient {
 model Recipe {
   id        String   @id @default(cuid())
   title     String
-  content   String
+  description String @default("")
+  content   String @default("")
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   visibility Visibility

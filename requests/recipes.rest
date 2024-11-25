@@ -1,0 +1,8 @@
+@baseUrl = http://localhost:3000/api
+@recipeId = cm3wb68yz0005ompfh3oe4enz
+
+### Get Recipe by ID
+GET {{baseUrl}}/recipes/{{recipeId}}
+
+### Get Recipe details by ID
+GET {{baseUrl}}/recipes/{{recipeId}}/details
