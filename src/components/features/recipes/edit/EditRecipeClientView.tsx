@@ -1,24 +1,25 @@
 "use client";
 
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
-import { AddRecipeForm } from "@/components/organisms/forms/AddRecipeForm";
+import { EditRecipeForm } from "@/components/organisms/forms/EditRecipeForm";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { Recipe } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-export const AddRecipePage = () => {
+export const ClientContent = ({ recipe }: { recipe: Recipe }) => {
   const { toast } = useToast();
   const router = useRouter();
-
   const handleSubmit = useCallback(
     (data: Recipe) => {
       toast({
         title: "Success",
-        description: "Recipe created successfully",
+        description: "Recipe updated successfully",
         variant: "default",
       });
+
+      router.refresh();
 
       setTimeout(() => {
         router.push(`/recipes/${data.id}`);
@@ -30,10 +31,8 @@ export const AddRecipePage = () => {
   return (
     <ClientProvidersWrapper>
       <PageContentLayout>
-        <AddRecipeForm onSubmitAction={handleSubmit} />
+        <EditRecipeForm recipe={recipe} onSubmitAction={handleSubmit} />
       </PageContentLayout>
     </ClientProvidersWrapper>
   );
 };
-
-export default AddRecipePage;

@@ -80,14 +80,95 @@ export const POST = async (req: NextRequest) => {
   }
 };
 
+type RecipeSearchParams = {
+  skip: number;
+  take: number;
+  query: string;
+  cookTime: number;
+  prepTime: number;
+  calories: number;
+  ingredients: string[];
+  vegan: boolean;
+  vegetarian: boolean;
+};
+
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
+
+  const user = await getCurrentUser();
+
+  const blacklistedIngredients =
+    await prisma.userBlacklistedIngredient.findMany({
+      where: {
+        userId: {
+          equals: user?.id,
+        },
+      },
+    });
+
+  const blacklistedIngredientsIds = blacklistedIngredients.map(
+    (ingredient) => ingredient.ingredientId
+  );
+
+  const ingredients = searchParams.get("ingredients")?.split(",");
+
   const skip = parseInt(searchParams.get("skip") || "0");
   const take = parseInt(searchParams.get("take") || "25");
 
   const recipes = await prisma.recipe.findMany({
     skip,
     take,
+    include: {
+      author: true,
+      recipeIngredients: true,
+    },
+    where: {
+      title: {
+        contains: searchParams.get("query") || "",
+        mode: "insensitive",
+      },
+      cookTime: {
+        lte: Number(searchParams.get("cookTime")) || 0,
+      },
+      prepTime: {
+        lte: Number(searchParams.get("prepTime")) || 0,
+      },
+      calories: {
+        lte: Number(searchParams.get("calories")) || 0,
+      },
+      vegan: searchParams.get("vegan") === "true",
+      vegetarian: searchParams.get("vegetarian") === "true",
+      recipeIngredients: {
+        every: {
+          ingredientId: {
+            notIn:
+              searchParams.get("ignoreBlacklistedIngredients") === "true"
+                ? []
+                : blacklistedIngredientsIds,
+          },
+        },
+        some: {
+          ingredient: {
+            id: {
+              in: ingredients,
+            },
+          },
+        },
+      },
+      // recipeIngredients: {
+      //   some: {
+      //     ingredient: {
+      //       id: {
+      //         in: searchParams.get("ingredients")?.split(",") || [],
+      //         notIn:
+      //           searchParams.get("ignoreBlacklistedIngredients") === "true"
+      //             ? []
+      //             : blacklistedIngredientsIds,
+      //       },
+      //     },
+      //   },
+      // },
+    },
     orderBy: { createdAt: "desc" },
   });
 
