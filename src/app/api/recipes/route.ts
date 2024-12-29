@@ -80,16 +80,18 @@ export const POST = async (req: NextRequest) => {
   }
 };
 
-type RecipeSearchParams = {
+export type RecipeSearchParams = {
   skip: number;
   take: number;
   query: string;
   cookTime: number;
   prepTime: number;
   calories: number;
-  ingredients: string[];
+  ingredients?: string;
   vegan: boolean;
   vegetarian: boolean;
+  ignoreBlacklistedIngredients: boolean;
+  blacklistedIngredientsIds: string[];
 };
 
 export const GET = async (req: NextRequest) => {
@@ -110,67 +112,76 @@ export const GET = async (req: NextRequest) => {
     (ingredient) => ingredient.ingredientId
   );
 
-  const ingredients = searchParams.get("ingredients")?.split(",");
-
   const skip = parseInt(searchParams.get("skip") || "0");
   const take = parseInt(searchParams.get("take") || "25");
 
-  const recipes = await prisma.recipe.findMany({
+  const params: RecipeSearchParams = {
     skip,
     take,
+    query: searchParams.get("query") || "",
+    cookTime: parseInt(searchParams.get("cookTime") || "0"),
+    prepTime: parseInt(searchParams.get("prepTime") || "0"),
+    calories: parseInt(searchParams.get("calories") || "0"),
+    ingredients: searchParams.get("ingredients") || undefined,
+    vegan: searchParams.get("vegan") === "true",
+    vegetarian: searchParams.get("vegetarian") === "true",
+    ignoreBlacklistedIngredients:
+      searchParams.get("ignoreBlacklistedIngredients") === "true",
+    blacklistedIngredientsIds: blacklistedIngredientsIds,
+  };
+
+  console.log("RecipeSearchParams", params);
+
+  const recipes = await getRecipes(params);
+
+  return NextResponse.json(recipes);
+};
+
+export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
+  return await prisma.recipe.findMany({
+    skip: params.skip,
+    take: params.take,
     include: {
       author: true,
       recipeIngredients: true,
     },
     where: {
       title: {
-        contains: searchParams.get("query") || "",
+        contains: params.query && params.query,
         mode: "insensitive",
       },
       cookTime: {
-        lte: Number(searchParams.get("cookTime")) || 0,
+        lte: params.cookTime && Number(params.cookTime),
       },
       prepTime: {
-        lte: Number(searchParams.get("prepTime")) || 0,
+        lte: params.prepTime && Number(params.prepTime),
       },
       calories: {
-        lte: Number(searchParams.get("calories")) || 0,
+        lte: params.calories && Number(params.calories),
       },
-      vegan: searchParams.get("vegan") === "true",
-      vegetarian: searchParams.get("vegetarian") === "true",
+      vegan: params.vegan,
+      vegetarian: params.vegetarian,
       recipeIngredients: {
-        every: {
-          ingredientId: {
-            notIn:
-              searchParams.get("ignoreBlacklistedIngredients") === "true"
-                ? []
-                : blacklistedIngredientsIds,
-          },
-        },
-        some: {
-          ingredient: {
-            id: {
-              in: ingredients,
-            },
-          },
-        },
+        every: !params.ignoreBlacklistedIngredients
+          ? {
+              ingredientId: {
+                notIn: params.ignoreBlacklistedIngredients
+                  ? undefined
+                  : params.blacklistedIngredientsIds,
+              },
+            }
+          : undefined,
+        some: params.ingredients
+          ? {
+              ingredient: {
+                id: {
+                  in: params.ingredients?.split(","),
+                },
+              },
+            }
+          : undefined,
       },
-      // recipeIngredients: {
-      //   some: {
-      //     ingredient: {
-      //       id: {
-      //         in: searchParams.get("ingredients")?.split(",") || [],
-      //         notIn:
-      //           searchParams.get("ignoreBlacklistedIngredients") === "true"
-      //             ? []
-      //             : blacklistedIngredientsIds,
-      //       },
-      //     },
-      //   },
-      // },
     },
     orderBy: { createdAt: "desc" },
   });
-
-  return NextResponse.json(recipes);
 };

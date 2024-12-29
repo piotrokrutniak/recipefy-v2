@@ -1,5 +1,6 @@
 "use client";
 
+import { RecipeSearchParams } from "@/app/api/recipes/route";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { IngredientsParamsSection } from "@/components/molecules/search/IngredientsParamsSection";
@@ -14,19 +15,28 @@ import { useRouter } from "next/navigation";
 
 export default function RecipeSearchForm({
   formData,
+  children,
 }: {
-  formData: Partial<RecipeSearchFormData>;
+  formData: Partial<RecipeSearchParams>;
+  children?: React.ReactNode;
 }) {
-  const form = useSearchRecipesForm(formData);
+  const form = useSearchRecipesForm({
+    ...formData,
+    ingredients: formData.ingredients?.split(",") || [],
+  });
   const router = useRouter();
 
   const onSubmit = (data: RecipeSearchFormData) => {
-    const params = Object.entries(data).map(([key, value]) =>
+    const sanitizedData = {
+      ...data,
+      ingredients:
+        data.ingredients.length > 0 ? data.ingredients.join(",") : null,
+    };
+    const params = Object.entries(sanitizedData).map(([key, value]) =>
       !!value ? `${key}=${value}` : ""
     );
-    console.log(`/recipes?${params.filter(Boolean).join("&")}`);
 
-    router.replace(`/recipes?${params.filter(Boolean).join("&")}`);
+    router.push(`/recipes?${params.filter(Boolean).join("&")}`);
   };
 
   return (
@@ -37,8 +47,9 @@ export default function RecipeSearchForm({
           <IngredientsParamsSection form={form} />
         </PageContentLayout>
         <PageContentLayout>
-          <div className="w-full">
+          <div className="w-full flex flex-col gap-4">
             <SearchContainer onSubmit={onSubmit} form={form} />
+            {children}
           </div>
         </PageContentLayout>
       </Form>

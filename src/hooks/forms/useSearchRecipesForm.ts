@@ -36,7 +36,7 @@ export const useSearchRecipesForm = (defaultParams: DefaultParams) => {
       cookTime: 0,
       prepTime: 0,
       calories: 0,
-      ingredients: ["fagwegwer123", "fagwegwer1224"],
+      ingredients: [],
       vegan: false,
       vegetarian: false,
       ignoreBlacklistedIngredients: false,

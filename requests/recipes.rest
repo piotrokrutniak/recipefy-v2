@@ -14,16 +14,11 @@ GET {{baseUrl}}/recipes
 @query = taco
 @ingredients = 1,2,3
 @blacklistedIngredients = 4,5,6
-@ignoreBlacklistedIngredients = false
+@ignoreBlacklistedIngredients = true
 
 ### Get Recipes with query
 GET {{baseUrl}}/recipes?query={{query}}&ingredients={{ingredients}}&ignoreBlacklistedIngredients={{ignoreBlacklistedIngredients}}
 
-@query = Taco
-@ingredients = 1,2,3
-@blacklistedIngredients = 4,5,6
-@ignoreBlacklistedIngredients = true
-
 ### Get Recipes with query
-GET {{baseUrl}}/recipes?query={{query}}
+GET {{baseUrl}}/recipes?query={{query}}&ignoreBlacklistedIngredients={{ignoreBlacklistedIngredients}}
 
