@@ -10,7 +10,7 @@ const prisma = DBClient.getInstance().prisma;
 // Schema for validation
 export const createRecipeSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
+  description: z.string(),
   content: z.string().min(1, "Content is required"),
   cookTime: z.number().min(0, "Cook time cannot be negative"),
   prepTime: z.number().min(0, "Prep time cannot be negative"),

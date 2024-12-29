@@ -76,3 +76,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+.quill {
+  height: 100%;
+}
+.quill .ql-container {
+  height: 100%;
+}
+.quill .ql-editor {
+  min-height: 200px; /* Adjust this value as needed */
+}

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { createRecipeSchema } from "@/app/api/recipes/route";
 import { useEffect } from "react";
+import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -229,10 +230,9 @@ export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Recipe content"
-                  className="resize-none"
-                  {...field}
+                <QuillEditor
+                  value={form.getValues("content")}
+                  onChange={(value) => form.setValue("content", value)}
                 />
               </FormControl>
               <FormMessage />
