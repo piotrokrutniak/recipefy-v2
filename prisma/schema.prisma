@@ -169,12 +169,13 @@ model Recipe {
 }
 
 model UserRecipeNote {
-  id        String   @id @default(cuid())
   userId    String
   recipeId  String
   note      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, recipeId], name: "userId_recipeId")
 }
 
 model UserRecipeRating {
