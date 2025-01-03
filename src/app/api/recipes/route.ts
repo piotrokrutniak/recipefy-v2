@@ -36,6 +36,7 @@ export const createRecipe = async (
   const recipe = await prisma.recipe.create({
     data: {
       title: data.title,
+      description: data.description,
       content: data.content,
       cookTime: data.cookTime,
       prepTime: data.prepTime,

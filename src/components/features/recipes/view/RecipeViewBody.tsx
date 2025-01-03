@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Recipe, User } from "@prisma/client";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
+// TODO: Add mobile layout with foldable sections
 export const RecipeViewBody = ({
   recipe,
   user,
@@ -17,12 +18,17 @@ export const RecipeViewBody = ({
   return (
     <div className="flex flex-col gap-3 w-full">
       <TextH1>{recipe.title}</TextH1>
-      <TextLead>{recipe.visibility}</TextLead>
+      {user?.id === recipe.authorId && <TextLead>{recipe.visibility}</TextLead>}
       {user?.id === recipe.authorId && <AuthorControls recipe={recipe} />}
       <div className="flex flex-col">
-        <TextP noLeading>{`Prep Time: ${recipe.prepTime} minutes`}</TextP>
-        <TextP noLeading>{`Cook Time: ${recipe.cookTime} minutes`}</TextP>
+        {!!recipe.prepTime && (
+          <TextP noLeading>{`Prep Time: ${recipe.prepTime} minutes`}</TextP>
+        )}
+        {!!recipe.cookTime && (
+          <TextP noLeading>{`Cook Time: ${recipe.cookTime} minutes`}</TextP>
+        )}
       </div>
+      <TextP noLeading className="mb-4">{`${recipe.description}`}</TextP>
       <MarkupRenderer content={recipe.content} />
     </div>
   );

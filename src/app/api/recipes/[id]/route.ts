@@ -31,6 +31,7 @@ export const updateRecipeById = async (
     where: { id: data.id },
     data: {
       title: data.title,
+      description: data.description,
       content: data.content,
       cookTime: data.cookTime,
       prepTime: data.prepTime,

@@ -1,3 +1,4 @@
+import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getRecipeById } from "@/app/api/recipes/[id]/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
@@ -14,6 +15,7 @@ export const ViewRecipePage = async ({
 }) => {
   const recipe = await getRecipeById(params.id);
   const user = await getCurrentUser();
+  const recipeNote = await getRecipeNote(params.id);
 
   if (!recipe) {
     return <NotFoundError />;
@@ -22,7 +24,10 @@ export const ViewRecipePage = async ({
   return (
     <PageContentSidebarLayout>
       <PageContentLayout className="max-w-80">
-        <SideBarRecipeSummary recipe={recipe as RecipeFullInfoDto} />
+        <SideBarRecipeSummary
+          recipe={recipe as RecipeFullInfoDto}
+          initialNote={recipeNote?.note}
+        />
       </PageContentLayout>
       <PageContentLayout className="flex-1">
         <RecipeViewBody recipe={recipe} user={user} />

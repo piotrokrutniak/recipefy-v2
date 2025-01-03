@@ -6,7 +6,7 @@ export const RecipeThumbnail = ({ recipe }: { recipe?: Recipe }) => {
     <Image
       src={""}
       alt={recipe?.title ?? ""}
-      className="w-full object-cover rounded-lg aspect-square border border-gray-200 bg-gunmetal-500"
+      className="w-full object-cover rounded-lg aspect-square bg-gunmetal-500"
     />
   );
 };

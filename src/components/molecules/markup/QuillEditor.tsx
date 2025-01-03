@@ -12,7 +12,7 @@ export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
       [{ header: [1, 2, 3, false] }],
       ["bold", "italic", "underline", "strike"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "clean"],
+      ["link", "clean", "image"],
     ],
   };
   const formats = [
@@ -24,6 +24,7 @@ export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
     "list",
     "bullet",
     "link",
+    "image",
   ];
 
   return (
