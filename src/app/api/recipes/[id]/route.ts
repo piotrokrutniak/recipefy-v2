@@ -10,6 +10,9 @@ const prisma = DBClient.getInstance().prisma;
 export const getRecipeById = async (id: string) => {
   const recipe = await prisma.recipe.findUnique({
     where: { id },
+    include: {
+      recipeIngredients: true,
+    },
   });
 
   return recipe;

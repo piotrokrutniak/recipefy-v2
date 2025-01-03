@@ -30,7 +30,7 @@ export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
     <ReactQuill
       theme="snow"
       // Internal styles are declared in the global.css file
-      className="w-full border-red-500 border-2"
+      className="w-full"
       value={value}
       onChange={onChange}
       modules={modules}

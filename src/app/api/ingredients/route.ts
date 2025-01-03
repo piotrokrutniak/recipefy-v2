@@ -6,12 +6,14 @@ const prisma = DBClient.getInstance().prisma;
 export const getIngredients = async (
   skip: number = 0,
   take: number = 25,
-  query?: string,
+  query?: string
 ) => {
   const ingredients = await prisma.ingredient.findMany({
     skip,
     take,
-    where: query && { name: { contains: query, mode: "insensitive" } },
+    where: query
+      ? { name: { contains: query, mode: "insensitive" } }
+      : undefined,
     orderBy: { name: "desc" },
   });
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Recipe, Visibility } from "@prisma/client";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Ingredient, Recipe, RecipeIngredient } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -24,17 +25,21 @@ import {
 } from "@/components/ui/select";
 import { createRecipeSchema } from "@/app/api/recipes/route";
 import { useEffect } from "react";
-import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
+import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
+import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
+import { RecipeFullInfoDto } from "@/types/api";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
-type EditRecipeFormProps = {
-  recipe: Recipe;
+interface EditRecipeFormProps {
+  verifiedIngredients: Ingredient[];
+  recipe: RecipeFullInfoDto;
   onSubmitAction?: (data: Recipe) => void;
-};
+}
 
 export const EditRecipeForm = ({
+  verifiedIngredients,
   recipe,
   onSubmitAction,
 }: EditRecipeFormProps) => {
@@ -44,7 +49,6 @@ export const EditRecipeForm = ({
     isSuccess,
     isPending,
   } = useMutationEditRecipe();
-
   const form = useForm<RecipeFormData>({
     resolver: zodResolver(createRecipeSchema),
     defaultValues: {
@@ -57,11 +61,22 @@ export const EditRecipeForm = ({
       vegan: recipe.vegan,
       vegetarian: recipe.vegetarian,
       visibility: recipe.visibility,
+      ingredients: recipe.recipeIngredients.map((i) => ({
+        id: i.id,
+        ingredientId: i.ingredientId ?? undefined,
+        userIngredientId: i.userIngredientId ?? undefined,
+        amount: i.amount,
+      })),
     },
   });
 
   const onSubmit = (data: RecipeFormData) => {
-    updateRecipe({ id: recipe.id, ...data });
+    // remove empty ingredient lines
+    const purifiedData = {
+      ...data,
+      ingredients: data.ingredients.filter((i) => i.ingredientId),
+    };
+    updateRecipe(purifiedData);
   };
 
   useEffect(() => {
@@ -70,10 +85,46 @@ export const EditRecipeForm = ({
     }
   }, [updatedRecipe, isSuccess, onSubmitAction]);
 
+  const getUpdatedIngredients = (
+    recipeIngredients: Partial<RecipeIngredient>[],
+    index: number,
+    ingredient?: Partial<RecipeIngredient>
+  ) => {
+    const existingRecipe = recipeIngredients.find(
+      (i) => i?.ingredientId === ingredient?.ingredientId
+    );
+
+    const updatedIngredients = [...recipeIngredients];
+    updatedIngredients[index] = {
+      ...existingRecipe,
+      ...ingredient,
+    };
+
+    if (
+      updatedIngredients.filter(
+        (i) => i?.ingredientId === ingredient?.ingredientId
+      ).length > 1
+    ) {
+      return recipeIngredients;
+    }
+
+    return updatedIngredients;
+  };
+
+  const emptyIngredient = {
+    id: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ingredientId: null,
+    userIngredientId: null,
+    amount: "",
+    recipeId: "",
+  };
+
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-4"
+        className="flex flex-col w-full max-w-[1024px] gap-4"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -108,19 +159,42 @@ export const EditRecipeForm = ({
           )}
         />
 
-        <div className="flex flex-row gap-4">
+        <FormField
+          control={form.control}
+          name="visibility"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Visibility</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="PUBLIC">Public</SelectItem>
+                  <SelectItem value="PRIVATE">Private</SelectItem>
+                  <SelectItem value="UNLISTED">Unlisted</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-3 gap-4">
           <FormField
             control={form.control}
             name="prepTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Prep Time (minutes)</FormLabel>
+                <FormLabel>Prep Time (min)</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Prep time"
+                    min={0}
                     {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -133,13 +207,13 @@ export const EditRecipeForm = ({
             name="cookTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Cook Time (minutes)</FormLabel>
+                <FormLabel>Cook Time (min)</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Cook time"
+                    min={0}
                     {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -156,9 +230,9 @@ export const EditRecipeForm = ({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Number of servings"
+                    min={1}
                     {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -167,20 +241,19 @@ export const EditRecipeForm = ({
           />
         </div>
 
-        <div className="flex flex-row gap-4">
+        <div className="flex gap-4">
           <FormField
             control={form.control}
             name="vegetarian"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center gap-2">
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Vegetarian</FormLabel>
-                <FormMessage />
+                <FormLabel className="font-normal">Vegetarian</FormLabel>
               </FormItem>
             )}
           />
@@ -189,15 +262,14 @@ export const EditRecipeForm = ({
             control={form.control}
             name="vegan"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center gap-2">
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Vegan</FormLabel>
-                <FormMessage />
+                <FormLabel className="font-normal">Vegan</FormLabel>
               </FormItem>
             )}
           />
@@ -205,21 +277,29 @@ export const EditRecipeForm = ({
 
         <FormField
           control={form.control}
-          name="visibility"
+          name="ingredients"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Visibility</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select visibility" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={Visibility.PUBLIC}>Public</SelectItem>
-                  <SelectItem value={Visibility.PRIVATE}>Private</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormLabel>Ingredients</FormLabel>
+              <FormControl>
+                <RecipeIngredientsInfoInput
+                  recipeIngredients={field.value as RecipeIngredient[]}
+                  verifiedIngredients={verifiedIngredients}
+                  addIngredient={() =>
+                    field.onChange([...field.value, emptyIngredient])
+                  }
+                  removeIngredient={(ingredientId) => {
+                    field.onChange(
+                      field.value.filter((i) => i?.id !== ingredientId)
+                    );
+                  }}
+                  updateIngredient={(ingredient, index) =>
+                    field.onChange(
+                      getUpdatedIngredients(field.value, index, ingredient)
+                    )
+                  }
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -242,13 +322,13 @@ export const EditRecipeForm = ({
           )}
         />
 
-        <button
+        <Button
+          disabled={isSuccess || isPending}
           type="submit"
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md"
-          disabled={isPending}
+          className="w-full"
         >
-          {isPending ? "Saving..." : "Save Changes"}
-        </button>
+          {isSuccess ? "Recipe created" : "Create Recipe"}
+        </Button>
       </form>
     </Form>
   );

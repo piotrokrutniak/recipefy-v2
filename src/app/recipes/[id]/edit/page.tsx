@@ -1,10 +1,11 @@
+import { getIngredients } from "@/app/api/ingredients/route";
 import { getRecipeById } from "@/app/api/recipes/[id]/route";
 import { ClientContent } from "@/components/features/recipes/edit/EditRecipeClientView";
 import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
-import { notFound } from "next/navigation";
 
 const EditRecipePage = async ({ params }: { params: { id: string } }) => {
   const recipe = await getRecipeById(params.id);
+  const ingredients = await getIngredients();
 
   if (!recipe) {
     // TODO: Create a custom not found page
@@ -12,7 +13,7 @@ const EditRecipePage = async ({ params }: { params: { id: string } }) => {
     return <NotFoundError />;
   }
 
-  return <ClientContent recipe={recipe} />;
+  return <ClientContent verifiedIngredients={ingredients} recipe={recipe} />;
 };
 
 export default EditRecipePage;

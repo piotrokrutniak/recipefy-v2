@@ -1,32 +1,28 @@
 "use client";
 
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
-import { EditRecipeForm } from "@/components/organisms/forms/EditRecipeForm";
+import { AddRecipeForm } from "@/components/organisms/forms/AddRecipeForm";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { useToast } from "@/hooks/use-toast";
-import { RecipeFullInfoDto } from "@/types/api";
 import { Ingredient, Recipe } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-export const ClientContent = ({
-  recipe,
-  verifiedIngredients,
+export const AddRecipePageClientView = ({
+  ingredients,
 }: {
-  recipe: RecipeFullInfoDto;
-  verifiedIngredients: Ingredient[];
+  ingredients: Ingredient[];
 }) => {
   const { toast } = useToast();
   const router = useRouter();
+
   const handleSubmit = useCallback(
     (data: Recipe) => {
       toast({
         title: "Success",
-        description: "Recipe updated successfully",
+        description: "Recipe created successfully",
         variant: "default",
       });
-
-      router.refresh();
 
       setTimeout(() => {
         router.push(`/recipes/${data.id}`);
@@ -38,9 +34,8 @@ export const ClientContent = ({
   return (
     <ClientProvidersWrapper>
       <PageContentLayout>
-        <EditRecipeForm
-          recipe={recipe}
-          verifiedIngredients={verifiedIngredients}
+        <AddRecipeForm
+          verifiedIngredients={ingredients}
           onSubmitAction={handleSubmit}
         />
       </PageContentLayout>

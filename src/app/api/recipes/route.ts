@@ -52,8 +52,9 @@ export const createRecipe = async (
       recipeIngredients: {
         createMany: {
           data: data.ingredients.map((ingredient) => ({
-            ingredientId: ingredient?.ingredientId,
-            userIngredientId: ingredient?.userIngredientId,
+            id: ingredient?.id,
+            ingredientId: ingredient?.ingredientId || undefined,
+            userIngredientId: ingredient?.userIngredientId || undefined,
             amount: ingredient?.amount.toString(),
           })),
         },

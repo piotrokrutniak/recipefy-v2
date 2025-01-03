@@ -3,7 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Recipe, RecipeIngredient, Visibility } from "@prisma/client";
+import {
+  Ingredient,
+  Recipe,
+  RecipeIngredient,
+  Visibility,
+} from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,10 +37,14 @@ import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/Recipe
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
 interface AddRecipeFormProps {
+  verifiedIngredients: Ingredient[];
   onSubmitAction?: (data: Recipe) => void;
 }
 
-export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
+export const AddRecipeForm = ({
+  verifiedIngredients,
+  onSubmitAction,
+}: AddRecipeFormProps) => {
   const {
     mutate: createRecipe,
     data: createdRecipe,
@@ -59,17 +68,21 @@ export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
   });
 
   const onSubmit = (data: RecipeFormData) => {
-    createRecipe(data);
+    // remove empty ingredient lines
+    const purifiedData = {
+      ...data,
+      ingredients: data.ingredients.filter((i) => i.ingredientId),
+    };
+    createRecipe(purifiedData);
   };
 
   useEffect(() => {
+    console.log(form.formState.errors);
+  }, [form.formState.errors]);
+
+  useEffect(() => {
     if (isSuccess) {
-      // form.reset();
-      // create toast notification with success message
-
-      console.log(createdRecipe.data);
-
-      // onSubmitAction?.(createdRecipe.data);
+      onSubmitAction?.(createdRecipe.data);
     }
   }, [createdRecipe, isSuccess, onSubmitAction]);
 
@@ -78,18 +91,23 @@ export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
     index: number,
     ingredient?: Partial<RecipeIngredient>
   ) => {
-    const ingredientAlreadyExists = recipeIngredients.find(
+    const existingRecipe = recipeIngredients.find(
       (i) => i?.ingredientId === ingredient?.ingredientId
     );
 
-    if (ingredientAlreadyExists) {
-      return recipeIngredients;
-    }
-
     const updatedIngredients = [...recipeIngredients];
     updatedIngredients[index] = {
+      ...existingRecipe,
       ...ingredient,
     };
+
+    if (
+      updatedIngredients.filter(
+        (i) => i?.ingredientId === ingredient?.ingredientId
+      ).length > 1
+    ) {
+      return recipeIngredients;
+    }
 
     return updatedIngredients;
   };
@@ -107,7 +125,7 @@ export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-4"
+        className="flex flex-col w-full max-w-[1024px] gap-4"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -267,6 +285,7 @@ export const AddRecipeForm = ({ onSubmitAction }: AddRecipeFormProps) => {
               <FormControl>
                 <RecipeIngredientsInfoInput
                   recipeIngredients={field.value as RecipeIngredient[]}
+                  verifiedIngredients={verifiedIngredients}
                   addIngredient={() =>
                     field.onChange([...field.value, emptyIngredient])
                   }
