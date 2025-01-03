@@ -4,6 +4,8 @@ import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBod
 import { SideBarRecipeSummary } from "@/components/features/recipes/view/SideBarRecipeSummary";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
+import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
+import { RecipeFullInfoDto } from "@/types/api";
 
 export const ViewRecipePage = async ({
   params,
@@ -14,13 +16,13 @@ export const ViewRecipePage = async ({
   const user = await getCurrentUser();
 
   if (!recipe) {
-    return <div>Recipe not found</div>;
+    return <NotFoundError />;
   }
 
   return (
     <PageContentSidebarLayout>
       <PageContentLayout className="max-w-80">
-        <SideBarRecipeSummary recipe={recipe} />
+        <SideBarRecipeSummary recipe={recipe as RecipeFullInfoDto} />
       </PageContentLayout>
       <PageContentLayout className="flex-1">
         <RecipeViewBody recipe={recipe} user={user} />

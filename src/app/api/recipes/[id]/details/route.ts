@@ -11,7 +11,7 @@ export const GET = async (
     where: { id: params.id },
     include: {
       author: true,
-      RecipeIngredient: {
+      recipeIngredients: {
         include: {
           ingredient: true,
         },

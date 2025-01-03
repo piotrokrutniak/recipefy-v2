@@ -29,10 +29,10 @@ export const ClientContent = ({
       router.refresh();
 
       setTimeout(() => {
-        router.push(`/recipes/${data.id}`);
+        router.push(`/recipes/${recipe.id}`);
       }, 1000);
     },
-    [toast, router]
+    [toast, router, recipe]
   );
 
   return (

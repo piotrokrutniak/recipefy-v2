@@ -16,6 +16,7 @@ const createRecipeIngredientSchema = z.object({
 
 // Schema for validation
 export const createRecipeSchema = z.object({
+  id: z.string().optional(),
   title: z.string().min(1, "Title is required"),
   description: z.string(),
   content: z.string().min(1, "Content is required"),
@@ -25,7 +26,7 @@ export const createRecipeSchema = z.object({
   vegan: z.boolean(),
   vegetarian: z.boolean(),
   visibility: z.nativeEnum(Visibility),
-  ingredients: z.array(createRecipeIngredientSchema),
+  recipeIngredients: z.array(createRecipeIngredientSchema),
 }) satisfies z.ZodType<Partial<Recipe>>;
 
 export const createRecipe = async (
@@ -51,7 +52,7 @@ export const createRecipe = async (
       verifiedIngredients: false,
       recipeIngredients: {
         createMany: {
-          data: data.ingredients.map((ingredient) => ({
+          data: data.recipeIngredients.map((ingredient) => ({
             id: ingredient?.id,
             ingredientId: ingredient?.ingredientId || undefined,
             userIngredientId: ingredient?.userIngredientId || undefined,

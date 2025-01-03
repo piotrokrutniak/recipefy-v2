@@ -61,7 +61,7 @@ export const EditRecipeForm = ({
       vegan: recipe.vegan,
       vegetarian: recipe.vegetarian,
       visibility: recipe.visibility,
-      ingredients: recipe.recipeIngredients.map((i) => ({
+      recipeIngredients: recipe.recipeIngredients.map((i) => ({
         id: i.id,
         ingredientId: i.ingredientId ?? undefined,
         userIngredientId: i.userIngredientId ?? undefined,
@@ -74,8 +74,10 @@ export const EditRecipeForm = ({
     // remove empty ingredient lines
     const purifiedData = {
       ...data,
-      ingredients: data.ingredients.filter((i) => i.ingredientId),
+      id: recipe.id,
+      recipeIngredients: data.recipeIngredients.filter((i) => i.ingredientId),
     };
+    console.log("onSubmit", purifiedData);
     updateRecipe(purifiedData);
   };
 
@@ -277,7 +279,7 @@ export const EditRecipeForm = ({
 
         <FormField
           control={form.control}
-          name="ingredients"
+          name="recipeIngredients"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Ingredients</FormLabel>

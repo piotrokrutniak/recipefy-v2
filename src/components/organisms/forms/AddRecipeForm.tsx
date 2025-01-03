@@ -63,7 +63,7 @@ export const AddRecipeForm = ({
       vegan: false,
       vegetarian: false,
       visibility: Visibility.PRIVATE,
-      ingredients: [],
+      recipeIngredients: [],
     },
   });
 
@@ -71,7 +71,7 @@ export const AddRecipeForm = ({
     // remove empty ingredient lines
     const purifiedData = {
       ...data,
-      ingredients: data.ingredients.filter((i) => i.ingredientId),
+      recipeIngredients: data.recipeIngredients.filter((i) => i.ingredientId),
     };
     createRecipe(purifiedData);
   };
@@ -278,7 +278,7 @@ export const AddRecipeForm = ({
 
         <FormField
           control={form.control}
-          name="ingredients"
+          name="recipeIngredients"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Ingredients</FormLabel>

@@ -4,6 +4,7 @@ import { createRecipeSchema } from "../route";
 import { getCurrentUser } from "../../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
 import z from "node_modules/zod/lib";
+import { UpdateRecipeDto } from "@/types/api";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -11,10 +12,53 @@ export const getRecipeById = async (id: string) => {
   const recipe = await prisma.recipe.findUnique({
     where: { id },
     include: {
-      recipeIngredients: true,
+      recipeIngredients: {
+        include: {
+          ingredient: true,
+        },
+      },
     },
   });
 
+  return recipe;
+};
+
+export const updateRecipeById = async (
+  data: z.infer<typeof createRecipeSchema>,
+  authorId: string
+) => {
+  const recipe = await prisma.recipe.update({
+    where: { id: data.id },
+    data: {
+      title: data.title,
+      content: data.content,
+      cookTime: data.cookTime,
+      prepTime: data.prepTime,
+      author: {
+        connect: {
+          id: authorId,
+        },
+      },
+      servings: data.servings,
+      vegan: data.vegan,
+      vegetarian: data.vegetarian,
+      visibility: data.visibility,
+      calories: 0,
+      verifiedIngredients: false,
+      recipeIngredients: {
+        deleteMany: {
+          recipeId: data.id,
+        },
+        createMany: {
+          data: data.recipeIngredients.map((ingredient) => ({
+            ingredientId: ingredient?.ingredientId || undefined,
+            userIngredientId: ingredient?.userIngredientId || undefined,
+            amount: ingredient?.amount.toString(),
+          })),
+        },
+      },
+    },
+  });
   return recipe;
 };
 
@@ -79,7 +123,9 @@ export const PATCH = async (
     const body = await req.json();
 
     // Validate the request body
-    const validatedData = createRecipeSchema.partial().parse(body);
+    const validatedData = createRecipeSchema.parse(body);
+
+    console.log("validatedData", validatedData);
 
     const user = await getCurrentUser();
 
@@ -104,10 +150,27 @@ export const PATCH = async (
     }
 
     // Update the recipe
-    const recipe = await prisma.recipe.update({
-      where: { id: params.id },
-      data: validatedData,
-    });
+    // const recipe = await prisma.recipe.update({
+    //   where: { id: params.id },
+    //   data: {
+    //     ...validatedData,
+    //     recipeIngredients: {
+    //       deleteMany: {
+    //         recipeId: params.id,
+    //       },
+    //       createMany: {
+    //         data:
+    //           validatedData.recipeIngredients?.map((ingredient) => ({
+    //             ingredientId: ingredient?.ingredientId || undefined,
+    //             userIngredientId: ingredient?.userIngredientId || undefined,
+    //             amount: ingredient?.amount.toString(),
+    //           })) || [],
+    //       },
+    //     },
+    //   },
+    // });
+
+    const recipe = await updateRecipeById(validatedData, user.id);
 
     return NextResponse.json(recipe);
   } catch (error) {
