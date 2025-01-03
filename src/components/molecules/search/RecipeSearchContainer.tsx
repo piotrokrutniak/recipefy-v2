@@ -1,9 +1,9 @@
-import { RecipeSearchFormData } from "@/components/organisms/forms/SearchRecipesForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RecipeSearchFormData } from "@/hooks/forms/useSearchRecipesForm";
 import { UseFormReturn } from "react-hook-form";
 
-export const SearchContainer = ({
+export const RecipeSearchContainer = ({
   form,
   onSubmit,
 }: {

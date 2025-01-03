@@ -5,7 +5,7 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { IngredientsParamsSection } from "@/components/molecules/search/IngredientsParamsSection";
 import { PrepParamsSection } from "@/components/molecules/search/PrepParamsSection";
-import { SearchContainer } from "@/components/molecules/search/SearchContainer";
+import { RecipeSearchContainer } from "@/components/molecules/search/RecipeSearchContainer";
 import { Form } from "@/components/ui/form";
 import {
   useSearchRecipesForm,
@@ -48,7 +48,7 @@ export default function RecipeSearchForm({
         </PageContentLayout>
         <PageContentLayout>
           <div className="w-full flex flex-col gap-4">
-            <SearchContainer onSubmit={onSubmit} form={form} />
+            <RecipeSearchContainer onSubmit={onSubmit} form={form} />
             {children}
           </div>
         </PageContentLayout>

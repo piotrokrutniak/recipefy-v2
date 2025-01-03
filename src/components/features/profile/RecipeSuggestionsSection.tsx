@@ -31,12 +31,14 @@ export const RecipeSuggestionsSection = () => {
 };
 
 const BlacklistedIngredientsSection = () => {
-  const { data: initialBlacklistedIngredients } = useQueryGetBlacklistedIngredients();
+  const { data: initialBlacklistedIngredients } =
+    useQueryGetBlacklistedIngredients();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { data: ingredients } = useQueryGetIngredients({ query: searchQuery });
 
-  const { mutate: toggleIngredientBlacklist } = useMutationToggleBlacklistIngredient();
+  const { mutate: toggleIngredientBlacklist } =
+    useMutationToggleBlacklistIngredient();
 
   const [blacklistedIngredients, setBlacklistedIngredients] = useState<
     Ingredient[]
@@ -45,7 +47,7 @@ const BlacklistedIngredientsSection = () => {
   const handleIngredientClick = (ingredient: Ingredient) => {
     if (blacklistedIngredients.some((item) => item.id === ingredient.id)) {
       setBlacklistedIngredients(
-        blacklistedIngredients.filter((item) => item.id !== ingredient.id),
+        blacklistedIngredients.filter((item) => item.id !== ingredient.id)
       );
     } else {
       setBlacklistedIngredients([...blacklistedIngredients, ingredient]);
@@ -65,16 +67,22 @@ const BlacklistedIngredientsSection = () => {
     <>
       <TextLarge>Blacklisted Ingredients</TextLarge>
       <div className="flex flex-row flex-wrap gap-2 max-w-96">
-      {blacklistedIngredients
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((ingredient) => (
-          <BlacklistedIngredient key={ingredient.id} ingredient={ingredient} />
-        ))}
+        {blacklistedIngredients
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((ingredient) => (
+            <BlacklistedIngredient
+              key={ingredient.id}
+              ingredient={ingredient}
+            />
+          ))}
       </div>
       <Command shouldFilter={false}>
         <CommandList>
           <CommandGroup>
-            <CommandInput onValueChange={setSearchQuery} placeholder="Search ingredients..." />
+            <CommandInput
+              onValueChange={setSearchQuery}
+              placeholder="Search ingredients..."
+            />
             {ingredients?.map((ingredient) => (
               <CommandItem
                 key={ingredient.id}
@@ -86,10 +94,10 @@ const BlacklistedIngredientsSection = () => {
                   className={cn(
                     "ml-auto h-4 w-4",
                     blacklistedIngredients.some(
-                      (item) => item.id === ingredient.id,
+                      (item) => item.id === ingredient.id
                     )
                       ? "opacity-100"
-                      : "opacity-0",
+                      : "opacity-0"
                   )}
                 />
               </CommandItem>

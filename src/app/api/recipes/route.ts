@@ -7,6 +7,13 @@ import { UnauthorizedNextResponse } from "@/lib/api";
 
 const prisma = DBClient.getInstance().prisma;
 
+const createRecipeIngredientSchema = z.object({
+  id: z.string(),
+  ingredientId: z.string().optional(),
+  userIngredientId: z.string().optional(),
+  amount: z.string(),
+});
+
 // Schema for validation
 export const createRecipeSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -18,6 +25,7 @@ export const createRecipeSchema = z.object({
   vegan: z.boolean(),
   vegetarian: z.boolean(),
   visibility: z.nativeEnum(Visibility),
+  ingredients: z.array(createRecipeIngredientSchema),
 }) satisfies z.ZodType<Partial<Recipe>>;
 
 export const createRecipe = async (
@@ -41,6 +49,15 @@ export const createRecipe = async (
       visibility: data.visibility,
       calories: 0,
       verifiedIngredients: false,
+      recipeIngredients: {
+        createMany: {
+          data: data.ingredients.map((ingredient) => ({
+            ingredientId: ingredient?.ingredientId,
+            userIngredientId: ingredient?.userIngredientId,
+            amount: ingredient?.amount.toString(),
+          })),
+        },
+      },
     },
   });
 

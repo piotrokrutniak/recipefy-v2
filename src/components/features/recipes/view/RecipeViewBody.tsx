@@ -1,7 +1,7 @@
 import { LinkButton } from "@/components/generic/LinkButton";
+import { MarkupRenderer } from "@/components/molecules/markup/MarkdownRenderer";
 import { TextH1 } from "@/components/typography/TextH1";
 import { TextLead } from "@/components/typography/TextLead";
-import { TextMedium } from "@/components/typography/TextMedium";
 import { TextP } from "@/components/typography/TextP";
 import { Button } from "@/components/ui/button";
 import { Recipe, User } from "@prisma/client";
@@ -23,7 +23,7 @@ export const RecipeViewBody = ({
         <TextP noLeading>{`Prep Time: ${recipe.prepTime} minutes`}</TextP>
         <TextP noLeading>{`Cook Time: ${recipe.cookTime} minutes`}</TextP>
       </div>
-      <TextMedium>{recipe.content}</TextMedium>
+      <MarkupRenderer content={recipe.content} />
     </div>
   );
 };
