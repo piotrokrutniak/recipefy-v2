@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -18,6 +19,8 @@ const createRecipeIngredientSchema = z.object({
 export const createRecipeSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, "Title is required"),
+  thumbnailUrl: z.string().optional(),
+  thumbnailBase64: z.string().optional(),
   description: z.string(),
   content: z.string().min(1, "Content is required"),
   cookTime: z.number().min(0, "Cook time cannot be negative"),
@@ -33,9 +36,16 @@ export const createRecipe = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
+  let thumbnailUrl = data.thumbnailUrl;
+
+  if (data.thumbnailBase64) {
+    thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);
+  }
+
   const recipe = await prisma.recipe.create({
     data: {
       title: data.title,
+      thumbnailUrl,
       description: data.description,
       content: data.content,
       cookTime: data.cookTime,

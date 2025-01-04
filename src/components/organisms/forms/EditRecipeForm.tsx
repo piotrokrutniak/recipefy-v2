@@ -24,11 +24,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createRecipeSchema } from "@/app/api/recipes/route";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { RecipeFullInfoDto } from "@/types/api";
+import { ImageIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -54,6 +56,8 @@ export const EditRecipeForm = ({
     defaultValues: {
       title: recipe.title,
       description: recipe.description,
+      thumbnailUrl: recipe.thumbnailUrl || undefined,
+      thumbnailBase64: recipe.thumbnailUrl || undefined,
       content: recipe.content,
       cookTime: recipe.cookTime,
       prepTime: recipe.prepTime,
@@ -145,6 +149,26 @@ export const EditRecipeForm = ({
 
         <FormField
           control={form.control}
+          name="thumbnailUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Thumbnail</FormLabel>
+              <FormControl>
+                <AttachThumbnailButton
+                  onChange={(file) => {
+                    field.onChange(file);
+                  }}
+                  uploadedThumbnailUrl={form.getValues("thumbnailUrl")}
+                  draftThumbnailBase64={form.getValues("thumbnailBase64")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -152,7 +176,7 @@ export const EditRecipeForm = ({
               <FormControl>
                 <Textarea
                   placeholder="Recipe description"
-                  className="resize-none"
+                  className="resize-none min-h-[180px]"
                   {...field}
                 />
               </FormControl>
@@ -333,5 +357,79 @@ export const EditRecipeForm = ({
         </Button>
       </form>
     </Form>
+  );
+};
+
+const AttachThumbnailButton = ({
+  onChange,
+  uploadedThumbnailUrl,
+  draftThumbnailBase64,
+}: {
+  onChange: (file: string) => void;
+  uploadedThumbnailUrl: string | undefined;
+  draftThumbnailBase64: string | undefined;
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fileToBase64 = async (file: File) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        // Make sure we have a string result
+        if (typeof reader.result === "string") {
+          resolve(reader.result);
+        } else {
+          reject(new Error("Failed to convert file to base64"));
+        }
+      };
+
+      reader.onerror = () => {
+        reject(new Error("Failed to read file"));
+      };
+
+      // Use readAsDataURL instead of readAsText
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      onChange(base64 as string);
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    fileInputRef.current?.click();
+  };
+
+  const thumbnailUrl = draftThumbnailBase64 || uploadedThumbnailUrl;
+
+  return (
+    <div className="flex flex-col gap-2 items-center">
+      {!!thumbnailUrl && (
+        <Image
+          src={thumbnailUrl}
+          alt="Thumbnail"
+          width={300}
+          height={300}
+          className="rounded-md"
+        />
+      )}
+      <Button variant="outline" onClick={handleButtonClick}>
+        <ImageIcon className="w-4 h-4" />
+        Attach Thumbnail
+      </Button>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+    </div>
   );
 };

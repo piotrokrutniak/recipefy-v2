@@ -4,7 +4,7 @@ import { createRecipeSchema } from "../route";
 import { getCurrentUser } from "../../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
 import z from "node_modules/zod/lib";
-import { UpdateRecipeDto } from "@/types/api";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -27,11 +27,18 @@ export const updateRecipeById = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
+  let thumbnailUrl = data.thumbnailUrl;
+
+  if (data.thumbnailBase64) {
+    thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);
+  }
+
   const recipe = await prisma.recipe.update({
     where: { id: data.id },
     data: {
       title: data.title,
       description: data.description,
+      thumbnailUrl,
       content: data.content,
       cookTime: data.cookTime,
       prepTime: data.prepTime,
@@ -116,6 +123,14 @@ export const DELETE = async (
     );
   }
 };
+
+/**
+ * TODO: Implement cleaning up the assets in the cloudinary
+ * - The thumbnail should be deleted if the recipe is deleted
+ * - The thumbnail previously uploaded should be deleted if the recipe thumbnail is updated
+ * - The markup should be scanned for images and then delete them if they are not in the updated recipe
+ * - The markup should be scanned for base64 images, upload them to cloudinary and replace base64 with the new url
+ */
 export const PATCH = async (
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -149,27 +164,6 @@ export const PATCH = async (
         { status: 403 }
       );
     }
-
-    // Update the recipe
-    // const recipe = await prisma.recipe.update({
-    //   where: { id: params.id },
-    //   data: {
-    //     ...validatedData,
-    //     recipeIngredients: {
-    //       deleteMany: {
-    //         recipeId: params.id,
-    //       },
-    //       createMany: {
-    //         data:
-    //           validatedData.recipeIngredients?.map((ingredient) => ({
-    //             ingredientId: ingredient?.ingredientId || undefined,
-    //             userIngredientId: ingredient?.userIngredientId || undefined,
-    //             amount: ingredient?.amount.toString(),
-    //           })) || [],
-    //       },
-    //     },
-    //   },
-    // });
 
     const recipe = await updateRecipeById(validatedData, user.id);
 

@@ -151,7 +151,7 @@ export const AddRecipeForm = ({
               <FormControl>
                 <Textarea
                   placeholder="Recipe description"
-                  className="resize-none"
+                  className="resize-none min-h-[180px]"
                   {...field}
                 />
               </FormControl>
