@@ -35,6 +35,16 @@ model User {
   Session Session[]
 }
 
+model UserRecipePreferences {
+  userId    String   @id
+  veganOnly Boolean
+  vegetarianOnly Boolean
+  enableSuggestions Boolean
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -82,9 +92,7 @@ model UserAllergy {
 model UserIngredient {
   id           String   @id @default(cuid())
   userId       String
-  ingredientId String
-  amount       Float
-  unit         String
+  name         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -94,6 +102,8 @@ model UserIngredient {
 model Ingredient {
   id        String   @id @default(cuid())
   name      String
+  vegan     Boolean
+  vegetarian Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -125,13 +135,11 @@ model RecipeIngredient {
   id           String     @id @default(cuid())
   recipeId     String
   recipe       Recipe     @relation(fields: [recipeId], references: [id])
-  ingredientId String
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  userIngredientId String
-  userIngredient   UserIngredient @relation(fields: [userIngredientId], references: [id])
+  ingredientId String?
+  ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
+  userIngredientId String?
+  userIngredient   UserIngredient? @relation(fields: [userIngredientId], references: [id])
   amount       String
-  published    Boolean
-  publishAt    DateTime
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }
@@ -139,7 +147,9 @@ model RecipeIngredient {
 model Recipe {
   id        String   @id @default(cuid())
   title     String
-  content   String
+  description String @default("")
+  content   String @default("")
+  thumbnailUrl String?
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   visibility Visibility
@@ -152,17 +162,20 @@ model Recipe {
   verifiedIngredients Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  shouldPublish Boolean @default(false)
+  publishAt DateTime?
 
-  RecipeIngredient RecipeIngredient[]
+  recipeIngredients RecipeIngredient[]
 }
 
 model UserRecipeNote {
-  id        String   @id @default(cuid())
   userId    String
   recipeId  String
   note      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, recipeId], name: "userId_recipeId")
 }
 
 model UserRecipeRating {
@@ -199,6 +212,14 @@ model UserRecipeCommentRating {
   liked     Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model UserBlacklistedIngredient {
+  id           String   @id @default(cuid())
+  userId       String
+  ingredientId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Circle {

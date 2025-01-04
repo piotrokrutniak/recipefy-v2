@@ -5,7 +5,11 @@ import { SessionProvider } from "next-auth/react";
 
 const queryClient = new QueryClient();
 
-export const ProvidersWrapper = ({
+/**
+ * Use this wrapper to provide the React Query client and NextAuth session to your app.
+ * Use only within the client-side context.
+ */
+export const ClientProvidersWrapper = ({
   children,
 }: {
   children: React.ReactNode;

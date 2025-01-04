@@ -1,0 +1,435 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Ingredient, Recipe, RecipeIngredient } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createRecipeSchema } from "@/app/api/recipes/route";
+import { useEffect, useRef, useState } from "react";
+import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
+import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
+import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
+import { RecipeFullInfoDto } from "@/types/api";
+import { ImageIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
+
+export type RecipeFormData = z.infer<typeof createRecipeSchema>;
+
+interface EditRecipeFormProps {
+  verifiedIngredients: Ingredient[];
+  recipe: RecipeFullInfoDto;
+  onSubmitAction?: (data: Recipe) => void;
+}
+
+export const EditRecipeForm = ({
+  verifiedIngredients,
+  recipe,
+  onSubmitAction,
+}: EditRecipeFormProps) => {
+  const {
+    mutate: updateRecipe,
+    data: updatedRecipe,
+    isSuccess,
+    isPending,
+  } = useMutationEditRecipe();
+  const form = useForm<RecipeFormData>({
+    resolver: zodResolver(createRecipeSchema),
+    defaultValues: {
+      title: recipe.title,
+      description: recipe.description,
+      thumbnailUrl: recipe.thumbnailUrl || undefined,
+      thumbnailBase64: recipe.thumbnailUrl || undefined,
+      content: recipe.content,
+      cookTime: recipe.cookTime,
+      prepTime: recipe.prepTime,
+      servings: recipe.servings,
+      vegan: recipe.vegan,
+      vegetarian: recipe.vegetarian,
+      visibility: recipe.visibility,
+      recipeIngredients: recipe.recipeIngredients.map((i) => ({
+        id: i.id,
+        ingredientId: i.ingredientId ?? undefined,
+        userIngredientId: i.userIngredientId ?? undefined,
+        amount: i.amount,
+      })),
+    },
+  });
+
+  const onSubmit = (data: RecipeFormData) => {
+    // remove empty ingredient lines
+    const purifiedData = {
+      ...data,
+      id: recipe.id,
+      recipeIngredients: data.recipeIngredients.filter((i) => i.ingredientId),
+    };
+    console.log("onSubmit", purifiedData);
+    updateRecipe(purifiedData);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onSubmitAction?.(updatedRecipe.data);
+    }
+  }, [updatedRecipe, isSuccess, onSubmitAction]);
+
+  const getUpdatedIngredients = (
+    recipeIngredients: Partial<RecipeIngredient>[],
+    index: number,
+    ingredient?: Partial<RecipeIngredient>
+  ) => {
+    const existingRecipe = recipeIngredients.find(
+      (i) => i?.ingredientId === ingredient?.ingredientId
+    );
+
+    const updatedIngredients = [...recipeIngredients];
+    updatedIngredients[index] = {
+      ...existingRecipe,
+      ...ingredient,
+    };
+
+    if (
+      updatedIngredients.filter(
+        (i) => i?.ingredientId === ingredient?.ingredientId
+      ).length > 1
+    ) {
+      return recipeIngredients;
+    }
+
+    return updatedIngredients;
+  };
+
+  const emptyIngredient = {
+    id: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ingredientId: null,
+    userIngredientId: null,
+    amount: "",
+    recipeId: "",
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        className="flex flex-col w-full max-w-[1024px] gap-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Recipe title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="thumbnailUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Thumbnail</FormLabel>
+              <FormControl>
+                <AttachThumbnailButton
+                  onChange={(file) => {
+                    field.onChange(file);
+                  }}
+                  uploadedThumbnailUrl={form.getValues("thumbnailUrl")}
+                  draftThumbnailBase64={form.getValues("thumbnailBase64")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Recipe description"
+                  className="resize-none min-h-[180px]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="visibility"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Visibility</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="PUBLIC">Public</SelectItem>
+                  <SelectItem value="PRIVATE">Private</SelectItem>
+                  <SelectItem value="UNLISTED">Unlisted</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-3 gap-4">
+          <FormField
+            control={form.control}
+            name="prepTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Prep Time (min)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="cookTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cook Time (min)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="servings"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Servings</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={1}
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex gap-4">
+          <FormField
+            control={form.control}
+            name="vegetarian"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="font-normal">Vegetarian</FormLabel>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="vegan"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="font-normal">Vegan</FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="recipeIngredients"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ingredients</FormLabel>
+              <FormControl>
+                <RecipeIngredientsInfoInput
+                  recipeIngredients={field.value as RecipeIngredient[]}
+                  verifiedIngredients={verifiedIngredients}
+                  addIngredient={() =>
+                    field.onChange([...field.value, emptyIngredient])
+                  }
+                  removeIngredient={(ingredientId) => {
+                    field.onChange(
+                      field.value.filter((i) => i?.id !== ingredientId)
+                    );
+                  }}
+                  updateIngredient={(ingredient, index) =>
+                    field.onChange(
+                      getUpdatedIngredients(field.value, index, ingredient)
+                    )
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <QuillEditor
+                  value={form.getValues("content")}
+                  onChange={(value) => form.setValue("content", value)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          disabled={isSuccess || isPending}
+          type="submit"
+          className="w-full"
+        >
+          {isSuccess ? "Recipe created" : "Create Recipe"}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+const AttachThumbnailButton = ({
+  onChange,
+  uploadedThumbnailUrl,
+  draftThumbnailBase64,
+}: {
+  onChange: (file: string) => void;
+  uploadedThumbnailUrl: string | undefined;
+  draftThumbnailBase64: string | undefined;
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fileToBase64 = async (file: File) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        // Make sure we have a string result
+        if (typeof reader.result === "string") {
+          resolve(reader.result);
+        } else {
+          reject(new Error("Failed to convert file to base64"));
+        }
+      };
+
+      reader.onerror = () => {
+        reject(new Error("Failed to read file"));
+      };
+
+      // Use readAsDataURL instead of readAsText
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      onChange(base64 as string);
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    fileInputRef.current?.click();
+  };
+
+  const thumbnailUrl = draftThumbnailBase64 || uploadedThumbnailUrl;
+
+  return (
+    <div className="flex flex-col gap-2 items-center">
+      {!!thumbnailUrl && (
+        <Image
+          src={thumbnailUrl}
+          alt="Thumbnail"
+          width={300}
+          height={300}
+          className="rounded-md"
+        />
+      )}
+      <Button variant="outline" onClick={handleButtonClick}>
+        <ImageIcon className="w-4 h-4" />
+        Attach Thumbnail
+      </Button>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+    </div>
+  );
+};

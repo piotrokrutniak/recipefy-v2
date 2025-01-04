@@ -5,7 +5,7 @@ export const TextP = ({
   children,
   noLeading,
   ...rest
-}: { children: React.ReactNode; noLeading: boolean } & DetailedHTMLProps<
+}: { children?: React.ReactNode; noLeading?: boolean } & DetailedHTMLProps<
   HTMLAttributes<HTMLParagraphElement>,
   HTMLParagraphElement
 >) => {

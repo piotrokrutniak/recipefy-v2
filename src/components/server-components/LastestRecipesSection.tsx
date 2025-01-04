@@ -1,5 +1,4 @@
 import { SelectValue } from "@radix-ui/react-select";
-import { RecipeListing } from "../features/recipes/RecipeListing";
 import { TextH3 } from "../typography/TextH3";
 import {
   Select,
@@ -9,19 +8,35 @@ import {
   SelectLabel,
   SelectTrigger,
 } from "../ui/select";
+import { getRecipes } from "@/app/api/recipes/route";
+import { RecipeListing } from "../features/recipes/RecipeListing";
+import { getCurrentUser } from "@/app/api/users/current/route";
+import { getLikedRecipes } from "@/app/api/users/current/liked-recipes/route";
+import { LinkButton } from "../generic/LinkButton";
 
-export const LatestRecipesSection = () => {
+export const LatestRecipesSection = async () => {
+  const recipes = await getRecipes({});
+  const user = (await getCurrentUser()) ?? undefined;
+  const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
-    <section className="flex flex-col px-5 py-4 gap-4">
+    <section className="flex flex-col px-5 py-4 gap-4 w-full">
       <div className="flex justify-between">
         <TextH3 className="ml-5">Recently Added Recipes</TextH3>
         <RecipeTypeSelector />
       </div>
-      <RecipeListing />
-      <RecipeListing />
-      <RecipeListing />
-      <RecipeListing />
-      <RecipeListing />
+      {recipes.map((recipe) => (
+        <RecipeListing
+          key={recipe.id}
+          recipe={recipe}
+          isLiked={likedRecipes.some(
+            (likedRecipe) => likedRecipe.recipeId === recipe.id
+          )}
+          user={user}
+        />
+      ))}
+      <LinkButton href="/recipes" className="w-full mx-3">
+        Discover more recipes
+      </LinkButton>
     </section>
   );
 };
