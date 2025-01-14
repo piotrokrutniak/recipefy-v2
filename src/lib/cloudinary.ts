@@ -1,4 +1,4 @@
-import axios from "axios";
+import { ReplacedAsset } from "./server-actions/recipes/uploadMarkupAssets";
 
 async function uploadImageToCloudinary(imageData: string | File) {
   const formData = new FormData();
@@ -56,6 +56,17 @@ export async function processContentImages(content: string): Promise<string> {
   }
 
   return processedContent;
+}
+
+export const replaceBase64WithUrls = (assetPairs: ReplacedAsset[], content: string) => {
+  let updatedContent = content;
+  
+  assetPairs.forEach(({ srcBase64, srcUrl }) => {
+    // Replace all occurrences of the base64 string with the URL
+    updatedContent = updatedContent.replaceAll(srcBase64, srcUrl);
+  });
+
+  return updatedContent;
 }
 
 export { uploadImageToCloudinary };

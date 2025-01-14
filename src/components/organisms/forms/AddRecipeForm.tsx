@@ -29,10 +29,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createRecipeSchema } from "@/app/api/recipes/route";
 import { useEffect } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
+import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
+import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -125,7 +126,7 @@ export const AddRecipeForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col w-full max-w-[1024px] gap-4"
+        className="flex flex-col w-full max-w-[1024px] gap-4 my-4"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -136,6 +137,26 @@ export const AddRecipeForm = ({
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Recipe title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+<FormField
+          control={form.control}
+          name="thumbnailUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Thumbnail</FormLabel>
+              <FormControl>
+                <UploadImageAssetInput
+                  onChange={(file) => {
+                    field.onChange(file);
+                  }}
+                  uploadedThumbnailUrl={form.getValues("thumbnailUrl")}
+                  draftThumbnailBase64={form.getValues("thumbnailBase64")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

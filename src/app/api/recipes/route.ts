@@ -1,81 +1,11 @@
 import DBClient from "@/persistence/DBClient";
-import { Recipe, Visibility } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
-import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { createRecipe, createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
 
 const prisma = DBClient.getInstance().prisma;
-
-const createRecipeIngredientSchema = z.object({
-  id: z.string(),
-  ingredientId: z.string().optional(),
-  userIngredientId: z.string().optional(),
-  amount: z.string(),
-});
-
-// Schema for validation
-export const createRecipeSchema = z.object({
-  id: z.string().optional(),
-  title: z.string().min(1, "Title is required"),
-  thumbnailUrl: z.string().optional(),
-  thumbnailBase64: z.string().optional(),
-  description: z.string(),
-  content: z.string().min(1, "Content is required"),
-  cookTime: z.number().min(0, "Cook time cannot be negative"),
-  prepTime: z.number().min(0, "Prep time cannot be negative"),
-  servings: z.number().min(1, "Must have at least 1 serving"),
-  vegan: z.boolean(),
-  vegetarian: z.boolean(),
-  visibility: z.nativeEnum(Visibility),
-  recipeIngredients: z.array(createRecipeIngredientSchema),
-}) satisfies z.ZodType<Partial<Recipe>>;
-
-export const createRecipe = async (
-  data: z.infer<typeof createRecipeSchema>,
-  authorId: string
-) => {
-  let thumbnailUrl = data.thumbnailUrl;
-
-  if (data.thumbnailBase64) {
-    thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);
-  }
-
-  const recipe = await prisma.recipe.create({
-    data: {
-      title: data.title,
-      thumbnailUrl,
-      description: data.description,
-      content: data.content,
-      cookTime: data.cookTime,
-      prepTime: data.prepTime,
-      author: {
-        connect: {
-          id: authorId,
-        },
-      },
-      servings: data.servings,
-      vegan: data.vegan,
-      vegetarian: data.vegetarian,
-      visibility: data.visibility,
-      calories: 0,
-      verifiedIngredients: false,
-      recipeIngredients: {
-        createMany: {
-          data: data.recipeIngredients.map((ingredient) => ({
-            id: ingredient?.id,
-            ingredientId: ingredient?.ingredientId || undefined,
-            userIngredientId: ingredient?.userIngredientId || undefined,
-            amount: ingredient?.amount.toString(),
-          })),
-        },
-      },
-    },
-  });
-
-  return recipe;
-};
 
 export const POST = async (req: NextRequest) => {
   try {

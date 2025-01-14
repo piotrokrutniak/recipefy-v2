@@ -1,10 +1,11 @@
 import DBClient from "@/persistence/DBClient";
 import { NextRequest, NextResponse } from "next/server";
-import { createRecipeSchema } from "../route";
 import { getCurrentUser } from "../../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
 import z from "node_modules/zod/lib";
-import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { replaceBase64WithUrls, uploadImageToCloudinary } from "@/lib/cloudinary";
+import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
+import { uploadMarkupAssets } from "@/lib/server-actions/recipes/uploadMarkupAssets";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -33,13 +34,20 @@ export const updateRecipeById = async (
     thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);
   }
 
+    // TODO: Try-Catch and clean up maybe? 
+  // Though the only failure side-effect is lack of SEO for the affected images
+  // The failed upload will be re-tried whenever user saves the recipe again
+  const replacedAssets = await uploadMarkupAssets(data.content);
+
+  const processedContent = replaceBase64WithUrls(replacedAssets, data.content)
+
   const recipe = await prisma.recipe.update({
     where: { id: data.id },
     data: {
       title: data.title,
       description: data.description,
       thumbnailUrl,
-      content: data.content,
+      content: processedContent,
       cookTime: data.cookTime,
       prepTime: data.prepTime,
       author: {
