@@ -1,3 +1,5 @@
+"use server";
+
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import DBClient from "@/persistence/DBClient";

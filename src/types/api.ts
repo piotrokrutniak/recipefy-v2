@@ -6,6 +6,7 @@ export type CreateRecipeDto = Partial<Omit<Recipe, "id" | "authorId">>;
 export type UpdateRecipeDto = Partial<Omit<Recipe, "authorId">>;
 export type RecipeFullInfoDto = Recipe & {
   recipeIngredients: RecipeIngredientDto[];
+  author: User;
 };
 
 export type RecipeIngredientDto = RecipeIngredient & {

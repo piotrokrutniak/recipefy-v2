@@ -5,7 +5,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useQueryGetCurrentUser } from "@/hooks/api/users/queries/useQueryGetCurrentUser";
 import { User } from "@prisma/client";
 
-export const ProfileSideBarHeader = ({ user }: { user: User }) => {
+export const ProfileSideBarHeaderClient = ({ user }: { user: User }) => {
   const { data: currentUser = user } = useQueryGetCurrentUser();
 
   return (

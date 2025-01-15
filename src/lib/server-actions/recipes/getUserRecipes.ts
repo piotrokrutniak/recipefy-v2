@@ -1,11 +1,28 @@
 "use server";
 
+import { getCurrentUser } from "@/app/api/users/current/route";
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import DBClient from "@/persistence/DBClient";
+import { Visibility } from "@prisma/client";
 
 const prisma = DBClient.getInstance().prisma;
 
-export const getPublicRecipes = async (params: Partial<RecipeSearchParams>) => {
+export const getUserRecipes = async (
+  params: Partial<RecipeSearchParams>,
+  userId: string
+) => {
+  const currentUser = await getCurrentUser();
+
+  if (!userId) {
+    return [];
+  }
+
+  const isCurrentUser = currentUser?.id === userId;
+
+  const visibility: Visibility[] = isCurrentUser
+    ? ["PUBLIC", "PRIVATE", "UNLISTED"]
+    : ["PUBLIC"];
+
   return await prisma.recipe.findMany({
     skip: params.skip,
     take: params.take,
@@ -29,7 +46,10 @@ export const getPublicRecipes = async (params: Partial<RecipeSearchParams>) => {
       },
       vegan: Boolean(params.vegan),
       vegetarian: Boolean(params.vegetarian),
-      visibility: "PUBLIC",
+      visibility: {
+        in: visibility,
+      },
+      authorId: userId,
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes
           ? {

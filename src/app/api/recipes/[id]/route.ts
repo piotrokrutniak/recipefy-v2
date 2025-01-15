@@ -21,6 +21,7 @@ export const getRecipeById = async (id: string) => {
           ingredient: true,
         },
       },
+      author: true,
     },
   });
 

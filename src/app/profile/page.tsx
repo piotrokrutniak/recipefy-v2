@@ -1,5 +1,5 @@
 import { AccountDetailsSection } from "@/components/features/profile/AccountDetailsSection";
-import { ProfileSideBarHeader } from "@/components/features/profile/ProfileSideBarHeader";
+import { ProfileSideBarHeaderClient } from "@/components/features/profile/ProfileSideBarHeaderClient";
 import { ProfileSideBarNavigation } from "@/components/features/profile/ProfileSideBarNavigation";
 import { RecipeSuggestionsSection } from "@/components/features/profile/RecipeSuggestionsSection";
 import { TeamsSection } from "@/components/features/profile/TeamsSection";
@@ -20,7 +20,7 @@ export const ProfilePage = async () => {
     <ClientProvidersWrapper>
       <PageContentSidebarLayout>
         <PageContentLayout className="flex-grow-0">
-          <ProfileSideBarHeader user={user!} />
+          <ProfileSideBarHeaderClient user={user!} />
           <ProfileSideBarNavigation />
         </PageContentLayout>
         <PageContentLayout>

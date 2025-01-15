@@ -1,3 +1,5 @@
+"use server";
+
 import { getLikedRecipes } from "./getLikedRecipes";
 import DBClient from "@/persistence/DBClient";
 
