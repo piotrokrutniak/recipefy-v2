@@ -11,14 +11,17 @@ import {
   useSearchRecipesForm,
   RecipeSearchFormData,
 } from "@/hooks/forms/useSearchRecipesForm";
+import { Ingredient } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 export default function RecipeSearchForm({
   formData,
   children,
+  ingredients,
 }: {
   formData: Partial<RecipeSearchParams>;
   children?: React.ReactNode;
+  ingredients: Ingredient[];
 }) {
   const form = useSearchRecipesForm({
     ...formData,
@@ -44,7 +47,7 @@ export default function RecipeSearchForm({
       <Form {...form}>
         <PageContentLayout className="flex-grow-0 w-80">
           <PrepParamsSection form={form} />
-          <IngredientsParamsSection form={form} />
+          <IngredientsParamsSection form={form} ingredients={ingredients} />
         </PageContentLayout>
         <PageContentLayout>
           <div className="w-full flex flex-col gap-4">

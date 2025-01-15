@@ -12,7 +12,7 @@ export type RecipeSearchFormData = {
   ingredients: string[];
   vegan: boolean;
   vegetarian: boolean;
-  ignoreBlacklistedIngredients: boolean;
+  includeBlacklistedRecipes: boolean;
 };
 
 const searchRecipesSchema = z.object({
@@ -23,7 +23,7 @@ const searchRecipesSchema = z.object({
   ingredients: z.array(z.string()).optional(),
   vegan: z.boolean().optional(),
   vegetarian: z.boolean().optional(),
-  ignoreBlacklistedIngredients: z.boolean().optional(),
+  includeBlacklistedRecipes: z.boolean().optional(),
 });
 
 type DefaultParams = Partial<RecipeSearchFormData>;
@@ -39,7 +39,7 @@ export const useSearchRecipesForm = (defaultParams: DefaultParams) => {
       ingredients: [],
       vegan: false,
       vegetarian: false,
-      ignoreBlacklistedIngredients: false,
+      includeBlacklistedRecipes: true,
       ...defaultParams,
     },
   });

@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
-import { createRecipe, createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
+import {
+  createRecipe,
+  createRecipeSchema,
+} from "@/lib/server-actions/recipes/createRecipe";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -50,7 +53,7 @@ export type RecipeSearchParams = {
   ingredients?: string;
   vegan: boolean;
   vegetarian: boolean;
-  ignoreBlacklistedIngredients: boolean;
+  includeBlacklistedRecipes: boolean;
   blacklistedIngredientsIds: string[];
 };
 
@@ -85,12 +88,10 @@ export const GET = async (req: NextRequest) => {
     ingredients: searchParams.get("ingredients") || undefined,
     vegan: searchParams.get("vegan") === "true",
     vegetarian: searchParams.get("vegetarian") === "true",
-    ignoreBlacklistedIngredients:
-      searchParams.get("ignoreBlacklistedIngredients") === "true",
+    includeBlacklistedRecipes:
+      searchParams.get("includeBlacklistedRecipes") === "true",
     blacklistedIngredientsIds: blacklistedIngredientsIds,
   };
-
-  console.log("RecipeSearchParams", params);
 
   const recipes = await getRecipes(params);
 
@@ -122,12 +123,10 @@ export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
       vegan: params.vegan,
       vegetarian: params.vegetarian,
       recipeIngredients: {
-        every: !params.ignoreBlacklistedIngredients
+        every: !params.includeBlacklistedRecipes
           ? {
               ingredientId: {
-                notIn: params.ignoreBlacklistedIngredients
-                  ? undefined
-                  : params.blacklistedIngredientsIds,
+                notIn: params.blacklistedIngredientsIds,
               },
             }
           : undefined,

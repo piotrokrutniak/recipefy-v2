@@ -4,21 +4,19 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Command } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
 import { Ingredient } from "@prisma/client";
-import { useState } from "react";
 
 export const IngredientSearchInput = ({
   setSearchQuery,
   ingredients,
   onIngredientClick,
+  className,
 }: {
   setSearchQuery: (query: string) => void;
   ingredients: Ingredient[];
   onIngredientClick: (ingredient: Ingredient) => void;
+  className?: string;
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
   return (
     <Command shouldFilter>
       <CommandList>
@@ -27,6 +25,7 @@ export const IngredientSearchInput = ({
           <CommandItem
             key={ingredient.id}
             onSelect={() => onIngredientClick(ingredient)}
+            className={className}
           >
             {ingredient.name}
           </CommandItem>

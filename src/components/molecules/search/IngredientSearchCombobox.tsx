@@ -7,16 +7,21 @@ import {
 import { Ingredient, RecipeIngredient } from "@prisma/client";
 import { useState } from "react";
 import { IngredientSearchInput } from "./IngredientSearchContainer";
+import { cn } from "@/lib/utils";
 
 type IngredientSearchComboboxProps = {
   selectedIngredient?: RecipeIngredient;
   ingredients: Ingredient[];
   onIngredientClick: (ingredient: Ingredient) => void;
+  buttonClassName?: string;
+  popoverContentClassName?: string;
 };
 export const IngredientSearchCombobox = ({
   selectedIngredient,
   ingredients,
   onIngredientClick,
+  buttonClassName,
+  popoverContentClassName,
 }: IngredientSearchComboboxProps) => {
   const [open, setOpen] = useState(false);
 
@@ -28,7 +33,10 @@ export const IngredientSearchCombobox = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
+        <Button
+          variant="outline"
+          className={cn("w-[150px] justify-start", buttonClassName)}
+        >
           {selectedIngredient?.id ? (
             <>
               {
@@ -44,7 +52,10 @@ export const IngredientSearchCombobox = ({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      <PopoverContent
+        className={cn("w-[200px] p-0", popoverContentClassName)}
+        align="start"
+      >
         <IngredientSearchInput
           setSearchQuery={() => {}}
           ingredients={ingredients}
