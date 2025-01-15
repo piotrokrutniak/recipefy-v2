@@ -23,13 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { RecipeFullInfoDto } from "@/types/api";
-import { ImageIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
 import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
 import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
 
@@ -82,7 +80,6 @@ export const EditRecipeForm = ({
       id: recipe.id,
       recipeIngredients: data.recipeIngredients.filter((i) => i.ingredientId),
     };
-    console.log("onSubmit", purifiedData);
     updateRecipe(purifiedData);
   };
 
@@ -360,4 +357,3 @@ export const EditRecipeForm = ({
     </Form>
   );
 };
-

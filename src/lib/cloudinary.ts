@@ -46,6 +46,8 @@ export async function processContentImages(content: string): Promise<string> {
   const base64Images = content.match(base64Regex) || [];
   let processedContent = content;
 
+  console.log("processContentImages", base64Images.length);
+
   for (const base64Image of base64Images) {
     try {
       const imageUrl = await uploadImageToCloudinary(base64Image);
@@ -58,15 +60,18 @@ export async function processContentImages(content: string): Promise<string> {
   return processedContent;
 }
 
-export const replaceBase64WithUrls = (assetPairs: ReplacedAsset[], content: string) => {
+export const replaceBase64WithUrls = (
+  assetPairs: ReplacedAsset[],
+  content: string
+) => {
   let updatedContent = content;
-  
+
   assetPairs.forEach(({ srcBase64, srcUrl }) => {
     // Replace all occurrences of the base64 string with the URL
     updatedContent = updatedContent.replaceAll(srcBase64, srcUrl);
   });
 
   return updatedContent;
-}
+};
 
 export { uploadImageToCloudinary };
