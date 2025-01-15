@@ -13,6 +13,7 @@ import {
 } from "@/hooks/forms/useSearchRecipesForm";
 import { Ingredient } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function RecipeSearchForm({
   formData,
@@ -25,6 +26,9 @@ export default function RecipeSearchForm({
 }) {
   const form = useSearchRecipesForm({
     ...formData,
+    vegan: Boolean(formData.vegan),
+    vegetarian: Boolean(formData.vegetarian),
+    includeBlacklistedRecipes: Boolean(formData.includeBlacklistedRecipes),
     ingredients: formData.ingredients?.split(",") || [],
   });
   const router = useRouter();
@@ -41,6 +45,10 @@ export default function RecipeSearchForm({
 
     router.push(`/recipes?${params.filter(Boolean).join("&")}`);
   };
+
+  useEffect(() => {
+    console.log("RecipeSearchForm", form.formState.errors);
+  }, [form.formState.errors]);
 
   return (
     <PageContentSidebarLayout>

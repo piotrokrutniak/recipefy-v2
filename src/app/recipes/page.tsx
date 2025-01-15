@@ -11,7 +11,6 @@ export default async function RecipeSearchPage({
 }: {
   searchParams: Partial<RecipeSearchParams>;
 }) {
-  console.log("searchParams", searchParams);
   const blacklistedIngredients = await getBlacklistedIngredients();
   const recipes = await getRecipes({
     ...searchParams,

@@ -7,9 +7,11 @@ import { Ingredient } from "@prisma/client";
 import { IngredientSearchCombobox } from "./IngredientSearchCombobox";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { EraserIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, EraserIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import { TextSmall } from "@/components/typography";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 export const IngredientsParamsSection = ({
   form,
@@ -19,7 +21,7 @@ export const IngredientsParamsSection = ({
   form: UseFormReturn<RecipeSearchFormData, any, undefined>;
   ingredients: Ingredient[];
 }) => {
-  const includeIngredient = (ingredient: Ingredient) => {
+  const toggleIngredient = (ingredient: Ingredient) => {
     if (form.getValues("ingredients").includes(ingredient.id)) {
       form.setValue(
         "ingredients",
@@ -59,12 +61,26 @@ export const IngredientsParamsSection = ({
         </Button>
       </div>
       {selectedIngredients.map((ingredient) => (
-        <div key={ingredient?.id}>{ingredient?.name}</div>
+        <div
+          key={ingredient?.id}
+          className="flex gap-1 items-center justify-between"
+        >
+          {ingredient?.name}
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            onClick={() => toggleIngredient(ingredient!)}
+          >
+            <Cross1Icon className="w-4 h-4" />
+          </Button>
+        </div>
       ))}
       <IngredientSearchCombobox
         ingredients={selectableIngredients}
-        onIngredientClick={includeIngredient}
+        onIngredientClick={toggleIngredient}
       />
+      <Separator />
+      <VeganVegetarianFilter form={form} />
       <BlacklistedIngredientsToggle form={form} />
     </OutlineContainer>
   );
@@ -88,6 +104,63 @@ const BlacklistedIngredientsToggle = ({
         onCheckedChange={() =>
           form.setValue("includeBlacklistedRecipes", !includeBlacklistedRecipes)
         }
+      />
+    </div>
+  );
+};
+
+const FilterCheckbox = ({
+  name,
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  name: keyof RecipeSearchFormData;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) => {
+  return (
+    <div className="flex gap-1 items-center">
+      <Checkbox name={name} checked={checked} onCheckedChange={onChange} />
+      <TextSmall className="font-medium">{label}</TextSmall>
+    </div>
+  );
+};
+
+const VeganVegetarianFilter = ({
+  form,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: UseFormReturn<RecipeSearchFormData, any, undefined>;
+}) => {
+  const toggleVegan = (isVegan: boolean) => {
+    const isVegetarian = form.getValues("vegetarian");
+
+    if (isVegan && !isVegetarian) {
+      form.setValue("vegetarian", true);
+    }
+
+    form.setValue("vegan", isVegan);
+  };
+
+  const toggleVegetarian = (isVegetarian: boolean) => {
+    form.setValue("vegetarian", isVegetarian);
+  };
+
+  return (
+    <div className="flex flex-col gap-2  w-full">
+      <FilterCheckbox
+        name="vegan"
+        label="Vegan"
+        checked={form.watch("vegan") as boolean}
+        onChange={toggleVegan}
+      />
+      <FilterCheckbox
+        name="vegetarian"
+        label="Vegetarian"
+        checked={form.watch("vegetarian") as boolean}
+        onChange={toggleVegetarian}
       />
     </div>
   );

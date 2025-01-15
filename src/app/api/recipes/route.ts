@@ -120,8 +120,8 @@ export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
       calories: {
         lte: params.calories && Number(params.calories),
       },
-      vegan: params.vegan,
-      vegetarian: params.vegetarian,
+      vegan: Boolean(params.vegan),
+      vegetarian: Boolean(params.vegetarian),
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes
           ? {
