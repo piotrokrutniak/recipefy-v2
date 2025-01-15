@@ -4,12 +4,17 @@ import { getServerSession } from "next-auth";
 import { LinkButton } from "../../generic/LinkButton";
 import { Avatar, AvatarImage } from "../../ui/avatar";
 import { FaPlus } from "react-icons/fa";
+import { HeartIcon } from "@radix-ui/react-icons";
 
 export const DynamicNavbarContent = async () => {
   const session = await getServerSession(authOptions);
 
   return session?.user ? (
     <>
+      <LinkButton href={"/recipes/liked"} variant={"default"}>
+        <HeartIcon className="w-4 h-4 mr-1" />
+        Liked Recipes
+      </LinkButton>
       <LinkButton href={"/recipes/add"} variant={"accent"}>
         <FaPlus className="mr-1" />
         Add Recipe

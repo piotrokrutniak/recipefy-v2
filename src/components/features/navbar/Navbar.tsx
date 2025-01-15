@@ -29,17 +29,23 @@ const NavbarButtons = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationLinkButton />
+        <NavigationLinkButton href="/recipes">Recipes</NavigationLinkButton>
       </NavigationMenuList>
     </NavigationMenu>
   );
 };
 
-const NavigationLinkButton = () => (
+const NavigationLinkButton = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
   <NavigationMenuItem>
-    <Link href="/recipes" legacyBehavior passHref>
+    <Link href={href} legacyBehavior passHref>
       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-        Recipes
+        {children}
       </NavigationMenuLink>
     </Link>
   </NavigationMenuItem>
