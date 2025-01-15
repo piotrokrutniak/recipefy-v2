@@ -22,6 +22,7 @@ export const PrepParamsSection = ({
         placeholder="Cook Time (minutes)"
         name="cookTime"
         type="number"
+        minValue={0}
         form={form}
       />
       <ParamInput
@@ -29,6 +30,7 @@ export const PrepParamsSection = ({
         placeholder="Prep Time (minutes)"
         name="prepTime"
         type="number"
+        minValue={0}
         form={form}
       />
     </OutlineContainer>
