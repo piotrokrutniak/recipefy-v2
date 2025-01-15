@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ImageIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, ImageIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useRef } from "react";
 
@@ -8,7 +8,7 @@ export const UploadImageAssetInput = ({
   uploadedThumbnailUrl,
   draftThumbnailBase64,
 }: {
-  onChange: (file: string) => void;
+  onChange: (file: string | undefined) => void;
   uploadedThumbnailUrl: string | undefined;
   draftThumbnailBase64: string | undefined;
 }) => {
@@ -45,6 +45,10 @@ export const UploadImageAssetInput = ({
     }
   };
 
+  const handleRemoveThumbnail = () => {
+    onChange(undefined);
+  };
+
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     fileInputRef.current?.click();
@@ -54,15 +58,23 @@ export const UploadImageAssetInput = ({
 
   return (
     <div className="flex flex-col gap-2 items-center">
-      {!!thumbnailUrl && (
-        <Image
-          src={thumbnailUrl}
-          alt="Thumbnail"
-          width={300}
-          height={300}
-          className="rounded-md"
-        />
-      )}
+      <div className="h-full w-fit relative">
+        {!!thumbnailUrl && (
+          <>
+            <Image
+              src={thumbnailUrl}
+              alt="Thumbnail"
+              width={300}
+              height={300}
+              className="rounded-md"
+            />
+            <Cross1Icon
+              className="absolute top-2 right-2 z-10 w-8 h-8"
+              onClick={handleRemoveThumbnail}
+            />
+          </>
+        )}
+      </div>
       <Button variant="outline" onClick={handleButtonClick}>
         <ImageIcon className="w-4 h-4" />
         Attach Thumbnail

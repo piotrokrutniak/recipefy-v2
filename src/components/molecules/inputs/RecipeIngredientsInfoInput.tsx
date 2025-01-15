@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { useEffect } from "react";
 import { Ingredient, RecipeIngredient } from "@prisma/client";
 import { IngredientSearchCombobox } from "../search/IngredientSearchCombobox";
 import { Input } from "@/components/ui/input";
@@ -24,15 +23,9 @@ export const RecipeIngredientsInfoInput = ({
   updateIngredient,
   removeIngredient,
 }: RecipeIngredientsInfoInputProps) => {
-  useEffect(() => {
-    console.log(recipeIngredients);
-  }, [recipeIngredients]);
-
   const lastIngredient = recipeIngredients[recipeIngredients.length - 1];
 
   const handleAddIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("add ingredient");
-
     addIngredient({
       id: "",
       createdAt: new Date(),
@@ -42,7 +35,6 @@ export const RecipeIngredientsInfoInput = ({
       vegetarian: false,
     });
     e.preventDefault();
-    // e.stopPropagation();
   };
 
   return (

@@ -12,10 +12,11 @@ export const getBlacklistedIngredients = async () => {
     return null;
   }
 
-  const blacklistedIngredients = await prisma.userBlacklistedIngredient.findMany({
-    where: { userId: user.id },
-    select: { ingredientId: true },
-  });
+  const blacklistedIngredients =
+    await prisma.userBlacklistedIngredient.findMany({
+      where: { userId: user.id },
+      select: { ingredientId: true },
+    });
 
   const ingredients = await prisma.ingredient.findMany({
     where: { id: { in: blacklistedIngredients.map((i) => i.ingredientId) } },
@@ -41,7 +42,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json() as Ingredient;
+  const body = (await req.json()) as Ingredient;
 
   const ingredient = await prisma.userBlacklistedIngredient.create({
     data: {

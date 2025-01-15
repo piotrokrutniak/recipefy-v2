@@ -1,4 +1,3 @@
-import { RecipeSearchFormData } from "@/components/organisms/forms/SearchRecipesForm";
 import { TextMedium } from "@/components/typography/TextMedium";
 import {
   FormField,
@@ -7,6 +6,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RecipeSearchFormData } from "@/hooks/forms/useSearchRecipesForm";
 import { UseFormReturn } from "react-hook-form";
 
 type ParamInputProps = {
@@ -16,6 +16,8 @@ type ParamInputProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any>;
   type?: "text" | "number" | "date";
+  minValue?: number;
+  maxValue?: number;
 };
 
 export const ParamInput = ({
@@ -24,13 +26,15 @@ export const ParamInput = ({
   name,
   form,
   type = "text",
+  minValue,
+  maxValue,
 }: ParamInputProps) => {
   return (
     <div className="flex justify-between items-center gap-2">
       <TextMedium>{label}</TextMedium>
       <FormField
         control={form.control}
-        name={name}
+        name={name as string}
         render={({ field }) => (
           <FormItem>
             <FormControl>
@@ -38,6 +42,8 @@ export const ParamInput = ({
                 type={type}
                 placeholder={placeholder}
                 className="resize-none"
+                min={minValue}
+                max={maxValue}
                 {...field}
               />
             </FormControl>

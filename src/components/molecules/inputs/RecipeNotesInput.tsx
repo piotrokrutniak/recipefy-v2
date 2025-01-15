@@ -52,7 +52,7 @@ export const RecipeNotesInput = ({
         description: `There was an error saving your note: ${error?.message}`,
       });
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, toast, error?.message]);
 
   return (
     <OutlineContainer className="flex flex-col gap-4">

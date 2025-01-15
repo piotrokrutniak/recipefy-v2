@@ -3,7 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
-import { createRecipe, createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
+import {
+  createRecipe,
+  createRecipeSchema,
+} from "@/lib/server-actions/recipes/createRecipe";
+import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -50,7 +54,7 @@ export type RecipeSearchParams = {
   ingredients?: string;
   vegan: boolean;
   vegetarian: boolean;
-  ignoreBlacklistedIngredients: boolean;
+  includeBlacklistedRecipes: boolean;
   blacklistedIngredientsIds: string[];
 };
 
@@ -85,63 +89,12 @@ export const GET = async (req: NextRequest) => {
     ingredients: searchParams.get("ingredients") || undefined,
     vegan: searchParams.get("vegan") === "true",
     vegetarian: searchParams.get("vegetarian") === "true",
-    ignoreBlacklistedIngredients:
-      searchParams.get("ignoreBlacklistedIngredients") === "true",
+    includeBlacklistedRecipes:
+      searchParams.get("includeBlacklistedRecipes") === "true",
     blacklistedIngredientsIds: blacklistedIngredientsIds,
   };
-
-  console.log("RecipeSearchParams", params);
 
   const recipes = await getRecipes(params);
 
   return NextResponse.json(recipes);
-};
-
-export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
-  return await prisma.recipe.findMany({
-    skip: params.skip,
-    take: params.take,
-    include: {
-      author: true,
-      recipeIngredients: true,
-    },
-    where: {
-      title: {
-        contains: params.query && params.query,
-        mode: "insensitive",
-      },
-      cookTime: {
-        lte: params.cookTime && Number(params.cookTime),
-      },
-      prepTime: {
-        lte: params.prepTime && Number(params.prepTime),
-      },
-      calories: {
-        lte: params.calories && Number(params.calories),
-      },
-      vegan: params.vegan,
-      vegetarian: params.vegetarian,
-      recipeIngredients: {
-        every: !params.ignoreBlacklistedIngredients
-          ? {
-              ingredientId: {
-                notIn: params.ignoreBlacklistedIngredients
-                  ? undefined
-                  : params.blacklistedIngredientsIds,
-              },
-            }
-          : undefined,
-        some: params.ingredients
-          ? {
-              ingredient: {
-                id: {
-                  in: params.ingredients?.split(","),
-                },
-              },
-            }
-          : undefined,
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
 };
