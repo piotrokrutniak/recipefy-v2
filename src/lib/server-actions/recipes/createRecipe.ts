@@ -1,4 +1,3 @@
-"use server";
 import {
   replaceBase64WithUrls,
   uploadImageToCloudinary,
