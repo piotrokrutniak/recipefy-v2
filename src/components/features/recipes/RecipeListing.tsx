@@ -24,7 +24,7 @@ export const RecipeListing = async ({
   // };
 
   return (
-    <div className="p-3 gap-3 flex">
+    <div className="p-3 gap-3 flex w-full">
       <Link href={`/recipes/${recipe.id}`}>
         <div className="relative w-48 aspect-square flex-shrink-0 bg-slate-200 rounded-lg overflow-hidden">
           {recipe.thumbnailUrl && (
