@@ -1,9 +1,14 @@
 import { RecipeSearchParams } from "@/app/api/recipes/route";
+import { getCurrentUser } from "@/app/api/users/current/route";
 import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;
 
-export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
+export const getUserPrivateRecipes = async (
+  params: Partial<RecipeSearchParams>
+) => {
+  const user = await getCurrentUser();
+
   return await prisma.recipe.findMany({
     skip: params.skip,
     take: params.take,
@@ -27,6 +32,7 @@ export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
       },
       vegan: Boolean(params.vegan),
       vegetarian: Boolean(params.vegetarian),
+      authorId: user?.id,
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes
           ? {
