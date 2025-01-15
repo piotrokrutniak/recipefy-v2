@@ -8,11 +8,11 @@ import {
   SelectLabel,
   SelectTrigger,
 } from "../ui/select";
-import { getRecipes } from "@/app/api/recipes/route";
 import { RecipeListing } from "../features/recipes/RecipeListing";
 import { getCurrentUser } from "@/app/api/users/current/route";
-import { getLikedRecipes } from "@/app/api/users/current/liked-recipes/route";
 import { LinkButton } from "../generic/LinkButton";
+import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
+import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 
 export const LatestRecipesSection = async () => {
   const recipes = await getRecipes({});

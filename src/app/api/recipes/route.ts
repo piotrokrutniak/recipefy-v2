@@ -7,6 +7,7 @@ import {
   createRecipe,
   createRecipeSchema,
 } from "@/lib/server-actions/recipes/createRecipe";
+import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -96,51 +97,4 @@ export const GET = async (req: NextRequest) => {
   const recipes = await getRecipes(params);
 
   return NextResponse.json(recipes);
-};
-
-export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
-  return await prisma.recipe.findMany({
-    skip: params.skip,
-    take: params.take,
-    include: {
-      author: true,
-      recipeIngredients: true,
-    },
-    where: {
-      title: {
-        contains: params.query && params.query,
-        mode: "insensitive",
-      },
-      cookTime: {
-        lte: params.cookTime && Number(params.cookTime),
-      },
-      prepTime: {
-        lte: params.prepTime && Number(params.prepTime),
-      },
-      calories: {
-        lte: params.calories && Number(params.calories),
-      },
-      vegan: Boolean(params.vegan),
-      vegetarian: Boolean(params.vegetarian),
-      recipeIngredients: {
-        every: !params.includeBlacklistedRecipes
-          ? {
-              ingredientId: {
-                notIn: params.blacklistedIngredientsIds,
-              },
-            }
-          : undefined,
-        some: params.ingredients
-          ? {
-              ingredient: {
-                id: {
-                  in: params.ingredients?.split(","),
-                },
-              },
-            }
-          : undefined,
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
 };

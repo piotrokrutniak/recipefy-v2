@@ -1,14 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "../route";
-import DBClient from "@/persistence/DBClient";
-
-const prisma = DBClient.getInstance().prisma;
-
-export const getLikedRecipes = async (userId: string) => {
-  return await prisma.userRecipeFavorite.findMany({
-    where: { userId: userId },
-  });
-};
+import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 
 export const GET = async () => {
   const user = await getCurrentUser();

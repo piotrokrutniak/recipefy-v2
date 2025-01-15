@@ -1,10 +1,11 @@
 import RecipeSearchForm from "@/components/organisms/forms/SearchRecipesForm";
-import { getRecipes, RecipeSearchParams } from "../api/recipes/route";
+import { RecipeSearchParams } from "../api/recipes/route";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";
 import { getCurrentUser } from "../api/users/current/route";
-import { getLikedRecipes } from "../api/users/current/liked-recipes/route";
 import { getIngredients } from "../api/ingredients/route";
 import { getBlacklistedIngredients } from "../api/users/current/blacklisted-ingredients/route";
+import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
+import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 
 export default async function RecipeSearchPage({
   searchParams,

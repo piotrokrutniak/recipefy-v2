@@ -7,15 +7,20 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { getCurrentUser } from "../api/users/current/route";
+import { redirect } from "next/navigation";
 
 export const ProfilePage = async () => {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
 
   return (
     <ClientProvidersWrapper>
       <PageContentSidebarLayout>
         <PageContentLayout className="flex-grow-0">
-          <ProfileSideBarHeader user={user} />
+          <ProfileSideBarHeader user={user!} />
           <ProfileSideBarNavigation />
         </PageContentLayout>
         <PageContentLayout>
