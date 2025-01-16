@@ -2,6 +2,7 @@ import {
   Circle,
   CircleInvite,
   CircleMember,
+  CircleRecipe,
   Ingredient,
   Recipe,
   RecipeIngredient,
@@ -35,4 +36,8 @@ export type CircleFullInfoDto = Circle & {
   circleInvite: CircleInviteFullInfoDto[];
   circleOwner: User;
   circleMembers: CircleMemberFullInfoDto[];
+};
+
+export type CircleRecipeFullInfoDto = CircleRecipe & {
+  recipe: Recipe;
 };

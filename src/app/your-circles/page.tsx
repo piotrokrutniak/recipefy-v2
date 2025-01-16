@@ -1,9 +1,6 @@
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { CirclesSummary } from "@/components/molecules/info-display/CirclesSummary";
-import { CircleThumbnailPanel } from "@/components/molecules/panels/CircleThumbnailPanel";
-import { InboundPendingInvites } from "@/components/organisms/server/users/InboundPendingInvites";
-import { TextH2 } from "@/components/typography";
 import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { redirect } from "next/navigation";

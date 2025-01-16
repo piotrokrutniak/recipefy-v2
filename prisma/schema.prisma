@@ -171,6 +171,7 @@ model Recipe {
   publishAt DateTime?
 
   recipeIngredients RecipeIngredient[]
+  circleRecipes CircleRecipe[]
 }
 
 model UserRecipeNote {
@@ -237,6 +238,8 @@ model Circle {
   circleOwner User @relation(fields: [circleOwnerId], references: [id])
   circleMembers CircleMember[]
   circleInvite CircleInvite[]
+
+  circleRecipe CircleRecipe[]
 }
 
 model CircleMember {
@@ -257,6 +260,9 @@ model CircleRecipe {
   recipeId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  circle Circle @relation(fields: [circleId], references: [id])
+  recipe Recipe @relation(fields: [recipeId], references: [id])
 }
 
 model CircleInvite {

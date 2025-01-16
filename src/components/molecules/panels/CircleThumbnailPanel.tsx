@@ -7,7 +7,7 @@ export const CircleThumbnailPanel = ({ circle }: { circle: Circle }) => {
   return (
     <>
       <LinkButton
-        href={`/circles/${circle.id}`}
+        href={`/your-circles/${circle.id}`}
         className="w-[200px] h-[200px] aspect-square flex flex-col justify-center items-center text-white hover:shadow-lg"
         variant="default"
       >

@@ -11,7 +11,7 @@ export const DynamicNavbarContent = async () => {
 
   return session?.user ? (
     <>
-      <LinkButton href={"/profile/circles"} variant={"ghost"}>
+      <LinkButton href={"/your-circles"} variant={"ghost"}>
         <FaUserFriends className="w-4 h-4 mr-1" />
         Your Circles
       </LinkButton>
