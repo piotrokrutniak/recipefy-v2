@@ -14,6 +14,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { CircleInviteHistoryDialog } from "./CircleInviteHistoryDialog";
 import { CircleInviteFullInfoDto } from "@/types/api";
 import { EmptyResultsIndicator } from "@/components/atoms/EmptyResultsIndicator";
+import { CircleInviteStatus } from "@prisma/client";
 
 export const CircleInvites = ({
   circleId,
@@ -31,15 +32,17 @@ export const CircleInvites = ({
           <InviteUserToCircleDialog circleId={circleId} />
         </div>
       </div>
-      {circleInvites.map((circleInvite) => (
-        <CircleInviteOutbound
-          key={circleInvite.id}
-          circleInvite={circleInvite}
-        />
-      ))}
-      {!circleInvites.length && (
-        <EmptyResultsIndicator message="No pending invites" />
-      )}
+      {circleInvites
+        .filter((invite) => invite.status === CircleInviteStatus.PENDING)
+        .map((circleInvite) => (
+          <CircleInviteOutbound
+            key={circleInvite.id}
+            circleInvite={circleInvite}
+          />
+        ))}
+      {!circleInvites.filter(
+        (invite) => invite.status === CircleInviteStatus.PENDING
+      ).length && <EmptyResultsIndicator message="No pending invites" />}
     </div>
   );
 };

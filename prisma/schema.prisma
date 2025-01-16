@@ -241,6 +241,7 @@ model Circle {
 
 model CircleMember {
   id        String   @id @default(cuid())
+  @@unique([circleId, userId])
   circleId  String
   userId    String
   createdAt DateTime @default(now())
