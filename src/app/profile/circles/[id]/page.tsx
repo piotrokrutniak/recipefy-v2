@@ -24,7 +24,7 @@ export const CircleDetailsPage = async ({
         {/* <UserHeaderServer user={circle?.CircleOwner} /> */}
       </PageContentLayout>
       <PageContentLayout className="py-8">
-        <CircleMembers members={circle?.members || []} />
+        <CircleMembers members={circle?.circleMembers || []} />
         <CircleInvites
           circleId={params.id}
           circleInvites={

@@ -36,6 +36,8 @@ model User {
 
   receivedInvites CircleInvite[] @relation("invitee")
   sentInvites CircleInvite[] @relation("inviting")
+
+  CircleMember CircleMember[]
 }
 
 model UserRecipePreferences {
@@ -233,6 +235,7 @@ model Circle {
   circleOwnerId String
 
   circleOwner User @relation(fields: [circleOwnerId], references: [id])
+  circleMembers CircleMember[]
   circleInvite CircleInvite[]
 }
 
@@ -242,6 +245,9 @@ model CircleMember {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  circle Circle @relation(fields: [circleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model CircleRecipe {
