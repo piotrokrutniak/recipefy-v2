@@ -9,6 +9,7 @@ import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper"
 import { getCurrentUser } from "../api/users/current/route";
 import { redirect } from "next/navigation";
 import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
+import { UserPendingCircleInvites } from "@/components/molecules/info-display/UserPendingCircleInvites";
 
 export const ProfilePage = async () => {
   const user = await getCurrentUser();
@@ -29,6 +30,7 @@ export const ProfilePage = async () => {
           <AccountDetailsSection />
           <RecipeSuggestionsSection />
           <CirclesSection circles={circles} />
+          <UserPendingCircleInvites />
         </PageContentLayout>
       </PageContentSidebarLayout>
     </ClientProvidersWrapper>

@@ -6,8 +6,8 @@ export const getCircleById = async (id: string) => {
   return await prisma.circle.findUnique({
     where: { id },
     include: {
-      CircleInvite: true,
-      CircleOwner: true,
+      circleInvite: true,
+      circleOwner: true,
     },
   });
 };

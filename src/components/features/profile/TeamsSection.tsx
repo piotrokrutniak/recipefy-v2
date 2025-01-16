@@ -1,5 +1,5 @@
 import { ProfileSection } from "./ProfileSection";
-import { Circle } from "@prisma/client";
+import { Circle, CircleInvite } from "@prisma/client";
 import { TextH2, TextH4, TextMedium } from "@/components/typography";
 import { ChevronRightIcon, PlusIcon } from "@radix-ui/react-icons";
 import { LinkButton } from "@/components/generic/LinkButton";

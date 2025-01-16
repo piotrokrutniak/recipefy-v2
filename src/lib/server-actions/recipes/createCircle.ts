@@ -19,7 +19,7 @@ export const createCircle = async (
   const circle = await prisma.circle.create({
     data: {
       name: data.name,
-      CircleOwner: {
+      circleOwner: {
         connect: {
           id: user.id,
         },
