@@ -19,7 +19,7 @@ import { useQueryGetBlacklistedIngredients } from "@/hooks/api/users/queries/use
 
 export const RecipeSuggestionsSection = () => {
   return (
-    <ProfileSection header="Recipe Suggestions">
+    <ProfileSection header="Recipe Suggestions" id="recipe-suggestions">
       <div className="flex flex-col gap-4">
         <SwitchRow name="enableSuggestions" label="Enable Suggestions" />
         <SwitchRow name="vegetarianOnly" label="Display Vegetarian Only" />

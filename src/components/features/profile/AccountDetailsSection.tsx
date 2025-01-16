@@ -7,7 +7,7 @@ import { useMutationUpdateUser } from "@/hooks/api/users/mutations/useMutationUp
 
 export const AccountDetailsSection = () => {
   return (
-    <ProfileSection header="Account Details">
+    <ProfileSection header="Account Details" id="account-details">
       <TextLarge>Security</TextLarge>
       <LabeledInput
         className="max-w-[500px]"

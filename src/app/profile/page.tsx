@@ -21,8 +21,8 @@ export const ProfilePage = async () => {
 
   return (
     <ClientProvidersWrapper>
-      <PageContentSidebarLayout>
-        <PageContentLayout className="flex-grow-0">
+      <PageContentSidebarLayout className="">
+        <PageContentLayout className="flex-grow-0 sticky top-0 h-fit">
           <ProfileSideBarHeaderClient user={user!} />
           <ProfileSideBarNavigation />
         </PageContentLayout>

@@ -17,8 +17,8 @@ export const CircleInviteInbound = ({
         } on ${circleInvite.createdAt.toLocaleDateString()}`}</TextP>
       </div>
       <div className="flex gap-2 w-fit items-center">
-        <Button>Accept</Button>
         <Button variant="destructive">Reject</Button>
+        <Button>Accept</Button>
       </div>
     </OutlineContainer>
   );
