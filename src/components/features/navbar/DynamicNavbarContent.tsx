@@ -3,7 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { LinkButton } from "../../generic/LinkButton";
 import { Avatar, AvatarImage } from "../../ui/avatar";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaUserFriends } from "react-icons/fa";
 import { HeartIcon } from "@radix-ui/react-icons";
 
 export const DynamicNavbarContent = async () => {
@@ -11,6 +11,10 @@ export const DynamicNavbarContent = async () => {
 
   return session?.user ? (
     <>
+      <LinkButton href={"/profile/circles"} variant={"ghost"}>
+        <FaUserFriends className="w-4 h-4 mr-1" />
+        Your Circles
+      </LinkButton>
       <LinkButton href={"/recipes/liked"} variant={"default"}>
         <HeartIcon className="w-4 h-4 mr-1" />
         Liked Recipes

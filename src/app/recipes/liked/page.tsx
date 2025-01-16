@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/app/api/users/current/route";
+import { EmptyResultsIndicator } from "@/components/atoms/EmptyResultsIndicator";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { TextH2 } from "@/components/typography";
@@ -23,13 +24,14 @@ export default async function LikedRecipesPage() {
         <RecipeListing
           key={recipe.id}
           recipe={recipe}
-          // isLiked={likedRecipes.some(
-          //   (likedRecipe) => likedRecipe.recipeId === recipe.id
-          // )}
           isLiked={true}
           user={user}
         />
       ))}
+
+      {!likedRecipes.length && (
+        <EmptyResultsIndicator message="No liked recipes found" />
+      )}
     </PageContentLayout>
   );
 }
