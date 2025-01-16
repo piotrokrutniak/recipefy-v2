@@ -1,9 +1,11 @@
+"use server";
+
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;
 
-export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
+export const getPublicRecipes = async (params: Partial<RecipeSearchParams>) => {
   return await prisma.recipe.findMany({
     skip: params.skip,
     take: params.take,
@@ -27,6 +29,7 @@ export const getRecipes = async (params: Partial<RecipeSearchParams>) => {
       },
       vegan: Boolean(params.vegan),
       vegetarian: Boolean(params.vegetarian),
+      visibility: "PUBLIC",
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes
           ? {

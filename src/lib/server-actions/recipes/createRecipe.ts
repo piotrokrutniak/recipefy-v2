@@ -1,8 +1,11 @@
-import { replaceBase64WithUrls, uploadImageToCloudinary } from "@/lib/cloudinary";
+import {
+  replaceBase64WithUrls,
+  uploadImageToCloudinary,
+} from "@/lib/cloudinary";
 import DBClient from "@/persistence/DBClient";
 import { Visibility, Recipe } from "@prisma/client";
 import { z } from "zod";
-import { ReplacedAsset, uploadMarkupAssets } from "./uploadMarkupAssets";
+import { uploadMarkupAssets } from "./uploadMarkupAssets";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -40,13 +43,12 @@ export const createRecipe = async (
     thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);
   }
 
-  // TODO: Try-Catch and clean up maybe? 
+  // TODO: Try-Catch and clean up maybe?
   // Though the only failure side-effect is lack of SEO for the affected images
   // The failed upload will be re-tried whenever user saves the recipe again
   const replacedAssets = await uploadMarkupAssets(data.content);
 
-  const processedContent = replaceBase64WithUrls(replacedAssets, data.content)
-
+  const processedContent = replaceBase64WithUrls(replacedAssets, data.content);
 
   const recipe = await prisma.recipe.create({
     data: {
@@ -82,4 +84,3 @@ export const createRecipe = async (
 
   return recipe;
 };
-

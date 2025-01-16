@@ -26,13 +26,16 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Recipe Recipe[]
+  recipe Recipe[]
 
-  Circle Circle[]
+  circle Circle[]
 
-  Account Account[]
+  account Account[]
 
-  Session Session[]
+  session Session[]
+
+  receivedInvites CircleInvite[] @relation("invitee")
+  sentInvites CircleInvite[] @relation("inviting")
 }
 
 model UserRecipePreferences {
@@ -96,7 +99,7 @@ model UserIngredient {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  RecipeIngredient RecipeIngredient[]
+  recipeIngredient RecipeIngredient[]
 }
 
 model Ingredient {
@@ -107,9 +110,9 @@ model Ingredient {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  RecipeIngredient RecipeIngredient[]
+  recipeIngredient RecipeIngredient[]
 
-  IngredientConversion IngredientConversion[]
+  ingredientConversion IngredientConversion[]
 }
 
 model MeasurementUnit {
@@ -128,7 +131,7 @@ model IngredientConversion {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  Ingredient Ingredient[]
+  ingredient Ingredient[]
 }
 
 model RecipeIngredient {
@@ -227,9 +230,10 @@ model Circle {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  circleOwnerId String
 
-  CircleOwner User @relation(fields: [CircleOwnerid], references: [id])
-  CircleOwnerid String
+  circleOwner User @relation(fields: [circleOwnerId], references: [id])
+  circleInvite CircleInvite[]
 }
 
 model CircleMember {
@@ -251,9 +255,15 @@ model CircleRecipe {
 model CircleInvite {
   id        String   @id @default(cuid())
   circleId  String
-  email     String
+  inviteeEmail     String?
+  inviteeId String?
+  invitingUserId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  invitingUser User @relation("inviting", fields: [invitingUserId], references: [id])
+  invitee User? @relation("invitee", fields: [inviteeId], references: [id])
+  circle Circle @relation(fields: [circleId], references: [id])
 }
 
 enum Visibility {

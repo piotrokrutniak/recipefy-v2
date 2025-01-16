@@ -7,7 +7,7 @@ import {
   createRecipe,
   createRecipeSchema,
 } from "@/lib/server-actions/recipes/createRecipe";
-import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
+import { getUserPrivateRecipes } from "@/lib/server-actions/recipes/getUserPrivateRecipes";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -94,7 +94,7 @@ export const GET = async (req: NextRequest) => {
     blacklistedIngredientsIds: blacklistedIngredientsIds,
   };
 
-  const recipes = await getRecipes(params);
+  const recipes = await getUserPrivateRecipes(params);
 
   return NextResponse.json(recipes);
 };

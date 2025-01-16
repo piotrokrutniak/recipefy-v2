@@ -11,11 +11,11 @@ import {
 import { RecipeListing } from "../features/recipes/RecipeListing";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { LinkButton } from "../generic/LinkButton";
-import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
+import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 
 export const LatestRecipesSection = async () => {
-  const recipes = await getRecipes({});
+  const recipes = await getPublicRecipes({});
   const user = (await getCurrentUser()) ?? undefined;
   const likedRecipes = await getLikedRecipes(user?.id || "");
   return (

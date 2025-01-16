@@ -10,7 +10,7 @@ export const OutlineContainer = ({
   return (
     <div
       className={cn(
-        "outline outline-2 outline-slate-200 rounded-sm p-4 shadow-sm",
+        "outline outline-1 outline-slate-200 rounded-sm p-4 shadow-sm",
         className
       )}
     >

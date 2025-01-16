@@ -1,3 +1,5 @@
+"use server";
+
 import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;

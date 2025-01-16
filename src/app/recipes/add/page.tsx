@@ -8,7 +8,7 @@ export const AddRecipePage = async () => {
   const ingredients = await getIngredients(0, 5000);
 
   if (!user) {
-    return redirect("/login");
+    return redirect("/auth");
   }
 
   return <AddRecipePageClientView ingredients={ingredients} />;

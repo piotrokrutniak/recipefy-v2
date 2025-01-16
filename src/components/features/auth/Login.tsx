@@ -1,8 +1,8 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+"use client";
+
 import { LinkButton } from "@/components/generic/LinkButton";
 import { TextLead } from "@/components/typography/TextLead";
 import { Button } from "@/components/ui/button";
-import { getServerSession } from "next-auth";
 import { signIn } from "next-auth/react";
 
 export const Login = () => {

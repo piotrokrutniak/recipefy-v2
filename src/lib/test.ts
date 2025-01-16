@@ -1,4 +1,4 @@
-import { Ingredient, Recipe } from "@prisma/client";
+import { Circle, Ingredient, Recipe } from "@prisma/client";
 
 export const testRecipe = {
   id: "cm3vr1aty000nexo4plvyif1t",
@@ -66,3 +66,11 @@ export const testIngredients: Ingredient[] = [
     updatedAt: new Date(),
   },
 ];
+
+export const testCircle: Circle = {
+  id: "cm3vr1aty000nexo4plvyif1t7",
+  name: "Circle 1",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  circleOwnerId: "cm27une4b00009d6b78945zia",
+};

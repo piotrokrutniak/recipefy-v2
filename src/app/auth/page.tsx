@@ -1,8 +1,15 @@
-"use client";
 import { Login } from "@/components/features/auth/Login";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
+import { getCurrentUser } from "../api/users/current/route";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const currentUser = await getCurrentUser();
+
+  if (currentUser) {
+    return redirect("/profile");
+  }
+
   return (
     <PageContentLayout>
       <div className="flex flex-1 justify-center w-full">

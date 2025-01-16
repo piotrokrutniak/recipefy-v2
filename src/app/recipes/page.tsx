@@ -4,7 +4,7 @@ import { RecipeListing } from "@/components/features/recipes/RecipeListing";
 import { getCurrentUser } from "../api/users/current/route";
 import { getIngredients } from "../api/ingredients/route";
 import { getBlacklistedIngredients } from "../api/users/current/blacklisted-ingredients/route";
-import { getRecipes } from "@/lib/server-actions/recipes/getRecipes";
+import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 
 export default async function RecipeSearchPage({
@@ -13,7 +13,7 @@ export default async function RecipeSearchPage({
   searchParams: Partial<RecipeSearchParams>;
 }) {
   const blacklistedIngredients = await getBlacklistedIngredients();
-  const recipes = await getRecipes({
+  const recipes = await getPublicRecipes({
     ...searchParams,
     blacklistedIngredientsIds: blacklistedIngredients?.map(
       (ingredient) => ingredient.id

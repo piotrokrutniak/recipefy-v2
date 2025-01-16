@@ -30,7 +30,7 @@ export const ViewRecipePage = async ({
         />
       </PageContentLayout>
       <PageContentLayout className="flex-1">
-        <RecipeViewBody recipe={recipe} user={user} />
+        <RecipeViewBody recipe={recipe as RecipeFullInfoDto} user={user} />
       </PageContentLayout>
     </PageContentSidebarLayout>
   );
