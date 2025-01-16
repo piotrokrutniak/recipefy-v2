@@ -13,7 +13,7 @@ export const ProfilePage = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
-    return redirect("/login");
+    return redirect("/auth");
   }
 
   return (
