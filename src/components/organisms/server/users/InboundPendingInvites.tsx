@@ -5,7 +5,7 @@ export const InboundPendingInvites = () => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <TextH3>Inbound Pending Invites</TextH3>
-      <CircleInvites />
+      <CircleInvites circleInvites={[]} />
     </div>
   );
 };

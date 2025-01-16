@@ -1,18 +1,22 @@
-import { CircleInviteFullInfoDto } from "@/types/api";
-import { TextH3, TextP } from "@/components/typography";
+import { TextLarge, TextP } from "@/components/typography";
 import { Button } from "@/components/ui/button";
+import { CircleInvite } from "@prisma/client";
 
-export const CircleInviteInbound = (circleInvite: CircleInviteFullInfoDto) => {
+export const CircleInviteOutbound = ({
+  circleInvite,
+}: {
+  circleInvite: CircleInvite;
+}) => {
   return (
     <div className="flex gap-2">
-      <div className="flex flex-col w-full">
-        <TextH3>
-          {circleInvite.invitee?.name || circleInvite.inviteeEmail}
-        </TextH3>
-        <TextP>{`${circleInvite.circle.createdAt.toLocaleDateString()}`}</TextP>
+      <div className="flex flex-col w-full justify-between">
+        <TextLarge>{circleInvite.inviteeEmail}</TextLarge>
+        <TextP
+          noLeading
+        >{`${circleInvite.createdAt.toLocaleDateString()}`}</TextP>
       </div>
-      <div className="flex gap-2 w-fit">
-        <Button variant="destructive">Cancel</Button>
+      <div className="flex gap-2 w-fit items-center">
+        <Button variant="outline">Cancel</Button>
       </div>
     </div>
   );
