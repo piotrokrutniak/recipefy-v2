@@ -258,6 +258,7 @@ model CircleInvite {
   inviteeEmail     String?
   inviteeId String?
   invitingUserId String
+  status CircleInviteStatus @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -271,3 +272,10 @@ enum Visibility {
   PRIVATE
   UNLISTED
 }
+
+enum CircleInviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+

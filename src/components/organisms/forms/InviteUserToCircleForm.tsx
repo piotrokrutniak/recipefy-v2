@@ -1,10 +1,10 @@
 "use client";
 
-import { CreateCircleInviteSchema } from "@/lib/server-actions/recipes/createCircleInvite.schema";
+import { CreateCircleInviteSchema } from "@/lib/server-actions/circles/createCircleInvite.schema";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createCircleInviteSchema } from "@/lib/server-actions/recipes/createCircleInvite.schema";
+import { createCircleInviteSchema } from "@/lib/server-actions/circles/createCircleInvite.schema";
 import {
   Form,
   FormField,
@@ -13,20 +13,14 @@ import {
   FormLabel,
   FormControl,
 } from "@/components/ui/form";
-import { createCircleInvite } from "@/lib/server-actions/recipes/createCircleInvite";
+import { createCircleInvite } from "@/lib/server-actions/circles/createCircleInvite";
 import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-export const InviteUserToCircleForm = ({
-  circleId,
-  onSuccess,
-}: {
-  circleId: string;
-  onSuccess: () => void;
-}) => {
+export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { refresh } = useRouter();
@@ -57,9 +51,8 @@ export const InviteUserToCircleForm = ({
       description: "User invited to the circle",
       variant: "success",
     });
-    onSuccess();
     form.reset();
-  }, [toast, onSuccess, form]);
+  }, [toast, form]);
 
   const onSubmit = useCallback(
     async (data: CreateCircleInviteSchema) => {

@@ -3,7 +3,7 @@
 import { getCurrentUser } from "@/app/api/users/current/route";
 import DBClient from "@/persistence/DBClient";
 import { z } from "zod";
-import { createCircleSchema } from "../circles/createCircle.schema";
+import { createCircleSchema } from "./createCircle.schema";
 
 const prisma = DBClient.getInstance().prisma;
 
