@@ -143,7 +143,7 @@ export const AddRecipeForm = ({
           )}
         />
 
-<FormField
+        <FormField
           control={form.control}
           name="thumbnailUrl"
           render={({ field }) => (

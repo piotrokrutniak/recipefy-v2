@@ -1,4 +1,11 @@
-import { Ingredient, Recipe, RecipeIngredient, User } from "@prisma/client";
+import {
+  Circle,
+  CircleInvite,
+  Ingredient,
+  Recipe,
+  RecipeIngredient,
+  User,
+} from "@prisma/client";
 
 export type UpdateUserDto = Partial<Omit<User, "id">>;
 
@@ -11,4 +18,10 @@ export type RecipeFullInfoDto = Recipe & {
 
 export type RecipeIngredientDto = RecipeIngredient & {
   ingredient: Ingredient;
+};
+
+export type CircleInviteFullInfoDto = CircleInvite & {
+  circle: Circle;
+  invitingUser: User;
+  invitee?: User;
 };

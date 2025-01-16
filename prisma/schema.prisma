@@ -33,6 +33,9 @@ model User {
   Account Account[]
 
   Session Session[]
+
+  receivedInvites CircleInvite[] @relation("invitee")
+  sentInvites CircleInvite[] @relation("inviting")
 }
 
 model UserRecipePreferences {
@@ -227,9 +230,10 @@ model Circle {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  circleOwnerId String
 
-  CircleOwner User @relation(fields: [CircleOwnerid], references: [id])
-  CircleOwnerid String
+  CircleOwner User @relation(fields: [circleOwnerId], references: [id])
+  CircleInvite CircleInvite[]
 }
 
 model CircleMember {
@@ -251,9 +255,15 @@ model CircleRecipe {
 model CircleInvite {
   id        String   @id @default(cuid())
   circleId  String
-  email     String
+  inviteeEmail     String?
+  inviteeId String?
+  invitingUserId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  InvitingUser User @relation("inviting", fields: [invitingUserId], references: [id])
+  Invitee User? @relation("invitee", fields: [inviteeId], references: [id])
+  Circle Circle @relation(fields: [circleId], references: [id])
 }
 
 enum Visibility {
