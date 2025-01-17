@@ -26,9 +26,9 @@ export const assignCirclesToRecipe = async (
     throw new Error(ErrorCodes.NOT_FOUND);
   }
 
-  if (recipe.authorId !== user.id) {
-    throw new Error(ErrorCodes.FORBIDDEN);
-  }
+  // if (recipe.authorId !== user.id) {
+  //   throw new Error(ErrorCodes.FORBIDDEN);
+  // }
 
   const existingAssignments = await prisma.circleRecipe.findMany({
     where: {
@@ -43,11 +43,23 @@ export const assignCirclesToRecipe = async (
       )
   );
 
+  const circlesToRemove = existingAssignments.filter(
+    (assignment) => !circleIds.includes(assignment.circleId)
+  );
+
   const assigments = await prisma.circleRecipe.createMany({
     data: unassignedCircleIds.map((circleId) => ({
       circleId,
       recipeId,
     })),
+  });
+
+  await prisma.circleRecipe.deleteMany({
+    where: {
+      id: {
+        in: circlesToRemove.map((circle) => circle.id),
+      },
+    },
   });
 
   return assigments;

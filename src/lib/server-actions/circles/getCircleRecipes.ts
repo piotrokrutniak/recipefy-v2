@@ -27,7 +27,7 @@ export const getCircleRecipes = async (
   });
 
   if (!circle) {
-    throw new Error(ErrorCodes.NOT_FOUND);
+    throw new Error(ErrorCodes.FORBIDDEN);
   }
 
   return await prisma.circleRecipe.findMany({

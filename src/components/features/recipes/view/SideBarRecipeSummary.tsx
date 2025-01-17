@@ -17,13 +17,16 @@ export const SideBarRecipeSummary = async ({
 }) => {
   const circles = await getUserOwnedCircles();
 
+  console.log(recipe?.circleRecipes);
+  console.log(circles);
+
   return (
     <div className="flex flex-col gap-8 max-w-80 w-full">
       <RecipeThumbnail recipe={recipe} />
       <AssignCirclesToRecipeForm
         recipeId={recipe?.id ?? ""}
         circles={circles}
-        circleIds={[]}
+        circleIds={recipe?.circleRecipes.map((cr) => cr.circleId) ?? []}
       />
       <RecipeIngredientsSection ingredients={recipe?.recipeIngredients ?? []} />
 

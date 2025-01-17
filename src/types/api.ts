@@ -16,6 +16,7 @@ export type UpdateRecipeDto = Partial<Omit<Recipe, "authorId">>;
 export type RecipeFullInfoDto = Recipe & {
   recipeIngredients: RecipeIngredientDto[];
   author: User;
+  circleRecipes: CircleRecipe[];
 };
 
 export type RecipeIngredientDto = RecipeIngredient & {

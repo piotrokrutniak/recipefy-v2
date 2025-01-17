@@ -35,7 +35,6 @@ export const AssignCirclesToRecipeForm = ({
   });
 
   const onSubmit = async (data: AssignCirclesToRecipeSchema) => {
-    console.log(data);
     try {
       await assignCirclesToRecipe(data);
       toast({
@@ -48,7 +47,6 @@ export const AssignCirclesToRecipeForm = ({
   };
 
   const onCheckboxChange = (circleId: string) => {
-    console.log(circleId);
     if (form.getValues("circleIds").includes(circleId)) {
       form.setValue(
         "circleIds",
@@ -57,8 +55,6 @@ export const AssignCirclesToRecipeForm = ({
     } else {
       form.setValue("circleIds", [...form.getValues("circleIds"), circleId]);
     }
-
-    console.log(form.getValues("circleIds"));
   };
 
   return (
@@ -80,6 +76,7 @@ export const AssignCirclesToRecipeForm = ({
               key={circle.id}
               circle={circle}
               onChange={onCheckboxChange}
+              isChecked={form.getValues("circleIds").includes(circle.id)}
             />
           ))}
         </div>
@@ -94,9 +91,11 @@ export const AssignCirclesToRecipeForm = ({
 const CircleCheckbox = ({
   circle,
   onChange,
+  isChecked,
 }: {
   circle: Circle;
   onChange: (circleId: string) => void;
+  isChecked: boolean;
 }) => {
   return (
     <div className="flex items-center gap-2">
@@ -104,6 +103,7 @@ const CircleCheckbox = ({
         id={circle.id}
         name={circle.name}
         onClick={() => onChange(circle.id)}
+        defaultChecked={isChecked}
       />
       <Label htmlFor={circle.id}>{circle.name}</Label>
     </div>
