@@ -29,7 +29,6 @@ export const RecipeViewBody = ({
         </Avatar>
         {recipe.author?.name}
       </Link>
-      {user?.id === recipe.authorId && <TextLead>{recipe.visibility}</TextLead>}
       <div className="flex flex-col">
         {!!recipe.prepTime && (
           <TextP noLeading>{`Prep Time: ${recipe.prepTime} minutes`}</TextP>

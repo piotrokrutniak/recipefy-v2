@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { ManageRecipeCirclesDialog } from "@/components/molecules/dialogs/ManageRecipeCirclesDialog";
 import { RecipeFullInfoDto } from "@/types/api";
+import { RecipeAvailabilitySelect } from "@/components/molecules/selects/RecipeAvailabilitySelect";
 
 export const AuthorControls = ({
   recipe,
@@ -34,6 +35,7 @@ export const AuthorControls = ({
 
   return (
     <div className="flex flex-col gap-2">
+      <RecipeAvailabilitySelect recipe={recipe} />
       <div className="flex flex-row gap-2 items-center">
         <LinkButton
           href={`/recipes/${recipe.id}/edit`}
