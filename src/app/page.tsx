@@ -1,12 +1,20 @@
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { HighlightedRecipesCarousel } from "@/components/server-components/HighlightedRecipesCarousel";
 import { LatestRecipesSection } from "@/components/server-components/LastestRecipesSection";
+import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 
-export default function Home() {
+const Home = async () => {
+  const recipes = await getPublicRecipes({
+    skip: 0,
+    take: 3,
+  });
+
   return (
-    <PageContentLayout>
-      <HighlightedRecipesCarousel />
+    <PageContentLayout className="pt-0">
+      <HighlightedRecipesCarousel recipes={recipes} />
       <LatestRecipesSection />
     </PageContentLayout>
   );
-}
+};
+
+export default Home;
