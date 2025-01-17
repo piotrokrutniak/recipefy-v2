@@ -1,15 +1,13 @@
 "use server";
 
 import { RecipeThumbnail } from "@/components/atoms/RecipeThumbnail";
-import { ManageRecipeCirclesDialog } from "@/components/molecules/dialogs/ManageRecipeCirclesDialog";
 import { RecipeIngredientsSection } from "@/components/molecules/info-display/RecipeIngredientsSection";
 import { RecipeNotesInput } from "@/components/molecules/inputs/RecipeNotesInput";
-import { AssignCirclesToRecipeForm } from "@/components/organisms/forms/AssignCirclesToRecipeForm";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
-import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User } from "@prisma/client";
 import { AuthorControls } from "./AuthorControlsClient";
+import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 
 export const SideBarRecipeSummary = async ({
   recipe,

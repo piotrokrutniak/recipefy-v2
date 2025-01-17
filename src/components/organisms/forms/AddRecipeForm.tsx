@@ -32,8 +32,8 @@ import {
 import { useEffect } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
-import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
 import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
+import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -76,10 +76,6 @@ export const AddRecipeForm = ({
     };
     createRecipe(purifiedData);
   };
-
-  useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
 
   useEffect(() => {
     if (isSuccess) {

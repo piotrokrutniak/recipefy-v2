@@ -16,7 +16,7 @@ import { FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
-export const UserPanelPopUp = async ({ user }: { user: User }) => {
+export const UserPanelPopUp = ({ user }: { user: User }) => {
   return (
     <Popover>
       <PopoverTrigger>
