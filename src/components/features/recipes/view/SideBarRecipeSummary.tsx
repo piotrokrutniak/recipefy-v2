@@ -6,7 +6,7 @@ import { RecipeIngredientsSection } from "@/components/molecules/info-display/Re
 import { RecipeNotesInput } from "@/components/molecules/inputs/RecipeNotesInput";
 import { AssignCirclesToRecipeForm } from "@/components/organisms/forms/AssignCirclesToRecipeForm";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
-import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
+import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User } from "@prisma/client";
 import { AuthorControls } from "./AuthorControlsClient";
@@ -20,7 +20,7 @@ export const SideBarRecipeSummary = async ({
   initialNote?: string;
   user?: User;
 }) => {
-  const circles = await getUserOwnedCircles();
+  const circles = await getCurrentUserOwnedCircles();
 
   return (
     <div className="flex flex-col gap-8 max-w-80 w-full">

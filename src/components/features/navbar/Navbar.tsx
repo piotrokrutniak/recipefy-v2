@@ -1,13 +1,7 @@
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { TextH2 } from "../../typography/TextH2";
 import { DynamicNavbarContent } from "./DynamicNavbarContent";
+import { LinkButton } from "@/components/generic/LinkButton";
 
 export const Navbar = () => {
   return (
@@ -17,36 +11,12 @@ export const Navbar = () => {
           <TextH2>Recipefy</TextH2>
         </Link>
         <section className="flex relative gap-2 items-center">
-          <NavbarButtons />
+          <LinkButton href="/recipes" variant="ghost">
+            Recipes
+          </LinkButton>
           <DynamicNavbarContent />
         </section>
       </div>
     </nav>
   );
 };
-
-const NavbarButtons = () => {
-  return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationLinkButton href="/recipes">Recipes</NavigationLinkButton>
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
-};
-
-const NavigationLinkButton = ({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) => (
-  <NavigationMenuItem>
-    <Link href={href} legacyBehavior passHref>
-      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-        {children}
-      </NavigationMenuLink>
-    </Link>
-  </NavigationMenuItem>
-);

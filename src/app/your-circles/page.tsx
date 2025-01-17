@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { CirclesSummary } from "@/components/molecules/info-display/CirclesSummary";
-import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
+import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { redirect } from "next/navigation";
 
@@ -12,7 +12,7 @@ export const CirclesPage = async () => {
     return redirect("/auth");
   }
 
-  const userOwnedCircles = await getUserOwnedCircles();
+  const userOwnedCircles = await getCurrentUserOwnedCircles();
   const userJoinedCircles = await getUserJoinedCircles();
 
   return (

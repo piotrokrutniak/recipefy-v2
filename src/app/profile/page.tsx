@@ -8,12 +8,12 @@ import { PageContentSidebarLayout } from "@/components/layouts/PageContentSideba
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { getCurrentUser } from "../api/users/current/route";
 import { redirect } from "next/navigation";
-import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
+import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { UserPendingCircleInvites } from "@/components/molecules/info-display/UserPendingCircleInvites";
 
 export const ProfilePage = async () => {
   const user = await getCurrentUser();
-  const circles = await getUserOwnedCircles();
+  const circles = await getCurrentUserOwnedCircles();
 
   if (!user) {
     return redirect("/auth");
