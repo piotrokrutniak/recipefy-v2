@@ -26,9 +26,9 @@ const SignInMethods = () => {
       <Button onClick={() => signIn("google")} className="flex">
         Sign In with Google
       </Button>
-      <Button onClick={() => signIn("facebook")}>Sign In with Facebook</Button>
-      <TextLead className="text-center">Or</TextLead>
-      <LinkButton href="/auth/signin">Sign In</LinkButton>
+      {/* <Button onClick={() => signIn("facebook")}>Sign In with Facebook</Button> */}
+      {/* <TextLead className="text-center">Or</TextLead> */}
+      {/* <LinkButton href="/auth/signin">Sign In</LinkButton> */}
       {/* Add more sign in buttons here and an alternative credentials form */}
     </section>
   );

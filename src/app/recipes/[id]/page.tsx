@@ -11,7 +11,6 @@ import { getRecipeById } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
-import { notFound } from "next/navigation";
 
 export const ViewRecipePage = async ({
   params,

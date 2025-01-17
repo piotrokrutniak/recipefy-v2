@@ -12,6 +12,7 @@ import Image from "next/image";
 import { TextH1 } from "../typography/TextH1";
 import { TextLarge } from "../typography/TextLarge";
 import Link from "next/link";
+import { Recipe } from "@prisma/client";
 
 const rawData = {
   id: 1,
@@ -24,7 +25,11 @@ const rawData = {
 
 type RecipeSlide = typeof rawData;
 
-export const HighlightedRecipesCarousel = () => {
+export const HighlightedRecipesCarousel = ({
+  recipes,
+}: {
+  recipes: Recipe[];
+}) => {
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
   return (
@@ -35,9 +40,9 @@ export const HighlightedRecipesCarousel = () => {
       className="w-full h-screen-2/3 min-h-96 max-h-screen"
     >
       <CarouselContent>
-        <Slide data={rawData} />
-        <Slide data={rawData} />
-        <Slide data={rawData} />
+        {recipes.map((recipe) => (
+          <Slide data={recipe} />
+        ))}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
@@ -45,11 +50,11 @@ export const HighlightedRecipesCarousel = () => {
   );
 };
 
-const Slide = ({ data }: { data: RecipeSlide }) => (
+const Slide = ({ data }: { data: Recipe }) => (
   <CarouselItem>
     <div className="relative w-full h-screen-2/3 bg-black">
       <Image
-        src={data.imgUri}
+        src={data.thumbnailUrl ?? ""}
         alt={data.title}
         width={1280}
         height={720}
