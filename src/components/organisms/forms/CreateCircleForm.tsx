@@ -13,16 +13,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCallback, useState } from "react";
-import { createCircleSchema } from "@/lib/server-actions/recipes/createCircle.schema";
-import { createCircle } from "@/lib/server-actions/recipes/createCircle";
+import { useCallback } from "react";
+import { createCircleSchema } from "@/lib/server-actions/circles/createCircle.schema";
+import { createCircle } from "@/lib/server-actions/circles/createCircle";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 export type CreateCircleFormData = z.infer<typeof createCircleSchema>;
 
 export const CreateCircleForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { push } = useRouter();
 
@@ -35,7 +34,6 @@ export const CreateCircleForm = () => {
 
   const onSubmit = useCallback(
     async (data: CreateCircleFormData) => {
-      setIsLoading(true);
       try {
         const circle = await createCircle(data);
 
@@ -52,7 +50,6 @@ export const CreateCircleForm = () => {
             description: "Please try again",
             variant: "destructive",
           });
-          setIsLoading(false);
         }
       } catch (error) {
         console.error(error);
@@ -61,7 +58,6 @@ export const CreateCircleForm = () => {
           description: "Please try again",
           variant: "destructive",
         });
-        setIsLoading(false);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,8 +83,8 @@ export const CreateCircleForm = () => {
             </FormItem>
           )}
         />
-        <Button disabled={isLoading} type="submit">
-          {isLoading ? "Creating..." : "Create Circle"}
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? "Creating..." : "Create Circle"}
         </Button>
       </form>
     </Form>

@@ -1,10 +1,10 @@
 "use client";
 
-import { CreateCircleInviteSchema } from "@/lib/server-actions/recipes/createCircleInvite.schema";
+import { CreateCircleInviteSchema } from "@/lib/server-actions/circles/createCircleInvite.schema";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createCircleInviteSchema } from "@/lib/server-actions/recipes/createCircleInvite.schema";
+import { createCircleInviteSchema } from "@/lib/server-actions/circles/createCircleInvite.schema";
 import {
   Form,
   FormField,
@@ -13,21 +13,14 @@ import {
   FormLabel,
   FormControl,
 } from "@/components/ui/form";
-import { createCircleInvite } from "@/lib/server-actions/recipes/createCircleInvite";
+import { createCircleInvite } from "@/lib/server-actions/circles/createCircleInvite";
 import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-export const InviteUserToCircleForm = ({
-  circleId,
-  onSuccess,
-}: {
-  circleId: string;
-  onSuccess: () => void;
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
+export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
   const { toast } = useToast();
   const { refresh } = useRouter();
 
@@ -38,10 +31,6 @@ export const InviteUserToCircleForm = ({
       circleId: circleId,
     },
   });
-
-  useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
 
   const handleError = useCallback(() => {
     toast({
@@ -57,22 +46,18 @@ export const InviteUserToCircleForm = ({
       description: "User invited to the circle",
       variant: "success",
     });
-    onSuccess();
     form.reset();
-  }, [toast, onSuccess, form]);
+  }, [toast, form]);
 
   const onSubmit = useCallback(
     async (data: CreateCircleInviteSchema) => {
       console.log(data);
       try {
-        setIsLoading(true);
         const circleInvite = await createCircleInvite(data);
         handleSuccess();
         refresh();
       } catch {
         handleError();
-      } finally {
-        setIsLoading(false);
       }
     },
     [handleError, handleSuccess, refresh]
@@ -97,8 +82,8 @@ export const InviteUserToCircleForm = ({
             </FormItem>
           )}
         />
-        <Button disabled={isLoading} type="submit">
-          {isLoading ? "Inviting..." : "Invite"}
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? "Inviting..." : "Invite"}
         </Button>
       </form>
     </Form>

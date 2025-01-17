@@ -4,6 +4,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import Link from "next/link";
 import { FaLightbulb, FaUser, FaUsers } from "react-icons/fa";
 
 export const ProfileSideBarNavigation = () => {
@@ -12,17 +13,23 @@ export const ProfileSideBarNavigation = () => {
       <Command>
         <CommandList>
           <CommandGroup heading="Settings">
-            <CommandItem className="gap-2">
-              <FaUser />
-              <span>Account Details</span>
+            <CommandItem className="gap-2" asChild>
+              <Link href="/profile#account-details">
+                <FaUser />
+                <span>Account Details</span>
+              </Link>
             </CommandItem>
-            <CommandItem className="gap-2">
-              <FaLightbulb />
-              <span>Recipe Suggestions</span>
+            <CommandItem className="gap-2" asChild>
+              <Link href="/profile#recipe-suggestions">
+                <FaLightbulb />
+                <span>Recipe Suggestions</span>
+              </Link>
             </CommandItem>
-            <CommandItem className="gap-2">
-              <FaUsers />
-              <span>Teams</span>
+            <CommandItem className="gap-2" asChild>
+              <Link href="/profile#circles">
+                <FaUsers />
+                <span>Circles</span>
+              </Link>
             </CommandItem>
           </CommandGroup>
         </CommandList>

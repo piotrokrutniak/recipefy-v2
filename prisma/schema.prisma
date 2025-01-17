@@ -36,6 +36,8 @@ model User {
 
   receivedInvites CircleInvite[] @relation("invitee")
   sentInvites CircleInvite[] @relation("inviting")
+
+  CircleMember CircleMember[]
 }
 
 model UserRecipePreferences {
@@ -169,6 +171,7 @@ model Recipe {
   publishAt DateTime?
 
   recipeIngredients RecipeIngredient[]
+  circleRecipes CircleRecipe[]
 }
 
 model UserRecipeNote {
@@ -233,15 +236,22 @@ model Circle {
   circleOwnerId String
 
   circleOwner User @relation(fields: [circleOwnerId], references: [id])
+  circleMembers CircleMember[]
   circleInvite CircleInvite[]
+
+  circleRecipe CircleRecipe[]
 }
 
 model CircleMember {
   id        String   @id @default(cuid())
+  @@unique([circleId, userId])
   circleId  String
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  circle Circle @relation(fields: [circleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model CircleRecipe {
@@ -250,6 +260,9 @@ model CircleRecipe {
   recipeId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  circle Circle @relation(fields: [circleId], references: [id])
+  recipe Recipe @relation(fields: [recipeId], references: [id])
 }
 
 model CircleInvite {
@@ -258,6 +271,7 @@ model CircleInvite {
   inviteeEmail     String?
   inviteeId String?
   invitingUserId String
+  status CircleInviteStatus @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -271,3 +285,10 @@ enum Visibility {
   PRIVATE
   UNLISTED
 }
+
+enum CircleInviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+

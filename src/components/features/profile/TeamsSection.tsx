@@ -7,7 +7,7 @@ import { OutlineContainer } from "@/components/atoms/OutlineContainer";
 
 export const CirclesSection = ({ circles }: { circles: Circle[] }) => {
   return (
-    <ProfileSection>
+    <ProfileSection id="circles">
       <CirclesHeader />
       <div className="flex flex-col gap-4 p-4">
         {circles.map((circle) => (

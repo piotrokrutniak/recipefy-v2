@@ -1,6 +1,8 @@
 import {
   Circle,
   CircleInvite,
+  CircleMember,
+  CircleRecipe,
   Ingredient,
   Recipe,
   RecipeIngredient,
@@ -14,6 +16,7 @@ export type UpdateRecipeDto = Partial<Omit<Recipe, "authorId">>;
 export type RecipeFullInfoDto = Recipe & {
   recipeIngredients: RecipeIngredientDto[];
   author: User;
+  circleRecipes: CircleRecipe[];
 };
 
 export type RecipeIngredientDto = RecipeIngredient & {
@@ -24,4 +27,18 @@ export type CircleInviteFullInfoDto = CircleInvite & {
   circle: Circle;
   invitingUser: User;
   invitee?: User;
+};
+
+export type CircleMemberFullInfoDto = CircleMember & {
+  user: User;
+};
+
+export type CircleFullInfoDto = Circle & {
+  circleInvite: CircleInviteFullInfoDto[];
+  circleOwner: User;
+  circleMembers: CircleMemberFullInfoDto[];
+};
+
+export type CircleRecipeFullInfoDto = CircleRecipe & {
+  recipe: Recipe;
 };

@@ -1,7 +1,4 @@
-"use client";
-
-import { TextH3 } from "@/components/typography";
-import { CircleInvite } from "@prisma/client";
+import { TextH3, TextP } from "@/components/typography";
 import { CircleInviteOutbound } from "./CircleInviteOutbound";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,26 +11,38 @@ import {
 import { DialogTrigger } from "@/components/ui/dialog";
 import { InviteUserToCircleForm } from "@/components/organisms/forms/InviteUserToCircleForm";
 import { FaUserPlus } from "react-icons/fa";
+import { CircleInviteHistoryDialog } from "./CircleInviteHistoryDialog";
+import { CircleInviteFullInfoDto } from "@/types/api";
+import { EmptyResultsIndicator } from "@/components/atoms/EmptyResultsIndicator";
+import { CircleInviteStatus } from "@prisma/client";
 
 export const CircleInvites = ({
   circleId,
   circleInvites,
 }: {
   circleId: string;
-  circleInvites: CircleInvite[];
+  circleInvites: CircleInviteFullInfoDto[];
 }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="flex gap-4 w-full justify-between mb-2">
-        <TextH3>Circle Invites</TextH3>
-        <InviteUserToCircleDialog circleId={circleId} />
+        <TextH3>Pending Circle Invites</TextH3>
+        <div className="flex gap-2">
+          <CircleInviteHistoryDialog circleInvites={circleInvites} />
+          <InviteUserToCircleDialog circleId={circleId} />
+        </div>
       </div>
-      {circleInvites.map((circleInvite) => (
-        <CircleInviteOutbound
-          key={circleInvite.id}
-          circleInvite={circleInvite as CircleInvite}
-        />
-      ))}
+      {circleInvites
+        .filter((invite) => invite.status === CircleInviteStatus.PENDING)
+        .map((circleInvite) => (
+          <CircleInviteOutbound
+            key={circleInvite.id}
+            circleInvite={circleInvite}
+          />
+        ))}
+      {!circleInvites.filter(
+        (invite) => invite.status === CircleInviteStatus.PENDING
+      ).length && <EmptyResultsIndicator message="No pending invites" />}
     </div>
   );
 };
@@ -54,7 +63,7 @@ const InviteUserToCircleDialog = ({ circleId }: { circleId: string }) => {
         <DialogDescription>
           Invite a user to join your circle.
         </DialogDescription>
-        <InviteUserToCircleForm circleId={circleId} onSuccess={() => {}} />
+        <InviteUserToCircleForm circleId={circleId} />
       </DialogContent>
     </Dialog>
   );

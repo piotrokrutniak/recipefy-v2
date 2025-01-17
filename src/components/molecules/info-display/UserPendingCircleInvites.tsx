@@ -1,6 +1,5 @@
 import { ProfileSection } from "@/components/features/profile/ProfileSection";
 import { getUserCircleInvites } from "@/lib/server-actions/recipes/getUserCircleInvites";
-import { CircleInviteOutbound } from "./CircleInviteOutbound";
 import { TextH2, TextMedium } from "@/components/typography";
 import { CircleInviteInbound } from "./CircleInviteInbound";
 import { CircleInviteFullInfoDto } from "@/types/api";

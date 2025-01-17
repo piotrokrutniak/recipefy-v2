@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/app/api/users/current/route";
 import DBClient from "@/persistence/DBClient";
 import { CircleInviteFullInfoDto } from "@/types/api";
+import { CircleInviteStatus } from "@prisma/client";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -12,7 +13,10 @@ export const getUserCircleInvites = async (): Promise<
     return [];
   }
   return await prisma.circleInvite.findMany({
-    where: { inviteeEmail: user.email },
+    where: {
+      inviteeEmail: user.email,
+      status: CircleInviteStatus.PENDING,
+    },
     include: {
       circle: true,
       invitingUser: true,
