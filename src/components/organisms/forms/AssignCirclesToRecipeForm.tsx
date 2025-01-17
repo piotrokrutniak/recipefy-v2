@@ -14,6 +14,7 @@ import {
 } from "@/lib/server-actions/recipes/assignCirclesToRecipe.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Circle } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export const AssignCirclesToRecipeForm = ({
@@ -34,6 +35,8 @@ export const AssignCirclesToRecipeForm = ({
     },
   });
 
+  const { refresh } = useRouter();
+
   const onSubmit = async (data: AssignCirclesToRecipeSchema) => {
     try {
       await assignCirclesToRecipe(data);
@@ -41,6 +44,7 @@ export const AssignCirclesToRecipeForm = ({
         title: "Circles assigned",
         description: "The circles have been assigned to the recipe.",
       });
+      refresh();
     } catch (error) {
       toast({ title: "Error", description: "An error occurred." });
     }
@@ -60,16 +64,9 @@ export const AssignCirclesToRecipeForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col w-full max-w-[1024px] gap-4 my-4"
+        className="flex flex-col w-full max-w-[1024px] gap-4"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-2">
-          <TextH3>Assign to circles</TextH3>
-          <TextMuted>
-            If the recipe availability is set to unlisted, it will only be
-            visible to the circles you assign it to.
-          </TextMuted>
-        </div>
         <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto">
           {circles.map((circle) => (
             <CircleCheckbox

@@ -10,7 +10,7 @@ import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
 import { getRecipeById } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
-import { Visibility } from "@prisma/client";
+import { User, Visibility } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 export const ViewRecipePage = async ({
@@ -50,6 +50,7 @@ export const ViewRecipePage = async ({
         <SideBarRecipeSummary
           recipe={recipe as RecipeFullInfoDto}
           initialNote={recipeNote?.note}
+          user={user as User}
         />
       </PageContentLayout>
       <PageContentLayout className="flex-1">
