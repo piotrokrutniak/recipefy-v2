@@ -17,8 +17,15 @@ export const getCircleRecipes = async (
   }
 
   const circle = await prisma.circle.findUnique({
-    where: { id: circleId, circleMembers: { some: { userId: user.id } } },
+    where: {
+      id: circleId,
+      OR: [
+        { circleMembers: { some: { userId: user.id } } },
+        { circleOwnerId: user.id },
+      ],
+    },
   });
+
   if (!circle) {
     throw new Error(ErrorCodes.NOT_FOUND);
   }

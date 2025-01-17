@@ -2,6 +2,7 @@
 
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";
+import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { TextH2 } from "@/components/typography";
 import { getCircleRecipes } from "@/lib/server-actions/circles/getCircleRecipes";
 import { getCircleById } from "@/lib/server-actions/recipes/getCircleById";
@@ -29,19 +30,21 @@ export const JoinedCirclePage = async ({
   const circleRecipes = await getCircleRecipes(params.id);
 
   return (
-    <div className="flex flex-col gap-4">
-      <TextH2> Recipes in {circle?.name}</TextH2>
-      {circleRecipes.map((circleRecipe) => (
-        <RecipeListing
-          key={circleRecipe.recipe.id}
-          recipe={circleRecipe.recipe}
-          isLiked={likedRecipes.some(
-            (likedRecipe) => likedRecipe.recipeId === circleRecipe.recipe.id
-          )}
-          user={user}
-        />
-      ))}
-    </div>
+    <PageContentLayout>
+      <div className="flex flex-col gap-4 w-full">
+        <TextH2> Recipes in {circle?.name}</TextH2>
+        {circleRecipes.map((circleRecipe) => (
+          <RecipeListing
+            key={circleRecipe.recipe.id}
+            recipe={circleRecipe.recipe}
+            isLiked={likedRecipes.some(
+              (likedRecipe) => likedRecipe.recipeId === circleRecipe.recipe.id
+            )}
+            user={user}
+          />
+        ))}
+      </div>
+    </PageContentLayout>
   );
 };
 

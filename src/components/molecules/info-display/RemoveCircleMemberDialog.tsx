@@ -69,7 +69,11 @@ export const RemoveCircleMemberDialog = ({
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button variant="destructive" onClick={handleRemoveMember}>
+          <Button
+            variant="destructive"
+            onClick={handleRemoveMember}
+            disabled={isLoading}
+          >
             Remove
           </Button>
         </DialogFooter>

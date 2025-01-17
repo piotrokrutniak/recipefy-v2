@@ -21,7 +21,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { refresh } = useRouter();
 
@@ -32,10 +31,6 @@ export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
       circleId: circleId,
     },
   });
-
-  useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
 
   const handleError = useCallback(() => {
     toast({
@@ -58,14 +53,11 @@ export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
     async (data: CreateCircleInviteSchema) => {
       console.log(data);
       try {
-        setIsLoading(true);
         const circleInvite = await createCircleInvite(data);
         handleSuccess();
         refresh();
       } catch {
         handleError();
-      } finally {
-        setIsLoading(false);
       }
     },
     [handleError, handleSuccess, refresh]
@@ -90,8 +82,8 @@ export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
             </FormItem>
           )}
         />
-        <Button disabled={isLoading} type="submit">
-          {isLoading ? "Inviting..." : "Invite"}
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? "Inviting..." : "Invite"}
         </Button>
       </form>
     </Form>

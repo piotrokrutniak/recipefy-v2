@@ -17,7 +17,7 @@ export const PageContentLayout = ({
   return (
     <div
       className={clsx([
-        "relative gap-8 flex flex-col flex-1 items-center",
+        "relative gap-8 flex flex-col flex-1 items-center py-8",
         className,
         sizes[size],
       ])}
