@@ -5,7 +5,6 @@ import { TextH4, TextMuted } from "@/components/typography";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { putRecipeNote } from "@/lib/server-actions/recipes/putRecipeNote";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

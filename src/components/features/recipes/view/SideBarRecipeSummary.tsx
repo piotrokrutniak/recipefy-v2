@@ -27,12 +27,14 @@ export const SideBarRecipeSummary = async ({
         <AuthorControls recipe={recipe} circles={circles} />
       )}
       <RecipeIngredientsSection ingredients={recipe?.recipeIngredients ?? []} />
-      <ClientProvidersWrapper>
-        <RecipeNotesInput
-          recipeId={recipe?.id ?? ""}
-          initialNote={initialNote}
-        />
-      </ClientProvidersWrapper>
+      {user && (
+        <ClientProvidersWrapper>
+          <RecipeNotesInput
+            recipeId={recipe?.id ?? ""}
+            initialNote={initialNote}
+          />
+        </ClientProvidersWrapper>
+      )}
     </div>
   );
 };

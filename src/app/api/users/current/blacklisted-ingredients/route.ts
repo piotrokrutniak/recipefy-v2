@@ -44,6 +44,20 @@ export const POST = async (req: NextRequest) => {
 
   const body = (await req.json()) as Ingredient;
 
+  const existingIngredient = await prisma.userBlacklistedIngredient.findFirst({
+    where: { ingredientId: body.id, userId: user.id },
+  });
+
+  if (existingIngredient) {
+    await prisma.userBlacklistedIngredient.delete({
+      where: { id: existingIngredient.id },
+    });
+
+    console.log("Deleted ingredient", existingIngredient);
+
+    return NextResponse.json(existingIngredient, { status: 200 });
+  }
+
   const ingredient = await prisma.userBlacklistedIngredient.create({
     data: {
       ingredientId: body.id,
@@ -63,8 +77,19 @@ export const DELETE = async (req: NextRequest) => {
 
   const body: Ingredient = await req.json();
 
-  const ingredient = await prisma.userBlacklistedIngredient.delete({
+  const ingredientId = await prisma.userBlacklistedIngredient.findFirst({
     where: { ingredientId: body.id, userId: user.id },
+  });
+
+  if (!ingredientId) {
+    return NextResponse.json(
+      { error: "Ingredient not found" },
+      { status: 404 }
+    );
+  }
+
+  const ingredient = await prisma.userBlacklistedIngredient.delete({
+    where: { id: ingredientId.id },
   });
 
   return NextResponse.json(ingredient, { status: 200 });
