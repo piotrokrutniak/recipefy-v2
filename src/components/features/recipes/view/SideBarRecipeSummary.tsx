@@ -21,7 +21,7 @@ export const SideBarRecipeSummary = async ({
   const circles = await getCurrentUserOwnedCircles();
 
   return (
-    <div className="flex flex-col gap-8 max-w-80 w-full">
+    <div className="flex flex-col gap-8 sm:max-w-80 w-full">
       <RecipeThumbnail recipe={recipe} />
       {recipe.authorId === user?.id && (
         <AuthorControls recipe={recipe} circles={circles} />

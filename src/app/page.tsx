@@ -1,6 +1,6 @@
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { HighlightedRecipesCarousel } from "@/components/server-components/HighlightedRecipesCarousel";
-import { LatestRecipesSection } from "@/components/server-components/LastestRecipesSection";
+import { LatestRecipesSection } from "@/components/server-components/LatestRecipesSection";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 
 const Home = async () => {
