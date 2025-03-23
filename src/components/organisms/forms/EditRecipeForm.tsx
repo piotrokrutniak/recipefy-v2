@@ -28,8 +28,8 @@ import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { RecipeFullInfoDto } from "@/types/api";
-import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
 import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
+import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -332,7 +332,7 @@ export const EditRecipeForm = ({
         <FormField
           control={form.control}
           name="content"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
