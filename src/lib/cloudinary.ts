@@ -40,6 +40,7 @@ async function uploadImageToCloudinary(imageData: string | File) {
   }
 }
 
+// TODO: Do not store the duplicate images, check for duplicates within the content and trim them
 // Helper function to process content and replace all base64 images
 export async function processContentImages(content: string): Promise<string> {
   const base64Regex = /data:image\/[^;]+;base64,[^"]+/g;

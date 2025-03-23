@@ -4,8 +4,8 @@ import {
   replaceBase64WithUrls,
   uploadImageToCloudinary,
 } from "@/lib/cloudinary";
-import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe";
 import { uploadMarkupAssets } from "@/lib/server-actions/recipes/uploadMarkupAssets";
+import { createRecipeSchema } from "./createRecipe.schema";
 
 const prisma = DBClient.getInstance().prisma;
 
