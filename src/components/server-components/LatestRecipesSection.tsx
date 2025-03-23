@@ -19,7 +19,7 @@ export const LatestRecipesSection = async () => {
   const user = (await getCurrentUser()) ?? undefined;
   const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
-    <section className="flex flex-col px-5 py-4 gap-4 w-full">
+    <section className="flex flex-col sm:px-5 py-4 gap-4 w-full">
       <div className="flex justify-between">
         <TextH3 className="ml-5">Recently Added Recipes</TextH3>
         <RecipeTypeSelector />
