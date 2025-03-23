@@ -1,8 +1,5 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession, User } from "next-auth";
 import { LinkButton } from "../../generic/LinkButton";
-import { Avatar, AvatarImage } from "../../ui/avatar";
-import { FaPlus, FaUserFriends } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { HeartIcon } from "@radix-ui/react-icons";
 import { UserPanelPopUp } from "@/components/molecules/pop-ups/UserPanelPopUp";
 import { getCurrentUser } from "@/app/api/users/current/route";

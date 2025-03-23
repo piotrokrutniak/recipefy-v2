@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
-import {
-  createRecipe,
-  createRecipeSchema,
-} from "@/lib/server-actions/recipes/createRecipe";
+import { createRecipe } from "@/lib/server-actions/recipes/createRecipe";
 import { getUserPrivateRecipes } from "@/lib/server-actions/recipes/getUserPrivateRecipes";
+import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
 
 const prisma = DBClient.getInstance().prisma;
 

@@ -4,7 +4,7 @@ import { Circle } from "@prisma/client";
 
 const prisma = DBClient.getInstance().prisma;
 
-export const getUserOwnedCircles = async (): Promise<Circle[]> => {
+export const getCurrentUserOwnedCircles = async (): Promise<Circle[]> => {
   const user = await getCurrentUser();
   if (!user) {
     return [];

@@ -8,15 +8,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { TextLarge } from "@/components/typography/TextLarge";
-import { User } from "@prisma/client";
 import { TextSmall } from "@/components/typography/TextSmall";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { Separator } from "@/components/ui/separator";
 import { FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
+import { User } from "next-auth";
 
-export const UserPanelPopUp = async ({ user }: { user: User }) => {
+export const UserPanelPopUp = ({ user }: { user: User }) => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -48,7 +48,7 @@ export const UserPanelPopUp = async ({ user }: { user: User }) => {
   );
 };
 
-const UserHeader = ({ user }: { user: User }) => {
+export const UserHeader = ({ user }: { user: User }) => {
   return (
     <div className="flex items-start gap-2">
       <Avatar>

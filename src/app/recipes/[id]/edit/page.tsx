@@ -1,7 +1,7 @@
 import { getIngredients } from "@/app/api/ingredients/route";
-import { getRecipeById } from "@/app/api/recipes/[id]/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { ClientContent } from "@/components/features/recipes/edit/EditRecipeClientView";
+import { getRecipeById } from "@/lib/server-actions/recipes/getRecipeById";
 import { RecipeFullInfoDto } from "@/types/api";
 import { redirect } from "next/navigation";
 

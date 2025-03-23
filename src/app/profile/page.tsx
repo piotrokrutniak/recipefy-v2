@@ -8,12 +8,12 @@ import { PageContentSidebarLayout } from "@/components/layouts/PageContentSideba
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { getCurrentUser } from "../api/users/current/route";
 import { redirect } from "next/navigation";
-import { getUserOwnedCircles } from "@/lib/server-actions/recipes/getUserOwnedCircles";
+import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { UserPendingCircleInvites } from "@/components/molecules/info-display/UserPendingCircleInvites";
 
 export const ProfilePage = async () => {
   const user = await getCurrentUser();
-  const circles = await getUserOwnedCircles();
+  const circles = await getCurrentUserOwnedCircles();
 
   if (!user) {
     return redirect("/auth");
@@ -22,7 +22,7 @@ export const ProfilePage = async () => {
   return (
     <ClientProvidersWrapper>
       <PageContentSidebarLayout className="">
-        <PageContentLayout className="flex-grow-0 sticky top-0 h-fit">
+        <PageContentLayout className="flex-grow-0 sticky top-0 h-fit max-sm:hidden">
           <ProfileSideBarHeaderClient user={user!} />
           <ProfileSideBarNavigation />
         </PageContentLayout>

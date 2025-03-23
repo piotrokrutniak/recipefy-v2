@@ -29,10 +29,11 @@ export const CircleDetailsPage = async ({
   }
 
   return (
-    <PageContentSidebarLayout>
-      <PageContentLayout className="flex w-[360px] max-w-[360px] py-8">
+    <PageContentSidebarLayout className="max-sm:flex-col max-sm:gap-4">
+      <PageContentLayout className="flex w-[360px] max-w-[360px] py-8 max-sm:hidden">
         <TextH2 className="w-full">{circle?.name}</TextH2>
       </PageContentLayout>
+      <TextH2 className="w-full sm:hidden">{circle?.name}</TextH2>
       <PageContentLayout className="py-8">
         <CircleMembers members={circle?.circleMembers || []} />
         <CircleInvites

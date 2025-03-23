@@ -27,8 +27,8 @@ export const getPublicRecipes = async (params: Partial<RecipeSearchParams>) => {
       calories: {
         lte: params.calories && Number(params.calories),
       },
-      vegan: Boolean(params.vegan),
-      vegetarian: Boolean(params.vegetarian),
+      vegan: params.vegan ? true : undefined,
+      vegetarian: params.vegetarian ? true : undefined,
       visibility: "PUBLIC",
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes

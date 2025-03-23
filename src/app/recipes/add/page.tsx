@@ -1,3 +1,5 @@
+"use server";
+
 import { getIngredients } from "@/app/api/ingredients/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { AddRecipePageClientView } from "@/components/organisms/client-rendered/recipes/AddRecipePageClientView";

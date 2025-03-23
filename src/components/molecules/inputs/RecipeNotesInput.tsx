@@ -1,11 +1,12 @@
 "use client";
 
 import { OutlineContainer } from "@/components/atoms/OutlineContainer";
-import { TextH4, TextLead, TextMuted } from "@/components/typography";
+import { TextH4, TextMuted } from "@/components/typography";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutationAddRecipeNote } from "@/hooks/api/recipes/mutations/useMutationAddRecipeNote";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { putRecipeNote } from "@/lib/server-actions/recipes/putRecipeNote";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const RecipeNotesInput = ({
   recipeId,
@@ -14,56 +15,41 @@ export const RecipeNotesInput = ({
   recipeId: string;
   initialNote?: string;
 }) => {
-  const {
-    mutate: addRecipeNote,
-    isPending,
-    data,
-    isSuccess,
-    isError,
-    error,
-  } = useMutationAddRecipeNote();
-  const [note, setNote] = useState(initialNote);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { refresh } = useRouter();
 
-  const handleSave = () => {
-    if (!note || data?.data === note) {
-      return;
-    }
-
-    addRecipeNote({ note, recipeId });
-    toast({
-      title: "Saving note...",
-      description: "Your note is being saved",
-    });
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
+  const handleSave = async (note: string) => {
+    setIsLoading(true);
+    try {
+      toast({
+        title: "Saving note...",
+        description: "Your note is being saved",
+      });
+      await putRecipeNote(recipeId, note);
       toast({
         title: "Note saved",
         description: "Your note has been saved",
       });
-      return;
-    }
-
-    if (isError) {
+      refresh();
+    } catch (error) {
+      console.error(error);
       toast({
         title: "Error saving note",
-        description: `There was an error saving your note: ${error?.message}`,
+        description: `There was an error saving your note`,
       });
+    } finally {
+      setIsLoading(false);
     }
-  }, [isSuccess, isError, toast, error?.message]);
+  };
 
   return (
     <OutlineContainer className="flex flex-col gap-4">
       <TextH4>Notes</TextH4>
       <Textarea
-        onChange={(e) => {
-          setNote(e.currentTarget.value);
-        }}
-        onBlur={handleSave}
-        disabled={isPending}
-        value={note}
+        defaultValue={initialNote}
+        onBlur={(e) => handleSave(e.currentTarget.value)}
+        disabled={isLoading}
         placeholder="Enter your notes here..."
         className="w-full min-h-64"
       />
