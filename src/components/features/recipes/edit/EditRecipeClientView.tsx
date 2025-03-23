@@ -37,7 +37,7 @@ export const ClientContent = ({
 
   return (
     <ClientProvidersWrapper>
-      <PageContentLayout>
+      <PageContentLayout className="p-4">
         <EditRecipeForm
           recipe={recipe}
           verifiedIngredients={verifiedIngredients}

@@ -25,7 +25,7 @@ export const CircleInvites = ({
 }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex gap-4 w-full justify-between mb-2">
+      <div className="flex max-sm:flex-col gap-4 w-full justify-between mb-2">
         <TextH3>Pending Circle Invites</TextH3>
         <div className="flex gap-2">
           <CircleInviteHistoryDialog circleInvites={circleInvites} />
