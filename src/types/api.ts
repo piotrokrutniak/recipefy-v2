@@ -7,6 +7,7 @@ import {
   Recipe,
   RecipeIngredient,
   User,
+  UserIngredient,
 } from "@prisma/client";
 
 export type UpdateUserDto = Partial<Omit<User, "id">>;
@@ -21,6 +22,7 @@ export type RecipeFullInfoDto = Recipe & {
 
 export type RecipeIngredientDto = RecipeIngredient & {
   ingredient: Ingredient;
+  userIngredient: UserIngredient;
 };
 
 export type CircleInviteFullInfoDto = CircleInvite & {

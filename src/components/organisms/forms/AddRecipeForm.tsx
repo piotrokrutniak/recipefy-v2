@@ -7,6 +7,7 @@ import {
   Ingredient,
   Recipe,
   RecipeIngredient,
+  UserIngredient,
   Visibility,
 } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -29,11 +30,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
 import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
+import { getUserIngredients } from "@/lib/server-actions/ingredients/getUserIngredients";
+import { SelectableIngredient } from "@/components/molecules/search/IngredientSearchContainer";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -67,6 +70,21 @@ export const AddRecipeForm = ({
       recipeIngredients: [],
     },
   });
+
+  const [userIngredients, setUserIngredients] = useState<UserIngredient[]>([]);
+
+  const fetchUserIngredients = useCallback(async () => {
+    const userIngredients = await getUserIngredients();
+    setUserIngredients(userIngredients);
+  }, []);
+
+  useEffect(() => {
+    fetchUserIngredients();
+  }, [fetchUserIngredients]);
+
+  const selectableIngredients: SelectableIngredient[] = useMemo(() => {
+    return [...verifiedIngredients, ...userIngredients];
+  }, [verifiedIngredients, userIngredients]);
 
   const onSubmit = (data: RecipeFormData) => {
     // remove empty ingredient lines
@@ -302,7 +320,8 @@ export const AddRecipeForm = ({
               <FormControl>
                 <RecipeIngredientsInfoInput
                   recipeIngredients={field.value as RecipeIngredient[]}
-                  verifiedIngredients={verifiedIngredients}
+                  selectableIngredients={selectableIngredients}
+                  refreshIngredients={fetchUserIngredients}
                   addIngredient={() =>
                     field.onChange([...field.value, emptyIngredient])
                   }

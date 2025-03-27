@@ -80,8 +80,6 @@ export const PATCH = async (
     // Validate the request body
     const validatedData = createRecipeSchema.parse(body);
 
-    console.log("validatedData", validatedData);
-
     const user = await getCurrentUser();
 
     if (!user) {

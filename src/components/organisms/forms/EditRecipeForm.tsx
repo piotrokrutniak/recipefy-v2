@@ -3,7 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Ingredient, Recipe, RecipeIngredient } from "@prisma/client";
+import {
+  Ingredient,
+  Recipe,
+  RecipeIngredient,
+  UserIngredient,
+} from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,24 +28,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback, useState } from "react";
 import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { RecipeFullInfoDto } from "@/types/api";
 import { UploadImageAssetInput } from "@/components/molecules/inputs/UploadImageAssetInput";
 import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
+import { getUserIngredients } from "@/lib/server-actions/ingredients/getUserIngredients";
+import { SelectableIngredient } from "@/components/molecules/search/IngredientSearchContainer";
 
 export type RecipeFormData = z.infer<typeof createRecipeSchema>;
 
 interface EditRecipeFormProps {
   verifiedIngredients: Ingredient[];
+  initialUserIngredients: UserIngredient[];
   recipe: RecipeFullInfoDto;
   onSubmitAction?: (data: Recipe) => void;
 }
 
 export const EditRecipeForm = ({
   verifiedIngredients,
+  initialUserIngredients,
   recipe,
   onSubmitAction,
 }: EditRecipeFormProps) => {
@@ -73,13 +82,33 @@ export const EditRecipeForm = ({
     },
   });
 
+  const [userIngredients, setUserIngredients] = useState<UserIngredient[]>(
+    initialUserIngredients
+  );
+
+  const fetchUserIngredients = useCallback(async () => {
+    const userIngredients = await getUserIngredients();
+    setUserIngredients(userIngredients);
+  }, []);
+
+  useEffect(() => {
+    fetchUserIngredients();
+  }, [fetchUserIngredients]);
+
+  const selectableIngredients: SelectableIngredient[] = useMemo(() => {
+    return [...verifiedIngredients, ...userIngredients];
+  }, [verifiedIngredients, userIngredients]);
+
   const onSubmit = (data: RecipeFormData) => {
     // remove empty ingredient lines
     const purifiedData = {
       ...data,
       id: recipe.id,
-      recipeIngredients: data.recipeIngredients.filter((i) => i.ingredientId),
+      recipeIngredients: data.recipeIngredients.filter(
+        (i) => !!i.ingredientId || !!i.userIngredientId
+      ),
     };
+
     updateRecipe(purifiedData);
   };
 
@@ -308,7 +337,8 @@ export const EditRecipeForm = ({
               <FormControl>
                 <RecipeIngredientsInfoInput
                   recipeIngredients={field.value as RecipeIngredient[]}
-                  verifiedIngredients={verifiedIngredients}
+                  selectableIngredients={selectableIngredients}
+                  refreshIngredients={fetchUserIngredients}
                   addIngredient={() =>
                     field.onChange([...field.value, emptyIngredient])
                   }

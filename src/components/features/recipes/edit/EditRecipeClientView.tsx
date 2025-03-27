@@ -5,16 +5,18 @@ import { EditRecipeForm } from "@/components/organisms/forms/EditRecipeForm";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { RecipeFullInfoDto } from "@/types/api";
-import { Ingredient, Recipe } from "@prisma/client";
+import { Ingredient, Recipe, UserIngredient } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 export const ClientContent = ({
   recipe,
   verifiedIngredients,
+  userIngredients,
 }: {
   recipe: RecipeFullInfoDto;
   verifiedIngredients: Ingredient[];
+  userIngredients: UserIngredient[];
 }) => {
   const { toast } = useToast();
   const router = useRouter();
@@ -32,7 +34,10 @@ export const ClientContent = ({
         router.push(`/recipes/${recipe.id}`);
       }, 1000);
     },
-    [toast, router, recipe]
+    // These dependencies are not needed for the callback to be memoized
+    // Prevents unnecessary re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [recipe.id]
   );
 
   return (
@@ -41,6 +46,7 @@ export const ClientContent = ({
         <EditRecipeForm
           recipe={recipe}
           verifiedIngredients={verifiedIngredients}
+          initialUserIngredients={userIngredients}
           onSubmitAction={handleSubmit}
         />
       </PageContentLayout>

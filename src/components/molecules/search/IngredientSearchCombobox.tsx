@@ -5,63 +5,140 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Ingredient, RecipeIngredient } from "@prisma/client";
-import { useState } from "react";
-import { IngredientSearchInput } from "./IngredientSearchContainer";
+import { useMemo, useState } from "react";
+import {
+  IngredientSearchInput,
+  SelectableIngredient,
+} from "./IngredientSearchContainer";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogTitle,
+  DialogHeader,
+  DialogContent,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { createUserIngredient } from "@/lib/server-actions/ingredients/createUserIngredient";
 
 type IngredientSearchComboboxProps = {
   selectedIngredient?: RecipeIngredient;
-  ingredients: Ingredient[];
-  onIngredientClick: (ingredient: Ingredient) => void;
+  ingredients: SelectableIngredient[];
+  onIngredientClick: (ingredient: SelectableIngredient) => void;
   buttonClassName?: string;
   popoverContentClassName?: string;
+  refreshIngredients?: () => void;
 };
+
 export const IngredientSearchCombobox = ({
   selectedIngredient,
   ingredients,
   onIngredientClick,
   buttonClassName,
   popoverContentClassName,
+  refreshIngredients,
 }: IngredientSearchComboboxProps) => {
   const [open, setOpen] = useState(false);
+  const [isAddingUserIngredient, setIsAddingUserIngredient] = useState(false);
 
-  const handleIngredientSelection = (ingredient: Ingredient) => {
+  const handleIngredientSelection = (ingredient: SelectableIngredient) => {
+    refreshIngredients?.();
     onIngredientClick(ingredient);
-    // setOpen(false);
+  };
+
+  //TODO: Remove since it will be obsolete soon
+  const memoizedIngredients = useMemo(() => ingredients, [ingredients]);
+
+  return (
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn("w-[150px] justify-start", buttonClassName)}
+          >
+            {selectedIngredient?.id ? (
+              <>
+                {
+                  memoizedIngredients.find(
+                    (ingredient) =>
+                      ingredient.id === selectedIngredient.ingredientId ||
+                      ingredient.id === selectedIngredient.userIngredientId
+                  )?.name
+                }
+              </>
+            ) : (
+              <>+ Select ingredient</>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className={cn("w-[200px] p-0", popoverContentClassName)}
+          align="start"
+        >
+          <IngredientSearchInput
+            setSearchQuery={() => {}}
+            ingredients={memoizedIngredients}
+            onIngredientClick={handleIngredientSelection}
+            onNewIngredientClick={() => setIsAddingUserIngredient(true)}
+          />
+        </PopoverContent>
+      </Popover>
+      {/** TODO: Possible performance issue here if each ingredient combobox has its own dialog */}
+      <AddUserIngredientDialog
+        isOpen={isAddingUserIngredient}
+        setIsOpen={setIsAddingUserIngredient}
+        selectCreatedIngredient={handleIngredientSelection}
+      />
+    </>
+  );
+};
+
+const AddUserIngredientDialog = ({
+  isOpen,
+  setIsOpen,
+  selectCreatedIngredient,
+}: {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  selectCreatedIngredient: (ingredient: Ingredient) => void;
+}) => {
+  const [ingredientName, setIngredientName] = useState("");
+  const handleIngredientNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIngredientName(e.target.value);
+  };
+
+  const handleAddIngredient = async () => {
+    const ingredient = await createUserIngredient(ingredientName);
+    selectCreatedIngredient(ingredient as Ingredient);
+    setIngredientName("");
+    setIsOpen(false);
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={cn("w-[150px] justify-start", buttonClassName)}
-        >
-          {selectedIngredient?.id ? (
-            <>
-              {
-                ingredients.find(
-                  (ingredient) =>
-                    ingredient.id === selectedIngredient.ingredientId ||
-                    ingredient.id === selectedIngredient.userIngredientId
-                )?.name
-              }
-            </>
-          ) : (
-            <>+ Select ingredient</>
-          )}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className={cn("w-[200px] p-0", popoverContentClassName)}
-        align="start"
-      >
-        <IngredientSearchInput
-          setSearchQuery={() => {}}
-          ingredients={ingredients}
-          onIngredientClick={handleIngredientSelection}
-        />
-      </PopoverContent>
-    </Popover>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Add user ingredient</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add user ingredient</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          <Input
+            type="text"
+            placeholder="Ingredient name"
+            value={ingredientName}
+            onChange={handleIngredientNameChange}
+          />
+        </DialogDescription>
+        {/* <DialogFooter> */}
+        <Button onClick={handleAddIngredient}>Add</Button>
+        {/* </DialogFooter> */}
+      </DialogContent>
+    </Dialog>
   );
 };

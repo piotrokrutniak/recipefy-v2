@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { TextSmall } from "@/components/typography";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-
+import { SelectableIngredient } from "./IngredientSearchContainer";
 export const IngredientsParamsSection = ({
   form,
   ingredients,
@@ -21,7 +21,7 @@ export const IngredientsParamsSection = ({
   form: UseFormReturn<RecipeSearchFormData, any, undefined>;
   ingredients: Ingredient[];
 }) => {
-  const toggleIngredient = (ingredient: Ingredient) => {
+  const toggleIngredient = (ingredient: SelectableIngredient) => {
     if (form.getValues("ingredients").includes(ingredient.id)) {
       form.setValue(
         "ingredients",

@@ -4,10 +4,12 @@ import { PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Ingredient, RecipeIngredient } from "@prisma/client";
 import { IngredientSearchCombobox } from "../search/IngredientSearchCombobox";
 import { Input } from "@/components/ui/input";
+import { SelectableIngredient } from "../search/IngredientSearchContainer";
 
 type RecipeIngredientsInfoInputProps = {
   recipeIngredients: (RecipeIngredient | undefined)[];
-  verifiedIngredients: Ingredient[];
+  selectableIngredients: SelectableIngredient[];
+  refreshIngredients: () => void;
   addIngredient: (ingredient?: Ingredient) => void;
   updateIngredient: (
     ingredient: Partial<RecipeIngredient>,
@@ -18,7 +20,8 @@ type RecipeIngredientsInfoInputProps = {
 
 export const RecipeIngredientsInfoInput = ({
   recipeIngredients,
-  verifiedIngredients,
+  selectableIngredients,
+  refreshIngredients,
   addIngredient,
   updateIngredient,
   removeIngredient,
@@ -44,9 +47,10 @@ export const RecipeIngredientsInfoInput = ({
           key={ingredient?.id}
           index={index}
           selectedIngredient={ingredient}
-          ingredients={verifiedIngredients}
+          ingredients={selectableIngredients}
           updateIngredient={updateIngredient}
           removeIngredient={removeIngredient}
+          refreshIngredients={refreshIngredients}
         />
       ))}
 
@@ -65,20 +69,23 @@ const VerifiedIngredientItem = ({
   ingredients,
   updateIngredient,
   removeIngredient,
+  refreshIngredients,
 }: {
   index: number;
   selectedIngredient?: RecipeIngredient;
-  ingredients: Ingredient[];
+  ingredients: SelectableIngredient[];
   updateIngredient: (ingredient: RecipeIngredient, index: number) => void;
   removeIngredient: (ingredientId: string) => void;
+  refreshIngredients: () => void;
 }) => {
-  const handleIngredientClick = (ingredient: Ingredient) => {
+  const handleIngredientClick = (ingredient: SelectableIngredient) => {
     updateIngredient(
       {
         id: ingredient?.id ?? "",
         recipeId: selectedIngredient?.recipeId ?? "",
-        ingredientId: ingredient.id,
-        userIngredientId: selectedIngredient?.userIngredientId ?? "",
+        // If the object has a userId then we're dealing with a user ingredient
+        ingredientId: ingredient.userId ? null : ingredient.id,
+        userIngredientId: ingredient.userId ? ingredient.id : null,
         amount: selectedIngredient?.amount ?? "",
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -108,6 +115,7 @@ const VerifiedIngredientItem = ({
         selectedIngredient={selectedIngredient}
         ingredients={ingredients}
         onIngredientClick={handleIngredientClick}
+        refreshIngredients={refreshIngredients}
       />
       <Input value={selectedIngredient?.amount} onChange={updateAmount} />
       <Button
