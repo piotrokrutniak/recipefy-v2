@@ -30,8 +30,6 @@ export const IngredientSearchInput = ({
   onNewIngredientClick?: () => void;
   className?: string;
 }) => {
-  console.log("IngredientSearchInput", ingredients);
-
   return (
     <Command shouldFilter>
       <CommandList>
