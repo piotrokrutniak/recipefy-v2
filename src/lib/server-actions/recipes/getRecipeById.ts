@@ -9,6 +9,7 @@ export const getRecipeById = async (id: string) => {
       recipeIngredients: {
         include: {
           ingredient: true,
+          userIngredient: true,
         },
       },
       author: true,

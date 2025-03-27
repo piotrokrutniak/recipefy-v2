@@ -1,12 +1,17 @@
 "use client";
 
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 
 type QuillEditorProps = {
   value: string;
   onChange: (value: string) => void;
 };
+
+// Dynamically import ReactQuill to prevent hydration errors
+const ReactQuillComponent = dynamic(() => import("react-quill"), {
+  ssr: false,
+});
 
 export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
   const modules = {
@@ -30,7 +35,7 @@ export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
   ];
 
   return (
-    <ReactQuill
+    <ReactQuillComponent
       theme="snow"
       // Internal styles are declared in the global.css file
       className="w-full"
