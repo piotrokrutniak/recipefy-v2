@@ -41,7 +41,7 @@ export const HighlightedRecipesCarousel = ({
     >
       <CarouselContent>
         {recipes.map((recipe) => (
-          <Slide data={recipe} />
+          <Slide data={recipe} key={recipe.id} />
         ))}
       </CarouselContent>
       <CarouselPrevious />

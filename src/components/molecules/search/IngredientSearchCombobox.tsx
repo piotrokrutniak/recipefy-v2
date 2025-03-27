@@ -29,6 +29,7 @@ type IngredientSearchComboboxProps = {
   buttonClassName?: string;
   popoverContentClassName?: string;
   refreshIngredients?: () => void;
+  allowAddingUserIngredients?: boolean;
 };
 
 export const IngredientSearchCombobox = ({
@@ -38,6 +39,7 @@ export const IngredientSearchCombobox = ({
   buttonClassName,
   popoverContentClassName,
   refreshIngredients,
+  allowAddingUserIngredients = false,
 }: IngredientSearchComboboxProps) => {
   const [open, setOpen] = useState(false);
   const [isAddingUserIngredient, setIsAddingUserIngredient] = useState(false);
@@ -45,6 +47,10 @@ export const IngredientSearchCombobox = ({
   const handleIngredientSelection = (ingredient: SelectableIngredient) => {
     refreshIngredients?.();
     onIngredientClick(ingredient);
+  };
+
+  const openPopover = () => {
+    setIsAddingUserIngredient(false);
   };
 
   //TODO: Remove since it will be obsolete soon
@@ -81,7 +87,9 @@ export const IngredientSearchCombobox = ({
             setSearchQuery={() => {}}
             ingredients={memoizedIngredients}
             onIngredientClick={handleIngredientSelection}
-            onNewIngredientClick={() => setIsAddingUserIngredient(true)}
+            onNewIngredientClick={
+              allowAddingUserIngredients ? openPopover : undefined
+            }
           />
         </PopoverContent>
       </Popover>
@@ -120,9 +128,9 @@ const AddUserIngredientDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+      {/* <DialogTrigger asChild>
         <Button variant="outline">Add user ingredient</Button>
-      </DialogTrigger>
+      </DialogTrigger> */}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add user ingredient</DialogTitle>

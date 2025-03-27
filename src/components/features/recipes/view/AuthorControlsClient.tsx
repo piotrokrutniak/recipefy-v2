@@ -1,6 +1,6 @@
 "use client";
 
-import { Circle, Recipe } from "@prisma/client";
+import { Circle } from "@prisma/client";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { deleteRecipe } from "@/lib/server-actions/recipes/deleteRecipe";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { ManageRecipeCirclesDialog } from "@/components/molecules/dialogs/ManageRecipeCirclesDialog";
 import { RecipeFullInfoDto } from "@/types/api";
 import { RecipeAvailabilitySelect } from "@/components/molecules/selects/RecipeAvailabilitySelect";
+import { ActionConfirmationDialog } from "@/components/molecules/dialogs/ActionConfirmationDialog";
 
 export const AuthorControls = ({
   recipe,
@@ -22,14 +23,32 @@ export const AuthorControls = ({
   const router = useRouter();
 
   const handleDelete = async () => {
-    const success = await deleteRecipe(recipe.id);
-    if (success) {
-      toast({ title: "Recipe deleted", description: "Recipe deleted" });
-    } else {
-      toast({ title: "Error", description: "Error deleting recipe" });
+    let success;
+    try {
+      success = await deleteRecipe(recipe.id);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "Error deleting recipe",
+        variant: "destructive",
+      });
       return;
     }
 
+    if (success) {
+      toast({
+        title: "Recipe deleted",
+        description: "Recipe successfully deleted",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Error deleting recipe",
+        variant: "destructive",
+      });
+      return;
+    }
     router.push("/recipes");
   };
 
@@ -46,15 +65,23 @@ export const AuthorControls = ({
           <FaEdit />
           Edit
         </LinkButton>
-        <Button
-          variant="destructive"
-          size="default"
-          className="w-full gap-2"
-          onClick={handleDelete}
-        >
-          <FaTrash />
-          Delete
-        </Button>
+        <ActionConfirmationDialog
+          title="Delete Recipe"
+          description="Are you sure you want to delete this recipe?"
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onConfirm={handleDelete}
+          triggerButton={
+            <Button
+              variant="destructive"
+              size="default"
+              className="w-full gap-2"
+            >
+              <FaTrash />
+              Delete
+            </Button>
+          }
+        />
       </div>
       <ManageRecipeCirclesDialog
         recipeId={recipe.id}
