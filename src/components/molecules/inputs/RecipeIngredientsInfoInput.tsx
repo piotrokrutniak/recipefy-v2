@@ -116,6 +116,7 @@ const VerifiedIngredientItem = ({
         ingredients={ingredients}
         onIngredientClick={handleIngredientClick}
         refreshIngredients={refreshIngredients}
+        buttonClassName="min-w-40"
       />
       <Input value={selectedIngredient?.amount} onChange={updateAmount} />
       <Button

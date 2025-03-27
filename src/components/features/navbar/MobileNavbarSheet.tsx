@@ -15,7 +15,7 @@ import { HeartIcon } from "@radix-ui/react-icons";
 export const MobileNavbarSheet = ({ user }: { user?: User }) => {
   return (
     <Sheet modal={false}>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <Button variant="ghost" size="icon">
           <FaBars className="w-8 h-8" />
         </Button>
