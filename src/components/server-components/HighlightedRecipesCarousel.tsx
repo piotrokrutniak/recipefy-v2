@@ -44,8 +44,8 @@ export const HighlightedRecipesCarousel = ({
           <Slide data={recipe} key={recipe.id} />
         ))}
       </CarouselContent>
-      <CarouselPrevious className="max-sm:hidden" />
-      <CarouselNext className="max-sm:hidden" />
+      <CarouselPrevious className="max-sm:hidden left-auto right-14 top-8" />
+      <CarouselNext className="max-sm:hidden right-3 top-8" />
     </Carousel>
   );
 };
@@ -60,7 +60,7 @@ const Slide = ({ data }: { data: Recipe }) => (
         height={720}
         className="object-cover h-full w-full opacity-60"
       />
-      <div className="absolute bottom-0 left-0 p-12 sm:w-2/3 lg:w-1/2 flex flex-col gap-4 text-white">
+      <div className="absolute bottom-0 left-0 p-4 sm:p-12 sm:w-2/3 lg:w-1/2 flex flex-col gap-4 text-white">
         <Link href={`/recipes/${data.id}`}>
           <TextH1>{data.title}</TextH1>
         </Link>
