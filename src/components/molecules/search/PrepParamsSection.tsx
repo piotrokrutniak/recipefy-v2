@@ -4,18 +4,21 @@ import { ParamInput } from "./ParamInput";
 import { UseFormReturn } from "react-hook-form";
 import { TextMuted } from "@/components/typography/TextMuted";
 import { RecipeSearchFormData } from "@/hooks/forms/useSearchRecipesForm";
+import { cn } from "@/lib/utils";
 
 export const PrepParamsSection = ({
   form,
+  className,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<RecipeSearchFormData, any, undefined>;
+  className?: string;
 }) => {
   return (
-    <OutlineContainer className="flex flex-col gap-4 w-80">
+    <OutlineContainer className={cn("flex flex-col gap-4 w-80", className)}>
       <div className="flex flex-col gap-1">
         <TextMedium className="font-medium">Preparation Time</TextMedium>
-        <TextMuted>Recipe timing parameters</TextMuted>
+        <TextMuted>How much time do you have?</TextMuted>
       </div>
       <ParamInput
         label="Cook Time"

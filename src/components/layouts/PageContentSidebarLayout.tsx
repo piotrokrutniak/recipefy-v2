@@ -10,7 +10,8 @@ export const PageContentSidebarLayout = ({
   return (
     <section
       className={cn(
-        "flex flex-1 gap-16 mx-auto w-full min-h-screen py-8 px-3 max-w-7xl",
+        "flex flex-1 gap-8 lg:gap-16 mx-auto w-full min-h-screen py-4 sm:py-8 px-3 max-w-7xl",
+        "md:flex-row flex-col",
         className
       )}
     >

@@ -20,8 +20,8 @@ export const LatestRecipesSection = async () => {
   const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
     <section className="flex flex-col sm:px-5 py-4 gap-4 w-full">
-      <div className="flex justify-between">
-        <TextH3 className="ml-5">Recently Added Recipes</TextH3>
+      <div className="flex justify-between gap-2 px-3">
+        <TextH3 className="">Recently Added Recipes</TextH3>
         <RecipeTypeSelector />
       </div>
       {recipes.map((recipe) => (
@@ -34,9 +34,11 @@ export const LatestRecipesSection = async () => {
           user={user}
         />
       ))}
-      <LinkButton href="/recipes" className="w-full mx-3">
-        Discover more recipes
-      </LinkButton>
+      <div className="px-3">
+        <LinkButton href="/recipes" className="w-full">
+          Discover more recipes
+        </LinkButton>
+      </div>
     </section>
   );
 };

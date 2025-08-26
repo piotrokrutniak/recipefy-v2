@@ -67,7 +67,7 @@ export const DynamicHeaderContentMobile = ({ user }: { user: User }) => {
         <LinkButton
           href={`/user/${user.id}`}
           variant={"default"}
-          className="gap-2"
+          className="gap-2 h-12"
         >
           <FaUser className="w-4 h-4" />
           View your profile
@@ -77,7 +77,7 @@ export const DynamicHeaderContentMobile = ({ user }: { user: User }) => {
         <LinkButton
           href={`/your-circles`}
           variant={"default"}
-          className="gap-2"
+          className="gap-2 h-12"
         >
           <FaUserFriends className="w-4 h-4" />
           Your circles
@@ -93,7 +93,7 @@ export const SignOutButton = () => {
       <Button
         variant={"secondary"}
         onClick={() => signOut()}
-        className="gap-2 mt-4 w-full"
+        className="gap-2 mt-4 w-full h-12"
       >
         <FaSignOutAlt className="w-4 h-4" />
         Sign out

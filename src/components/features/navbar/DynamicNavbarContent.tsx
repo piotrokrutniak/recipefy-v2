@@ -10,11 +10,11 @@ export const DynamicNavbarContent = async () => {
   return user ? (
     <>
       <LinkButton href={"/recipes/liked"} variant={"default"}>
-        <HeartIcon className="w-4 h-4 mr-1" />
+        <HeartIcon className="w-4 h-4 mr-2" />
         Liked Recipes
       </LinkButton>
       <LinkButton href={"/recipes/add"} variant={"accent"}>
-        <FaPlus className="mr-1" />
+        <FaPlus className="mr-2" />
         Add Recipe
       </LinkButton>
       <UserPanelPopUp user={user} />
