@@ -6,6 +6,14 @@ import { PageContentSidebarLayout } from "@/components/layouts/PageContentSideba
 import { IngredientsParamsSection } from "@/components/molecules/search/IngredientsParamsSection";
 import { PrepParamsSection } from "@/components/molecules/search/PrepParamsSection";
 import { RecipeSearchContainer } from "@/components/molecules/search/RecipeSearchContainer";
+import { TextP } from "@/components/typography";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
   useSearchRecipesForm,
@@ -48,13 +56,32 @@ export default function RecipeSearchForm({
   return (
     <PageContentSidebarLayout>
       <Form {...form}>
-        <PageContentLayout className="flex-grow-0 w-80">
+        <PageContentLayout className="flex-grow-0 w-80 hidden md:block">
           <PrepParamsSection form={form} />
           <IngredientsParamsSection form={form} ingredients={ingredients} />
         </PageContentLayout>
         <PageContentLayout>
           <div className="w-full flex flex-col gap-4">
             <RecipeSearchContainer onSubmit={onSubmit} form={form} />
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full px-3 md:hidden"
+            >
+              <AccordionItem value="search-parameters">
+                <AccordionTrigger>Search parameters</AccordionTrigger>
+                <AccordionContent>
+                  <div className="md:hidden flex sm:flex-row flex-col gap-4">
+                    <PrepParamsSection form={form} className="w-full" />
+                    <IngredientsParamsSection
+                      form={form}
+                      ingredients={ingredients}
+                      className="w-full"
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
             {children}
           </div>
         </PageContentLayout>

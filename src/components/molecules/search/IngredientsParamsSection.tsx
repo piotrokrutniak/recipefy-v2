@@ -13,13 +13,16 @@ import { TextSmall } from "@/components/typography";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { SelectableIngredient } from "./IngredientSearchContainer";
+import { cn } from "@/lib/utils";
 export const IngredientsParamsSection = ({
   form,
   ingredients,
+  className,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<RecipeSearchFormData, any, undefined>;
   ingredients: Ingredient[];
+  className?: string;
 }) => {
   const toggleIngredient = (ingredient: SelectableIngredient) => {
     if (form.getValues("ingredients").includes(ingredient.id)) {
@@ -50,11 +53,11 @@ export const IngredientsParamsSection = ({
   }, [ingredients, selectedIngredients]);
 
   return (
-    <OutlineContainer className="flex flex-col gap-4 w-80">
+    <OutlineContainer className={cn("flex flex-col gap-4 w-80", className)}>
       <div className="flex gap-1 items-center justify-between">
         <div className="flex flex-col gap-1">
           <TextMedium className="font-medium">Ingredients</TextMedium>
-          <TextMuted>Recipe ingredients</TextMuted>
+          <TextMuted>What's in your fridge?</TextMuted>
         </div>
         <Button size={"icon"} variant={"outline"} onClick={clearIngredients}>
           <EraserIcon />
