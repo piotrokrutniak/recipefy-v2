@@ -9,23 +9,21 @@ export const Navbar = async () => {
   const user = await getCurrentUser();
 
   return (
-    <nav className="w-full p-3 flex h-fit justify-center fixed backdrop-blur-lg z-40 bg-white bg-opacity-85">
-      <div className="max-w-7xl flex flex-1 justify-between">
-        <Link href="/" passHref>
-          <TextH2 className="cursor-pointer hover:text-light_red-500 transition-colors">
-            Recipefy
-          </TextH2>
-        </Link>
-        <section className="flex relative gap-2 items-center max-sm:hidden">
-          <LinkButton href="/recipes" variant="ghost">
-            Recipes
-          </LinkButton>
-          <DynamicNavbarContent />
-        </section>
-        <section className="sm:hidden">
-          <MobileNavbarSheet user={user ?? undefined} />
-        </section>
-      </div>
+    <nav className="flex flex-1 justify-between p-3 sticky top-0 z-40 bg-white bg-opacity-85 backdrop-blur-lg">
+      <Link href="/" passHref>
+        <TextH2 className="cursor-pointer hover:text-light_red-500 transition-colors">
+          Recipefy
+        </TextH2>
+      </Link>
+      <section className="flex relative gap-2 items-center max-sm:hidden">
+        <LinkButton href="/recipes" variant="ghost">
+          Recipes
+        </LinkButton>
+        <DynamicNavbarContent />
+      </section>
+      <section className="sm:hidden">
+        <MobileNavbarSheet user={user ?? undefined} />
+      </section>
     </nav>
   );
 };
