@@ -28,7 +28,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/recipes/liked"}
                 variant={"default"}
-                className="max-sm:w-full h-16"
+                className="max-sm:w-full h-12"
               >
                 <HeartIcon className="w-4 h-4 mr-1" />
                 Liked Recipes
@@ -38,7 +38,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/recipes/add"}
                 variant={"accent"}
-                className="max-sm:w-full h-16"
+                className="max-sm:w-full h-12"
               >
                 <FaPlus className="mr-1" />
                 Add Recipe
@@ -52,13 +52,13 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/auth"}
                 variant={"outline"}
-                className="max-sm:w-full h-16"
+                className="max-sm:w-full h-12"
               >
                 Sign In
               </LinkButton>
             </SheetClose>
             <SheetClose asChild>
-              <LinkButton href={"/auth"} className="max-sm:w-full h-16">
+              <LinkButton href={"/auth"} className="max-sm:w-full h-12">
                 Sign Up
               </LinkButton>
             </SheetClose>

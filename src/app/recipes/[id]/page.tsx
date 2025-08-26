@@ -45,7 +45,7 @@ export const ViewRecipePage = async ({
 
   return (
     <PageContentSidebarLayout className="max-sm:flex-col max-sm:gap-4">
-      <PageContentLayout className="sm:max-w-80">
+      <PageContentLayout className="md:max-w-80">
         <SideBarRecipeSummary
           recipe={recipe as RecipeFullInfoDto}
           initialNote={recipeNote?.note}

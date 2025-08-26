@@ -7,12 +7,14 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { ForbiddenError } from "@/components/organisms/errors/ForbiddenError";
 import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
 import { TextH2 } from "@/components/typography";
+import { Button } from "@/components/ui/button";
 import { isForbiddenError, isNotFoundError } from "@/lib/errors";
 import { getCircleRecipes } from "@/lib/server-actions/circles/getCircleRecipes";
 import { getCircleById } from "@/lib/server-actions/recipes/getCircleById";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { CircleFullInfoDto } from "@/types/api";
 import { redirect } from "next/navigation";
+import { FaCog } from "react-icons/fa";
 
 export const JoinedCirclePage = async ({
   params,
@@ -44,8 +46,13 @@ export const JoinedCirclePage = async ({
 
   return (
     <PageContentLayout>
-      <div className="flex flex-col gap-4 w-full">
-        <TextH2> Recipes in {circle?.name}</TextH2>
+      <div className="flex flex-col gap-4 w-full px-3">
+        <div className="flex justify-between">
+          <TextH2> Recipes in {circle?.name}</TextH2>
+          <Button>
+            <FaCog className="mr-2" /> Manage circle
+          </Button>
+        </div>
         {circleRecipes.map((circleRecipe) => (
           <RecipeListing
             key={circleRecipe.recipe.id}
