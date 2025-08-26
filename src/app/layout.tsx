@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/features/navbar/Navbar";
+import { Footer } from "@/components/features/footer/Footer";
+import { CookieConsentBanner } from "@/components/features/cookie-consent/CookieConsentBanner";
 import { PageLayout } from "@/components/layouts/PageLayout";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -30,10 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Navbar />
-        <PageLayout>{children}</PageLayout>
+        <main className="flex-1">
+          <PageLayout>{children}</PageLayout>
+        </main>
+        <Footer />
+        <CookieConsentBanner />
         <Toaster />
       </body>
     </html>
