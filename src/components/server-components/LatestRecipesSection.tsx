@@ -34,9 +34,11 @@ export const LatestRecipesSection = async () => {
           user={user}
         />
       ))}
-      <LinkButton href="/recipes" className="w-full mx-3">
-        Discover more recipes
-      </LinkButton>
+      <div className="px-3">
+        <LinkButton href="/recipes" className="w-full">
+          Discover more recipes
+        </LinkButton>
+      </div>
     </section>
   );
 };

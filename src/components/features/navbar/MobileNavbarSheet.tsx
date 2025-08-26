@@ -20,7 +20,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
           <FaBars className="w-8 h-8" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full pt-12 sm:hidden flex flex-col gap-4 items-center border-2 ">
+      <SheetContent className="w-full pt-12 sm:hidden flex flex-col gap-4 items-center border-2">
         {user && <DynamicHeaderContentMobile user={user} />}
         {user ? (
           <>

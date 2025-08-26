@@ -44,8 +44,8 @@ export const HighlightedRecipesCarousel = ({
           <Slide data={recipe} key={recipe.id} />
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="max-sm:hidden" />
+      <CarouselNext className="max-sm:hidden" />
     </Carousel>
   );
 };
