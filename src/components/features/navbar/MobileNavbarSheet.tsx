@@ -20,7 +20,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
           <FaBars className="w-8 h-8" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full pt-12 sm:hidden flex flex-col gap-4 items-center border-2">
+      <SheetContent className="w-full sm:hidden flex flex-col gap-4 items-center border-2 pt-16">
         {user && <DynamicHeaderContentMobile user={user} />}
         {user ? (
           <>
@@ -28,7 +28,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/recipes/liked"}
                 variant={"default"}
-                className="max-sm:w-full"
+                className="max-sm:w-full h-16"
               >
                 <HeartIcon className="w-4 h-4 mr-1" />
                 Liked Recipes
@@ -38,7 +38,7 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/recipes/add"}
                 variant={"accent"}
-                className="max-sm:w-full"
+                className="max-sm:w-full h-16"
               >
                 <FaPlus className="mr-1" />
                 Add Recipe
@@ -52,13 +52,13 @@ export const MobileNavbarSheet = ({ user }: { user?: User }) => {
               <LinkButton
                 href={"/auth"}
                 variant={"outline"}
-                className="max-sm:w-full"
+                className="max-sm:w-full h-16"
               >
                 Sign In
               </LinkButton>
             </SheetClose>
             <SheetClose asChild>
-              <LinkButton href={"/auth"} className="max-sm:w-full">
+              <LinkButton href={"/auth"} className="max-sm:w-full h-16">
                 Sign Up
               </LinkButton>
             </SheetClose>
