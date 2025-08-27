@@ -18,8 +18,13 @@ import {
   TextSmall,
 } from "@/components/typography";
 
-export default async function UserPage({ params }: { params: { id: string } }) {
-  const user = await getUserPublicInfo(params.id);
+export default async function UserPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const resolvedParams = await params;
+  const user = await getUserPublicInfo(resolvedParams.id);
 
   if (!user) {
     return <UserNotFound />;
@@ -27,10 +32,10 @@ export default async function UserPage({ params }: { params: { id: string } }) {
 
   const currentUser = await getCurrentUser();
 
-  const recipes = await getUserRecipes({}, params.id);
+  const recipes = await getUserRecipes({}, resolvedParams.id);
   const likedRecipes = await getLikedRecipes(currentUser?.id || "");
 
-  const userOwnedCircles = await getUserOwnedCirclesById(params.id);
+  const userOwnedCircles = await getUserOwnedCirclesById(resolvedParams.id);
   const currentUserJoinedCircles = await getUserJoinedCircles();
 
   const joinedUserCirclesCount = currentUserJoinedCircles.filter((circle) =>

@@ -15,12 +15,13 @@ import { User, Visibility } from "@prisma/client";
 export const ViewRecipePage = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const recipe = await getRecipeById(params.id);
+  const resolvedParams = await params;
+  const recipe = await getRecipeById(resolvedParams.id);
   const user = await getCurrentUser();
   const userCircles = await getUserJoinedCircles();
-  const recipeNote = await getRecipeNote(params.id);
+  const recipeNote = await getRecipeNote(resolvedParams.id);
 
   if (!recipe) {
     return <NotFoundError />;

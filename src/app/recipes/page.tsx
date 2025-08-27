@@ -10,11 +10,12 @@ import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 export default async function RecipeSearchPage({
   searchParams,
 }: {
-  searchParams: Partial<RecipeSearchParams>;
+  searchParams: Promise<Partial<RecipeSearchParams>>;
 }) {
+  const resolvedSearchParams = await searchParams;
   const blacklistedIngredients = await getBlacklistedIngredients();
   const recipes = await getPublicRecipes({
-    ...searchParams,
+    ...resolvedSearchParams,
     blacklistedIngredientsIds: blacklistedIngredients?.map(
       (ingredient) => ingredient.id
     ),
@@ -23,7 +24,7 @@ export default async function RecipeSearchPage({
   const user = (await getCurrentUser()) ?? undefined;
   const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
-    <RecipeSearchForm formData={searchParams} ingredients={ingredients}>
+    <RecipeSearchForm formData={resolvedSearchParams} ingredients={ingredients}>
       {recipes.map((recipe) => (
         <RecipeListing
           key={recipe.id}
