@@ -349,10 +349,7 @@ export const AddRecipeForm = ({
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <QuillEditor
-                  value={form.getValues("content")}
-                  onChange={(value) => form.setValue("content", value)}
-                />
+                <QuillEditor value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
