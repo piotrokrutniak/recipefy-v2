@@ -6,8 +6,9 @@ const prisma = DBClient.getInstance().prisma;
 
 export const PUT = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
+  const { id } = await params;
   const user = await getCurrentUser();
 
   if (!user) {
@@ -15,14 +16,14 @@ export const PUT = async (
   }
 
   const likedRecipe = await prisma.userRecipeFavorite.findFirst({
-    where: { userId: user.id, recipeId: params.id },
+    where: { userId: user.id, recipeId: id },
   });
 
   if (!likedRecipe) {
     await prisma.userRecipeFavorite.create({
       data: {
         userId: user.id,
-        recipeId: params.id,
+        recipeId: id,
       },
     });
   } else {

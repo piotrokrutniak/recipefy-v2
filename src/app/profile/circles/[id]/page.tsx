@@ -10,9 +10,10 @@ import { redirect } from "next/navigation";
 export const CircleDetailsPage = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const circle = await getCircleById(params.id);
+  const { id } = await params;
+  const circle = await getCircleById(id);
 
   const currentUser = await getCurrentUser();
 
@@ -37,7 +38,7 @@ export const CircleDetailsPage = async ({
       <PageContentLayout className="py-8">
         <CircleMembers members={circle?.circleMembers || []} />
         <CircleInvites
-          circleId={params.id}
+          circleId={id}
           circleInvites={circle?.circleInvite || []}
         />
       </PageContentLayout>

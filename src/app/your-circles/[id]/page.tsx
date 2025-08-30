@@ -19,7 +19,7 @@ import { FaCog } from "react-icons/fa";
 export const JoinedCirclePage = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
   const user = await getCurrentUser();
 
@@ -27,22 +27,24 @@ export const JoinedCirclePage = async ({
     return redirect("/auth");
   }
 
+  const { id } = await params;
+
   let circle: CircleFullInfoDto | null = null;
 
   try {
-    circle = await getCircleById(params.id);
+    circle = await getCircleById(id);
   } catch (error) {
     if (isNotFoundError(error)) {
       return <NotFoundError />;
     }
     if (isForbiddenError(error)) {
-      return <ForbiddenError />;
+      return <NotFoundError />;
     }
     throw error;
   }
 
   const likedRecipes = await getLikedRecipes(user?.id);
-  const circleRecipes = await getCircleRecipes(params.id);
+  const circleRecipes = await getCircleRecipes(id);
 
   return (
     <PageContentLayout>

@@ -11,18 +11,20 @@ const prisma = DBClient.getInstance().prisma;
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
-  const recipe = await getRecipeById(params.id);
+  const { id } = await params;
+  const recipe = await getRecipeById(id);
 
   return NextResponse.json(recipe);
 };
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
+    const { id } = await params;
     const user = await getCurrentUser();
 
     if (!user) {
@@ -31,7 +33,7 @@ export const DELETE = async (
 
     // Check if recipe exists and belongs to user
     const recipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!recipe) {
@@ -47,7 +49,7 @@ export const DELETE = async (
 
     // Delete the recipe
     await prisma.recipe.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(
@@ -72,9 +74,10 @@ export const DELETE = async (
  */
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
+    const { id } = await params;
     const body = await req.json();
 
     // Validate the request body
@@ -88,7 +91,7 @@ export const PATCH = async (
 
     // First check if the recipe exists and belongs to the user
     const existingRecipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingRecipe) {
@@ -102,7 +105,7 @@ export const PATCH = async (
       );
     }
 
-    const recipe = await updateRecipeById(validatedData, user.id);
+    const recipe = await updateRecipeById({ ...validatedData, id }, user.id);
 
     return NextResponse.json(recipe);
   } catch (error) {

@@ -5,10 +5,11 @@ const prisma = DBClient.getInstance().prisma;
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
+  const { id } = await params;
   const recipe = await prisma.recipe.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       author: true,
       recipeIngredients: {

@@ -6,12 +6,13 @@ const prisma = DBClient.getInstance().prisma;
 
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
+  const { id } = await params;
   const { note } = await req.json();
   const user = await getCurrentUser();
   const recipe = await prisma.recipe.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!user) {
@@ -26,7 +27,7 @@ export const PATCH = async (
     where: {
       userId_recipeId: {
         userId: user.id,
-        recipeId: params.id,
+        recipeId: id,
       },
     },
     update: {
@@ -34,7 +35,7 @@ export const PATCH = async (
     },
     create: {
       note: note,
-      recipeId: params.id,
+      recipeId: id,
       userId: user.id,
     },
   });
@@ -56,15 +57,16 @@ export const getRecipeNote = async (recipeId: string) => {
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
+  const { id } = await params;
   const user = await getCurrentUser();
 
   if (!user) {
     return NextResponse.json({ error: "User not found" }, { status: 401 });
   }
 
-  const note = await getRecipeNote(params.id);
+  const note = await getRecipeNote(id);
 
   if (!note) {
     return NextResponse.json({ error: "Note not found" }, { status: 404 });
