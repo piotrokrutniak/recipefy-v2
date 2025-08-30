@@ -61,7 +61,7 @@ export const DynamicNavbarContentMobile = ({ user }: { user?: User }) => {
 export const DynamicHeaderContentMobile = ({ user }: { user: User }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
-      <UserHeader user={user} />
+      <UserHeader user={user} withSheetClose />
       <Separator className="my-2" />
       <SheetClose asChild>
         <LinkButton

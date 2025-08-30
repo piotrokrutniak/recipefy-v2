@@ -22,7 +22,8 @@ export const LatestRecipesSection = async () => {
     <section className="flex flex-col sm:px-5 py-4 gap-4 w-full">
       <div className="flex justify-between gap-2 px-3">
         <TextH3 className="">Recently Added Recipes</TextH3>
-        <RecipeTypeSelector />
+        {/* TODO: Restore after incorporating filtering */}
+        {/* <RecipeTypeSelector /> */}
       </div>
       {recipes.map((recipe) => (
         <RecipeListing

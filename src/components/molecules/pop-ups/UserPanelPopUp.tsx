@@ -15,6 +15,7 @@ import { FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import { User } from "next-auth";
+import { SheetClose } from "@/components/ui/sheet";
 
 export const UserPanelPopUp = ({ user }: { user: User }) => {
   return (
@@ -48,7 +49,13 @@ export const UserPanelPopUp = ({ user }: { user: User }) => {
   );
 };
 
-export const UserHeader = ({ user }: { user: User }) => {
+export const UserHeader = ({
+  user,
+  withSheetClose,
+}: {
+  user: User;
+  withSheetClose?: boolean;
+}) => {
   return (
     <div className="flex items-start gap-2">
       <Avatar>
@@ -57,13 +64,26 @@ export const UserHeader = ({ user }: { user: User }) => {
       <div className="flex flex-col items-start">
         <TextLarge>{user.name}</TextLarge>
         <TextSmall>{user.email}</TextSmall>
-        <LinkButton
-          href={"/profile"}
-          variant={"link"}
-          className="px-0 text-indigo-500"
-        >
-          Manage your account
-        </LinkButton>
+        {withSheetClose && (
+          <SheetClose asChild>
+            <LinkButton
+              href={"/profile"}
+              variant={"link"}
+              className="px-0 text-indigo-500"
+            >
+              Manage your account
+            </LinkButton>
+          </SheetClose>
+        )}
+        {!withSheetClose && (
+          <LinkButton
+            href={"/profile"}
+            variant={"link"}
+            className="px-0 text-indigo-500"
+          >
+            Manage your account
+          </LinkButton>
+        )}
       </div>
     </div>
   );

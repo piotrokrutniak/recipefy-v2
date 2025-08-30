@@ -80,6 +80,7 @@ export const RteTextInput = ({
       {/* Toolbar */}
       <div className="border border-gray-300 rounded-t-md bg-gray-50 p-2 flex flex-wrap gap-1">
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
           className={`p-2 rounded hover:bg-gray-200 disabled:opacity-50 ${
@@ -90,6 +91,7 @@ export const RteTextInput = ({
           <strong>B</strong>
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
           className={`p-2 rounded hover:bg-gray-200 disabled:opacity-50 ${
@@ -100,6 +102,7 @@ export const RteTextInput = ({
           <em>I</em>
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive("underline") ? "bg-gray-200" : ""
@@ -109,6 +112,7 @@ export const RteTextInput = ({
           <u>U</u>
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
           className={`p-2 rounded hover:bg-gray-200 disabled:opacity-50 ${
@@ -122,6 +126,7 @@ export const RteTextInput = ({
         <div className="w-px h-6 bg-gray-300 mx-1"></div>
 
         <button
+          type="button"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
@@ -133,6 +138,7 @@ export const RteTextInput = ({
           H1
         </button>
         <button
+          type="button"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
@@ -144,6 +150,7 @@ export const RteTextInput = ({
           H2
         </button>
         <button
+          type="button"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
@@ -158,6 +165,7 @@ export const RteTextInput = ({
         <div className="w-px h-6 bg-gray-300 mx-1"></div>
 
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive("bulletList") ? "bg-gray-200" : ""
@@ -167,6 +175,7 @@ export const RteTextInput = ({
           •
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive("orderedList") ? "bg-gray-200" : ""
@@ -179,6 +188,7 @@ export const RteTextInput = ({
         <div className="w-px h-6 bg-gray-300 mx-1"></div>
 
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive({ textAlign: "left" }) ? "bg-gray-200" : ""
@@ -188,6 +198,7 @@ export const RteTextInput = ({
           ←
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive({ textAlign: "center" }) ? "bg-gray-200" : ""
@@ -197,6 +208,7 @@ export const RteTextInput = ({
           ↔
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
           className={`p-2 rounded hover:bg-gray-200 ${
             editor.isActive({ textAlign: "right" }) ? "bg-gray-200" : ""
@@ -209,6 +221,7 @@ export const RteTextInput = ({
         <div className="w-px h-6 bg-gray-300 mx-1"></div>
 
         <button
+          type="button"
           onClick={() => {
             const url = window.prompt("Enter URL");
             if (url) {
@@ -224,6 +237,7 @@ export const RteTextInput = ({
         </button>
 
         <button
+          type="button"
           onClick={() => editor.chain().focus().unsetLink().run()}
           disabled={!editor.isActive("link")}
           className="p-2 rounded hover:bg-gray-200 disabled:opacity-50"
