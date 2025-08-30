@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useMemo, useCallback, useState } from "react";
-import { QuillEditor } from "@/components/molecules/markup/QuillEditor";
+import { RteTextInput } from "@/components/molecules/markup/RteTextInput";
 import { RecipeIngredientsInfoInput } from "@/components/molecules/inputs/RecipeIngredientsInfoInput";
 import { useMutationEditRecipe } from "@/hooks/api/recipes/mutations/useMutationEditRecipe";
 import { RecipeFullInfoDto } from "@/types/api";
@@ -366,7 +366,11 @@ export const EditRecipeForm = ({
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <QuillEditor value={field.value} onChange={field.onChange} />
+                <RteTextInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter the recipe content here..."
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

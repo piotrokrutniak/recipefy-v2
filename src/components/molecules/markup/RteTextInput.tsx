@@ -7,12 +7,17 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { useState, useEffect } from "react";
 
-type QuillEditorProps = {
+type RteTextInputProps = {
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 };
 
-export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
+export const RteTextInput = ({
+  value,
+  onChange,
+  placeholder = "Enter content here...",
+}: RteTextInputProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -238,7 +243,7 @@ export const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
         {/* Placeholder */}
         {!editor.getText() && (
           <div className="absolute top-0 left-0 p-4 text-gray-400 pointer-events-none">
-            Enter the recipe content here...
+            {placeholder}
           </div>
         )}
       </div>
