@@ -9,6 +9,72 @@ import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.sc
 
 const prisma = DBClient.getInstance().prisma;
 
+/**
+ * @swagger
+ * /api/recipes:
+ *   post:
+ *     tags:
+ *       - Recipes
+ *     summary: Create a new recipe
+ *     description: Creates a new recipe for the authenticated user
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Recipe title
+ *               description:
+ *                 type: string
+ *                 description: Recipe description
+ *               cookTime:
+ *                 type: number
+ *                 description: Cooking time in minutes
+ *               prepTime:
+ *                 type: number
+ *                 description: Preparation time in minutes
+ *               servings:
+ *                 type: number
+ *                 description: Number of servings
+ *               difficulty:
+ *                 type: string
+ *                 enum: [easy, medium, hard]
+ *               isPublic:
+ *                 type: boolean
+ *                 description: Whether the recipe is public
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *               instructions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       201:
+ *         description: Recipe created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       400:
+ *         description: Invalid recipe data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
@@ -56,6 +122,79 @@ export type RecipeSearchParams = {
   blacklistedIngredientsIds: string[];
 };
 
+/**
+ * @swagger
+ * /api/recipes:
+ *   get:
+ *     tags:
+ *       - Recipes
+ *     summary: Search and filter recipes
+ *     description: Get a list of recipes with optional filters
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: Number of recipes to skip (pagination)
+ *       - in: query
+ *         name: take
+ *         schema:
+ *           type: integer
+ *           default: 25
+ *         description: Number of recipes to return
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: Search query for recipe title/description
+ *       - in: query
+ *         name: cookTime
+ *         schema:
+ *           type: integer
+ *         description: Maximum cooking time in minutes
+ *       - in: query
+ *         name: prepTime
+ *         schema:
+ *           type: integer
+ *         description: Maximum preparation time in minutes
+ *       - in: query
+ *         name: calories
+ *         schema:
+ *           type: integer
+ *         description: Maximum calories
+ *       - in: query
+ *         name: ingredients
+ *         schema:
+ *           type: string
+ *         description: Filter by ingredients
+ *       - in: query
+ *         name: vegan
+ *         schema:
+ *           type: boolean
+ *         description: Filter for vegan recipes
+ *       - in: query
+ *         name: vegetarian
+ *         schema:
+ *           type: boolean
+ *         description: Filter for vegetarian recipes
+ *       - in: query
+ *         name: includeBlacklistedRecipes
+ *         schema:
+ *           type: boolean
+ *         description: Include recipes with blacklisted ingredients
+ *     responses:
+ *       200:
+ *         description: List of recipes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Recipe'
+ *       500:
+ *         description: Server error
+ */
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
 

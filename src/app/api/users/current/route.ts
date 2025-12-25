@@ -21,6 +21,26 @@ export const getCurrentUser = async () => {
   return user;
 };
 
+/**
+ * @swagger
+ * /api/users/current:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get current user
+ *     description: Retrieve the currently authenticated user's details
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Current user details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ */
 export const GET = async () => {
   const user = await getCurrentUser();
 
@@ -31,6 +51,43 @@ export const GET = async () => {
   return NextResponse.json(user, { status: 200 });
 };
 
+/**
+ * @swagger
+ * /api/users/current:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Update current user
+ *     description: Update the currently authenticated user's profile
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               bio:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ */
 export const PUT = async (req: NextRequest) => {
   const user = await getCurrentUser();
 

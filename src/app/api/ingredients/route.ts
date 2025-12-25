@@ -20,6 +20,49 @@ export const getIngredients = async (
   return ingredients;
 };
 
+/**
+ * @swagger
+ * /api/ingredients:
+ *   get:
+ *     tags:
+ *       - Ingredients
+ *     summary: Get ingredients
+ *     description: Retrieve a list of ingredients with optional search and pagination
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: Number of ingredients to skip (pagination)
+ *       - in: query
+ *         name: take
+ *         schema:
+ *           type: integer
+ *           default: 25
+ *         description: Number of ingredients to return
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: Search query for ingredient name
+ *     responses:
+ *       200:
+ *         description: List of ingredients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   category:
+ *                     type: string
+ */
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
   const skip = parseInt(searchParams.get("skip") || "0");

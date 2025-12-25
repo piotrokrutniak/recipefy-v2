@@ -9,6 +9,31 @@ import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.sc
 
 const prisma = DBClient.getInstance().prisma;
 
+/**
+ * @swagger
+ * /api/recipes/{id}:
+ *   get:
+ *     tags:
+ *       - Recipes
+ *     summary: Get recipe by ID
+ *     description: Retrieve a single recipe by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     responses:
+ *       200:
+ *         description: Recipe details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       404:
+ *         description: Recipe not found
+ */
 export const GET = async (
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -18,6 +43,35 @@ export const GET = async (
   return NextResponse.json(recipe);
 };
 
+/**
+ * @swagger
+ * /api/recipes/{id}:
+ *   delete:
+ *     tags:
+ *       - Recipes
+ *     summary: Delete a recipe
+ *     description: Delete a recipe by ID (must be owner)
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     responses:
+ *       200:
+ *         description: Recipe deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Not authorized to delete this recipe
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Server error
+ */
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -69,6 +123,71 @@ export const DELETE = async (
  * - The thumbnail previously uploaded should be deleted if the recipe thumbnail is updated
  * - The markup should be scanned for images and then delete them if they are not in the updated recipe
  * - The markup should be scanned for base64 images, upload them to cloudinary and replace base64 with the new url
+ */
+/**
+ * @swagger
+ * /api/recipes/{id}:
+ *   patch:
+ *     tags:
+ *       - Recipes
+ *     summary: Update a recipe
+ *     description: Update a recipe by ID (must be owner)
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               cookTime:
+ *                 type: number
+ *               prepTime:
+ *                 type: number
+ *               servings:
+ *                 type: number
+ *               difficulty:
+ *                 type: string
+ *                 enum: [easy, medium, hard]
+ *               isPublic:
+ *                 type: boolean
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *               instructions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Recipe updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       400:
+ *         description: Invalid recipe data
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Not authorized to edit this recipe
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Server error
  */
 export const PATCH = async (
   req: NextRequest,
