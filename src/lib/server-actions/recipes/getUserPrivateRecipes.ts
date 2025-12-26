@@ -19,11 +19,21 @@ export const getUserPrivateRecipes = async (
       recipeIngredients: true,
     },
     where: {
-      title: params.query
-        ? {
-            contains: params.query,
-            mode: "insensitive",
-          }
+      OR: params.query
+        ? [
+            {
+              title: {
+                contains: params.query,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: params.query,
+                mode: "insensitive",
+              },
+            },
+          ]
         : undefined,
       cookTime: params.cookTime
         ? {
