@@ -34,6 +34,16 @@ const prisma = DBClient.getInstance().prisma;
  *               description:
  *                 type: string
  *                 description: Recipe description
+ *               content:
+ *                 type: string
+ *                 description: Recipe markup/HTML content with instructions
+ *               thumbnailUrl:
+ *                 type: string
+ *                 description: URL to recipe thumbnail image
+ *               visibility:
+ *                 type: string
+ *                 enum: [PUBLIC, PRIVATE, CIRCLE]
+ *                 description: Recipe visibility setting
  *               cookTime:
  *                 type: number
  *                 description: Cooking time in minutes
@@ -43,20 +53,36 @@ const prisma = DBClient.getInstance().prisma;
  *               servings:
  *                 type: number
  *                 description: Number of servings
- *               difficulty:
- *                 type: string
- *                 enum: [easy, medium, hard]
- *               isPublic:
+ *               calories:
+ *                 type: number
+ *                 description: Calories per serving
+ *               vegan:
  *                 type: boolean
- *                 description: Whether the recipe is public
- *               ingredients:
+ *                 description: Whether the recipe is vegan
+ *               vegetarian:
+ *                 type: boolean
+ *                 description: Whether the recipe is vegetarian
+ *               verifiedIngredients:
+ *                 type: boolean
+ *                 description: Whether ingredients are verified
+ *               shouldPublish:
+ *                 type: boolean
+ *                 description: Whether to publish the recipe
+ *               publishAt:
+ *                 type: string
+ *                 format: date-time
+ *                 description: When to publish the recipe
+ *               recipeIngredients:
  *                 type: array
  *                 items:
  *                   type: object
- *               instructions:
- *                 type: array
- *                 items:
- *                   type: string
+ *                   properties:
+ *                     ingredientId:
+ *                       type: string
+ *                     quantity:
+ *                       type: number
+ *                     unit:
+ *                       type: string
  *     responses:
  *       201:
  *         description: Recipe created successfully

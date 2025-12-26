@@ -152,25 +152,44 @@ export const DELETE = async (
  *                 type: string
  *               description:
  *                 type: string
+ *               content:
+ *                 type: string
+ *                 description: Recipe markup/HTML content with instructions
+ *               thumbnailUrl:
+ *                 type: string
+ *               visibility:
+ *                 type: string
+ *                 enum: [PUBLIC, PRIVATE, CIRCLE]
  *               cookTime:
  *                 type: number
  *               prepTime:
  *                 type: number
  *               servings:
  *                 type: number
- *               difficulty:
- *                 type: string
- *                 enum: [easy, medium, hard]
- *               isPublic:
+ *               calories:
+ *                 type: number
+ *               vegan:
  *                 type: boolean
- *               ingredients:
+ *               vegetarian:
+ *                 type: boolean
+ *               verifiedIngredients:
+ *                 type: boolean
+ *               shouldPublish:
+ *                 type: boolean
+ *               publishAt:
+ *                 type: string
+ *                 format: date-time
+ *               recipeIngredients:
  *                 type: array
  *                 items:
  *                   type: object
- *               instructions:
- *                 type: array
- *                 items:
- *                   type: string
+ *                   properties:
+ *                     ingredientId:
+ *                       type: string
+ *                     quantity:
+ *                       type: number
+ *                     unit:
+ *                       type: string
  *     responses:
  *       200:
  *         description: Recipe updated successfully
