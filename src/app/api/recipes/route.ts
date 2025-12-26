@@ -4,7 +4,7 @@ import { z } from "zod";
 import { getCurrentUser } from "../users/current/route";
 import { UnauthorizedNextResponse } from "@/lib/api";
 import { createRecipe } from "@/lib/server-actions/recipes/createRecipe";
-import { getUserPrivateRecipes } from "@/lib/server-actions/recipes/getUserPrivateRecipes";
+import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 import { createRecipeSchema } from "@/lib/server-actions/recipes/createRecipe.schema";
 
 const prisma = DBClient.getInstance().prisma;
@@ -137,15 +137,15 @@ export const POST = async (req: NextRequest) => {
 export type RecipeSearchParams = {
   skip: number;
   take: number;
-  query: string;
-  cookTime: number;
-  prepTime: number;
-  calories: number;
+  query?: string;
+  cookTime?: number;
+  prepTime?: number;
+  calories?: number;
   ingredients?: string;
-  vegan: boolean;
-  vegetarian: boolean;
-  includeBlacklistedRecipes: boolean;
-  blacklistedIngredientsIds: string[];
+  vegan?: boolean;
+  vegetarian?: boolean;
+  includeBlacklistedRecipes?: boolean;
+  blacklistedIngredientsIds?: string[];
 };
 
 /**
@@ -154,8 +154,8 @@ export type RecipeSearchParams = {
  *   get:
  *     tags:
  *       - Recipes
- *     summary: Search and filter recipes
- *     description: Get a list of recipes with optional filters
+ *     summary: Get public recipes
+ *     description: Get a list of public recipes with optional filters (does not require authentication)
  *     parameters:
  *       - in: query
  *         name: skip
@@ -239,25 +239,30 @@ export const GET = async (req: NextRequest) => {
     (ingredient) => ingredient.ingredientId
   );
 
-  const skip = parseInt(searchParams.get("skip") || "0");
-  const take = parseInt(searchParams.get("take") || "25");
+  const skipParam = searchParams.get("skip");
+  const takeParam = searchParams.get("take");
+  const cookTimeParam = searchParams.get("cookTime");
+  const prepTimeParam = searchParams.get("prepTime");
+  const caloriesParam = searchParams.get("calories");
+  const veganParam = searchParams.get("vegan");
+  const vegetarianParam = searchParams.get("vegetarian");
 
   const params: RecipeSearchParams = {
-    skip,
-    take,
+    skip: skipParam ? parseInt(skipParam) : 0,
+    take: takeParam ? parseInt(takeParam) : 25,
     query: searchParams.get("query") || "",
-    cookTime: parseInt(searchParams.get("cookTime") || "0"),
-    prepTime: parseInt(searchParams.get("prepTime") || "0"),
-    calories: parseInt(searchParams.get("calories") || "0"),
+    cookTime: cookTimeParam ? parseInt(cookTimeParam) : undefined,
+    prepTime: prepTimeParam ? parseInt(prepTimeParam) : undefined,
+    calories: caloriesParam ? parseInt(caloriesParam) : undefined,
     ingredients: searchParams.get("ingredients") || undefined,
-    vegan: searchParams.get("vegan") === "true",
-    vegetarian: searchParams.get("vegetarian") === "true",
+    vegan: veganParam === "true" ? true : veganParam === "false" ? false : undefined,
+    vegetarian: vegetarianParam === "true" ? true : vegetarianParam === "false" ? false : undefined,
     includeBlacklistedRecipes:
       searchParams.get("includeBlacklistedRecipes") === "true",
     blacklistedIngredientsIds: blacklistedIngredientsIds,
   };
 
-  const recipes = await getUserPrivateRecipes(params);
+  const recipes = await getPublicRecipes(params);
 
   return NextResponse.json(recipes);
 };
