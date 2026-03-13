@@ -7,7 +7,7 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { ForbiddenError } from "@/components/organisms/errors/ForbiddenError";
 import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
-import { getRecipeById } from "@/lib/server-actions/recipes/getRecipeById";
+import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
@@ -15,12 +15,12 @@ import { User, Visibility } from "@prisma/client";
 export const ViewRecipePage = async ({
   params,
 }: {
-  params: { id: string };
+  params: { slug: string };
 }) => {
-  const recipe = await getRecipeById(params.id);
+  const recipe = await getRecipeBySlug(params.slug);
   const user = await getCurrentUser();
   const userCircles = await getUserJoinedCircles();
-  const recipeNote = await getRecipeNote(params.id);
+  const recipeNote = recipe ? await getRecipeNote(recipe.id) : null;
 
   if (!recipe) {
     return <NotFoundError />;

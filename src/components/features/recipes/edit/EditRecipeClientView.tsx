@@ -31,13 +31,13 @@ export const ClientContent = ({
       router.refresh();
 
       setTimeout(() => {
-        router.push(`/recipes/${recipe.id}`);
+        router.push(`/recipes/${data.slug ?? data.id}`);
       }, 1000);
     },
     // These dependencies are not needed for the callback to be memoized
     // Prevents unnecessary re-renders
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [recipe.id]
+    []
   );
 
   return (

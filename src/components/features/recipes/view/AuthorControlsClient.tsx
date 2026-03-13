@@ -57,7 +57,7 @@ export const AuthorControls = ({
       <RecipeAvailabilitySelect recipe={recipe} />
       <div className="flex flex-row gap-2 items-center">
         <LinkButton
-          href={`/recipes/${recipe.id}/edit`}
+          href={`/recipes/${recipe.slug ?? recipe.id}/edit`}
           variant="default"
           size="default"
           className="w-full gap-2"

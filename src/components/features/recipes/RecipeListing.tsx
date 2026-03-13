@@ -25,7 +25,7 @@ export const RecipeListing = async ({
 
   return (
     <div className="p-3 gap-3 flex w-full max-sm:flex-col">
-      <Link href={`/recipes/${recipe.id}`}>
+      <Link href={`/recipes/${recipe.slug ?? recipe.id}`}>
         <div className="relative sm:w-48 aspect-square flex-shrink-0 bg-slate-200 rounded-lg overflow-hidden">
           {recipe.thumbnailUrl && (
             <Image
@@ -40,7 +40,7 @@ export const RecipeListing = async ({
       </Link>
       <div className="p-2 w-full">
         <div className="flex justify-between items-center">
-          <Link href={`/recipes/${recipe.id}`}>
+          <Link href={`/recipes/${recipe.slug ?? recipe.id}`}>
             <TextLarge className="line-clamp-2 sm:line-clamp-1">
               {recipe.title}
             </TextLarge>

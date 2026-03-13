@@ -2,20 +2,25 @@ import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;
 
-export const getRecipeById = async (id: string) => {
-  const recipe = await prisma.recipe.findUnique({
-    where: { id },
+const recipeInclude = {
+  recipeIngredients: {
     include: {
-      recipeIngredients: {
-        include: {
-          ingredient: true,
-          userIngredient: true,
-        },
-      },
-      author: true,
-      circleRecipes: true,
+      ingredient: true,
+      userIngredient: true,
     },
-  });
+  },
+  author: true,
+  circleRecipes: true,
+};
 
-  return recipe;
+export const getRecipeById = async (id: string) => {
+  return prisma.recipe.findUnique({ where: { id }, include: recipeInclude });
+};
+
+// Accepts a slug, falls back to id so old bookmarked URLs keep working
+export const getRecipeBySlug = async (slug: string) => {
+  return prisma.recipe.findFirst({
+    where: { OR: [{ slug }, { id: slug }] },
+    include: recipeInclude,
+  });
 };

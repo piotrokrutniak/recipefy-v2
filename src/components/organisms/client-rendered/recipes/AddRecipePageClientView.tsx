@@ -25,7 +25,7 @@ export const AddRecipePageClientView = ({
       });
 
       setTimeout(() => {
-        router.push(`/recipes/${data.id}`);
+        router.push(`/recipes/${data.slug ?? data.id}`);
       }, 1000);
     },
     [toast, router]
