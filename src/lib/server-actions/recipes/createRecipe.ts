@@ -8,6 +8,7 @@ import DBClient from "@/persistence/DBClient";
 import { z } from "zod";
 import { uploadMarkupAssets } from "./uploadMarkupAssets";
 import { createRecipeSchema } from "./createRecipe.schema";
+import { generateSlug } from "./generateSlug";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -15,6 +16,7 @@ export const createRecipe = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
+  const slug = await generateSlug(data.title);
   let thumbnailUrl = data.thumbnailUrl;
 
   if (data.thumbnailBase64) {
@@ -30,6 +32,7 @@ export const createRecipe = async (
 
   const recipe = await prisma.recipe.create({
     data: {
+      slug,
       title: data.title,
       thumbnailUrl,
       description: data.description,

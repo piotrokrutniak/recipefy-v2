@@ -6,6 +6,7 @@ import {
 } from "@/lib/cloudinary";
 import { uploadMarkupAssets } from "@/lib/server-actions/recipes/uploadMarkupAssets";
 import { createRecipeSchema } from "./createRecipe.schema";
+import { generateSlug } from "./generateSlug";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -13,6 +14,7 @@ export const updateRecipeById = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
+  const slug = await generateSlug(data.title, data.id);
   let thumbnailUrl = data.thumbnailUrl;
 
   if (data.thumbnailBase64 && data.thumbnailBase64 !== data.thumbnailUrl) {
@@ -29,6 +31,7 @@ export const updateRecipeById = async (
   const recipe = await prisma.recipe.update({
     where: { id: data.id },
     data: {
+      slug,
       title: data.title,
       description: data.description,
       thumbnailUrl,

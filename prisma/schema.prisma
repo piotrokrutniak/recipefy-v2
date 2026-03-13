@@ -164,6 +164,7 @@ model RecipeIngredient {
 
 model Recipe {
   id        String   @id @default(cuid())
+  slug      String?  @unique
   title     String
   description String @default("")
   content   String @default("")
