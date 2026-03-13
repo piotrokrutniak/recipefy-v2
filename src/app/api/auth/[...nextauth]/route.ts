@@ -3,18 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import DBClient from "@/persistence/DBClient";
 
-// let prisma;
-// // https://github.com/prisma/prisma/issues/1983
-// if (process.env.NODE_ENV === "production") {
-//   prisma = new PrismaClient();
-// } else {
-//   if (!global.prisma) {
-//     global.prisma = new PrismaClient();
-//   }
-
-//   prisma = global.prisma;
-// }
-
 // https://github.com/prisma/prisma/issues/1983#issuecomment-686742774
 const prisma = DBClient.getInstance().prisma;
 
@@ -28,7 +16,21 @@ export const authOptions: AuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "database",
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.userId = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.userId as string;
+      }
+      return session;
+    },
   },
 };
 

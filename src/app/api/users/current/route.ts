@@ -4,10 +4,39 @@ import DBClient from "@/persistence/DBClient";
 import { NextRequest, NextResponse } from "next/server";
 import { UpdateUserDto } from "@/types/api";
 import { UnauthorizedNextResponse } from "@/lib/api";
+import { headers } from "next/headers";
+import { jwtVerify } from "jose";
 
 const prisma = DBClient.getInstance().prisma;
 
 export const getCurrentUser = async () => {
+  const headersList = headers();
+  const authHeader = headersList.get("authorization");
+
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.slice(7);
+    try {
+      const secret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET!);
+      const { payload } = await jwtVerify(token, secret);
+
+      if (payload.type !== "mobile" || !payload.jti || !payload.sub) {
+        return null;
+      }
+
+      const mobileToken = await prisma.mobileToken.findUnique({
+        where: { jti: payload.jti },
+      });
+
+      if (!mobileToken || mobileToken.revokedAt || mobileToken.expiresAt < new Date()) {
+        return null;
+      }
+
+      return prisma.user.findUnique({ where: { id: payload.sub } });
+    } catch {
+      return null;
+    }
+  }
+
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.email) {

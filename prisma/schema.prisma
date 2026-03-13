@@ -34,10 +34,23 @@ model User {
 
   session Session[]
 
+  mobileTokens MobileToken[]
+
   receivedInvites CircleInvite[] @relation("invitee")
   sentInvites CircleInvite[] @relation("inviting")
 
   CircleMember CircleMember[]
+}
+
+model MobileToken {
+  id        String    @id @default(cuid())
+  jti       String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
 }
 
 model UserRecipePreferences {
