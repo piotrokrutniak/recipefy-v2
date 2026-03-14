@@ -1,13 +1,12 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { VariantProps } from "class-variance-authority";
-import Link, { LinkProps } from "next/link";
-import { forwardRef } from "react";
+import { Link } from "@/i18n/navigation";
+import { forwardRef, type ComponentProps } from "react";
 
 interface LinkButtonProps
-  extends LinkProps,
+  extends ComponentProps<typeof Link>,
     VariantProps<typeof buttonVariants> {
-  children?: React.ReactNode;
   className?: string;
 }
 

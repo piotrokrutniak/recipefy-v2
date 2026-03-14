@@ -17,7 +17,7 @@ import { useCallback } from "react";
 import { createCircleSchema } from "@/lib/server-actions/circles/createCircle.schema";
 import { createCircle } from "@/lib/server-actions/circles/createCircle";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 export type CreateCircleFormData = z.infer<typeof createCircleSchema>;
 

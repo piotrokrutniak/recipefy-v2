@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { TextP } from "@/components/typography/TextP";
 import { TextSmall } from "@/components/typography/TextSmall";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const CookieConsentBanner = () => {
   const [showBanner, setShowBanner] = useState(false);

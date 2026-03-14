@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cancelCircleInvite } from "@/lib/server-actions/circles/cancelCircleInvite";
 import { CircleInvite } from "@prisma/client";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useCallback, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 

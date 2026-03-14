@@ -1,7 +1,8 @@
 import { Login } from "@/components/features/auth/Login";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
-import { getCurrentUser } from "../api/users/current/route";
-import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/app/api/users/current/route";
+
+import { redirect } from "@/i18n/server-navigation";
 import { TextH1 } from "@/components/typography/TextH1";
 
 export default async function LoginPage() {

@@ -5,7 +5,8 @@ import { CircleInvites } from "@/components/molecules/info-display/CircleInvites
 import { CircleMembers } from "@/components/molecules/info-display/CircleMembers";
 import { TextH2 } from "@/components/typography";
 import { getCircleById } from "@/lib/server-actions/recipes/getCircleById";
-import { redirect } from "next/navigation";
+
+import { redirect } from "@/i18n/server-navigation";
 
 export const CircleDetailsPage = async ({
   params,

@@ -17,7 +17,7 @@ import { CircleMemberFullInfoDto } from "@/types/api";
 import { useCallback, useState } from "react";
 import { removeCircleMember } from "@/lib/server-actions/circles/removeCircleMember";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 export const RemoveCircleMemberDialog = ({
   member,

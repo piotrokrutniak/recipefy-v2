@@ -5,7 +5,7 @@ import { TextH4, TextP } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { OutlineContainer } from "@/components/atoms/OutlineContainer";
 import { acceptCircleInvite } from "@/lib/server-actions/circles/acceptCircleInvite";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useCallback } from "react";
 import { rejectCircleInvite } from "@/lib/server-actions/circles/rejectCircleInvite";

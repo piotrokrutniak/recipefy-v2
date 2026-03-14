@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 import {
   Carousel,
   CarouselContent,
@@ -11,7 +12,7 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { TextH1 } from "../typography/TextH1";
 import { TextLarge } from "../typography/TextLarge";
-import Link from "next/link";
+import { LinkButton } from "../generic/LinkButton";
 import { Recipe } from "@prisma/client";
 
 const rawData = {
@@ -50,22 +51,32 @@ export const HighlightedRecipesCarousel = ({
   );
 };
 
-const Slide = ({ data }: { data: Recipe }) => (
-  <CarouselItem>
-    <div className="relative w-full h-screen-2/3 bg-black">
-      <Image
-        src={data.thumbnailUrl ?? ""}
-        alt={data.title}
-        width={1280}
-        height={720}
-        className="object-cover h-full w-full opacity-60"
-      />
-      <div className="absolute bottom-0 left-0 p-4 sm:p-12 sm:w-2/3 lg:w-1/2 flex flex-col gap-4 text-white">
-        <Link href={`/recipes/${data.slug ?? data.id}`}>
+const Slide = ({ data }: { data: Recipe }) => {
+  const t = useTranslations("recipes.carousel");
+  return (
+    <CarouselItem>
+      <div className="relative w-full h-screen-2/3 bg-black">
+        <Image
+          src={data.thumbnailUrl ?? ""}
+          alt={data.title}
+          width={1280}
+          height={720}
+          className="object-cover h-full w-full opacity-60"
+        />
+        <div className="absolute bottom-0 left-0 p-4 sm:p-12 sm:w-2/3 lg:w-1/2 flex flex-col gap-4 text-white">
           <TextH1>{data.title}</TextH1>
-        </Link>
-        <TextLarge className="flex line-clamp-4">{data.description}</TextLarge>
+          <TextLarge className="flex line-clamp-4">
+            {data.description}
+          </TextLarge>
+          <LinkButton
+            href={`/recipes/${data.slug ?? data.id}`}
+            variant="secondary"
+            className="w-fit"
+          >
+            {t("viewRecipe")}
+          </LinkButton>
+        </div>
       </div>
-    </div>
-  </CarouselItem>
-);
+    </CarouselItem>
+  );
+};

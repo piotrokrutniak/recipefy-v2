@@ -3,7 +3,8 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { CirclesSummary } from "@/components/molecules/info-display/CirclesSummary";
 import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
-import { redirect } from "next/navigation";
+
+import { redirect } from "@/i18n/server-navigation";
 
 export const CirclesPage = async () => {
   const user = await getCurrentUser();

@@ -14,7 +14,7 @@ import {
 } from "@/lib/server-actions/recipes/assignCirclesToRecipe.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Circle } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useForm } from "react-hook-form";
 
 export const AssignCirclesToRecipeForm = ({

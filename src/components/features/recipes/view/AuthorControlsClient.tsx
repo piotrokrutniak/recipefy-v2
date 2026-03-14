@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { deleteRecipe } from "@/lib/server-actions/recipes/deleteRecipe";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { ManageRecipeCirclesDialog } from "@/components/molecules/dialogs/ManageRecipeCirclesDialog";
 import { RecipeFullInfoDto } from "@/types/api";
 import { RecipeAvailabilitySelect } from "@/components/molecules/selects/RecipeAvailabilitySelect";

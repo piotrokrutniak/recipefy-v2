@@ -3,7 +3,7 @@ import { TextLarge } from "@/components/typography/TextLarge";
 import { TextP } from "@/components/typography/TextP";
 import { Recipe, User } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const RecipeListing = async ({
   user,

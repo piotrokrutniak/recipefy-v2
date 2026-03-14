@@ -5,7 +5,7 @@ import { TextP } from "@/components/typography/TextP";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User } from "@prisma/client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { AuthorControls } from "./AuthorControlsClient";
 
 // TODO: Add mobile layout with foldable sections

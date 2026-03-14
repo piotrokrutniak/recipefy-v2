@@ -10,7 +10,7 @@ import { TextH2 } from "@/components/typography/TextH2";
 import { TextLead } from "@/components/typography/TextLead";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { FaGoogle } from "react-icons/fa";
 
 export const Login = () => {

@@ -6,7 +6,7 @@ import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper"
 import { useToast } from "@/hooks/use-toast";
 import { RecipeFullInfoDto } from "@/types/api";
 import { Ingredient, Recipe, UserIngredient } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useCallback } from "react";
 
 export const ClientContent = ({

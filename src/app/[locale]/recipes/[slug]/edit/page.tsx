@@ -4,7 +4,8 @@ import { ClientContent } from "@/components/features/recipes/edit/EditRecipeClie
 import { getUserIngredients } from "@/lib/server-actions/ingredients/getUserIngredients";
 import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { RecipeFullInfoDto } from "@/types/api";
-import { redirect } from "next/navigation";
+
+import { redirect } from "@/i18n/server-navigation";
 
 const EditRecipePage = async ({ params }: { params: { slug: string } }) => {
   const user = await getCurrentUser();

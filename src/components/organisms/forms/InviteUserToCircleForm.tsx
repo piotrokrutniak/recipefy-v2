@@ -18,7 +18,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 export const InviteUserToCircleForm = ({ circleId }: { circleId: string }) => {
   const { toast } = useToast();

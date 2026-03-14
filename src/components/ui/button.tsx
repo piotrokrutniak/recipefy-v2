@@ -11,7 +11,9 @@ const variant = {
   accent:
     "bg-light_red-500 text-destructive-foreground shadow-sm hover:bg-light_red-500/90",
   outline:
-    "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+    "border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground",
+  outlineBlack:
+    "border border-black text-black bg-transparent shadow-sm hover:bg-accent hover:border-accent hover:text-accent-foreground",
   secondary:
     "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
   ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -34,13 +36,14 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export type ButtonVariant = keyof typeof variant;
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
@@ -55,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

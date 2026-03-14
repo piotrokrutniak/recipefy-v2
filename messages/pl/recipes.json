@@ -1,0 +1,49 @@
+{
+  "search": {
+    "placeholder": "Szukaj przepisów",
+    "button": "Szukaj",
+    "parameters": "Parametry wyszukiwania",
+    "noResults": "Nie znaleziono przepisów"
+  },
+  "form": {
+    "title": "Tytuł",
+    "description": "Opis",
+    "thumbnail": "Miniatura",
+    "content": "Treść przepisu",
+    "cookTime": "Czas gotowania (min)",
+    "prepTime": "Czas przygotowania (min)",
+    "servings": "Porcje",
+    "vegan": "Wegański",
+    "vegetarian": "Wegetariański",
+    "visibility": "Widoczność",
+    "ingredients": "Składniki",
+    "visibilityPublic": "Publiczny",
+    "visibilityPrivate": "Prywatny",
+    "visibilityUnlisted": "Niepubliczny",
+    "save": "Zapisz przepis",
+    "saving": "Zapisywanie...",
+    "savedSuccess": "Przepis zapisany",
+    "createdSuccess": "Przepis utworzony"
+  },
+  "carousel": {
+    "viewRecipe": "Zobacz przepis"
+  },
+  "detail": {
+    "author": "Autor",
+    "cookTime": "Czas gotowania",
+    "prepTime": "Czas przygotowania",
+    "servings": "Porcje",
+    "calories": "Kalorie",
+    "ingredients": "Składniki",
+    "notes": "Notatki",
+    "addNote": "Dodaj notatkę",
+    "edit": "Edytuj przepis",
+    "delete": "Usuń przepis",
+    "deleteConfirm": "Czy na pewno chcesz usunąć ten przepis?",
+    "deleteSuccess": "Przepis usunięty",
+    "minutes": "min"
+  },
+  "visibility": {
+    "changeSuccess": "Widoczność zmieniona"
+  }
+}

@@ -13,7 +13,7 @@ import { getCurrentUser } from "@/app/api/users/current/route";
 import { LinkButton } from "../generic/LinkButton";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const LatestRecipesSection = async () => {
   const recipes = await getPublicRecipes({});

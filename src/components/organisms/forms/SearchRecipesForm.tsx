@@ -20,7 +20,7 @@ import {
   RecipeSearchFormData,
 } from "@/hooks/forms/useSearchRecipesForm";
 import { Ingredient } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 export default function RecipeSearchForm({
   formData,

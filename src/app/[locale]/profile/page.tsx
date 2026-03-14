@@ -6,8 +6,9 @@ import { CirclesSection } from "@/components/features/profile/TeamsSection";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
-import { getCurrentUser } from "../api/users/current/route";
-import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/app/api/users/current/route";
+
+import { redirect } from "@/i18n/server-navigation";
 import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
 import { UserPendingCircleInvites } from "@/components/molecules/info-display/UserPendingCircleInvites";
 
@@ -22,7 +23,7 @@ export const ProfilePage = async () => {
   return (
     <ClientProvidersWrapper>
       <PageContentSidebarLayout className="">
-        <PageContentLayout className="flex-grow-0 sticky top-0 h-fit max-sm:hidden">
+        <PageContentLayout className="flex-grow-0 sticky top-20 h-fit max-sm:hidden self-start">
           <ProfileSideBarHeaderClient user={user!} />
           <ProfileSideBarNavigation />
         </PageContentLayout>

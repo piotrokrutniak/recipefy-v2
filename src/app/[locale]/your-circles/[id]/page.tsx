@@ -13,7 +13,8 @@ import { getCircleRecipes } from "@/lib/server-actions/circles/getCircleRecipes"
 import { getCircleById } from "@/lib/server-actions/recipes/getCircleById";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { CircleFullInfoDto } from "@/types/api";
-import { redirect } from "next/navigation";
+
+import { redirect } from "@/i18n/server-navigation";
 import { FaCog } from "react-icons/fa";
 
 export const JoinedCirclePage = async ({

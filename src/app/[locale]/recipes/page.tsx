@@ -1,9 +1,9 @@
 import RecipeSearchForm from "@/components/organisms/forms/SearchRecipesForm";
-import { RecipeSearchParams } from "../api/recipes/route";
+import { RecipeSearchParams } from "@/app/api/recipes/route";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";
-import { getCurrentUser } from "../api/users/current/route";
-import { getIngredients } from "../api/ingredients/route";
-import { getBlacklistedIngredients } from "../api/users/current/blacklisted-ingredients/route";
+import { getCurrentUser } from "@/app/api/users/current/route";
+import { getIngredients } from "@/app/api/ingredients/route";
+import { getBlacklistedIngredients } from "@/app/api/users/current/blacklisted-ingredients/route";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 

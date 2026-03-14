@@ -1,12 +1,14 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { TextH2 } from "../../typography/TextH2";
 import { DynamicNavbarContent } from "./DynamicNavbarContent";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { MobileNavbarSheet } from "./MobileNavbarSheet";
+import { getTranslations } from "next-intl/server";
 
 export const Navbar = async () => {
   const user = await getCurrentUser();
+  const t = await getTranslations("navigation");
 
   return (
     <nav className="flex flex-1 justify-between p-3 sticky top-0 z-40">
@@ -19,7 +21,7 @@ export const Navbar = async () => {
       </Link>
       <section className="flex relative gap-2 items-center max-sm:hidden">
         <LinkButton href="/recipes" variant="ghost">
-          Recipes
+          {t("recipes")}
         </LinkButton>
         <DynamicNavbarContent />
       </section>

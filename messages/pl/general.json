@@ -1,0 +1,15 @@
+{
+  "loading": "Ładowanie...",
+  "error": "Wystąpił błąd",
+  "notFound": "Nie znaleziono",
+  "forbidden": "Brak dostępu",
+  "save": "Zapisz",
+  "cancel": "Anuluj",
+  "delete": "Usuń",
+  "edit": "Edytuj",
+  "back": "Wróć",
+  "confirm": "Potwierdź",
+  "success": "Sukces",
+  "goToRecipes": "Przejdź do przepisów",
+  "goToCircles": "Przejdź do kółek"
+}
