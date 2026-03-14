@@ -14,7 +14,8 @@ export const updateRecipeById = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
-  const slug = await generateSlug(data.title, data.id);
+  const id = data.id as string;
+  const slug = generateSlug(data.title, id);
   let thumbnailUrl: string | null = data.thumbnailUrl ?? null;
 
   if (data.thumbnailBase64 && data.thumbnailBase64 !== data.thumbnailUrl) {

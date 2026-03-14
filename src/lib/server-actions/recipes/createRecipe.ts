@@ -16,7 +16,6 @@ export const createRecipe = async (
   data: z.infer<typeof createRecipeSchema>,
   authorId: string
 ) => {
-  const slug = await generateSlug(data.title);
   let thumbnailUrl = data.thumbnailUrl;
 
   if (data.thumbnailBase64) {
@@ -32,7 +31,6 @@ export const createRecipe = async (
 
   const recipe = await prisma.recipe.create({
     data: {
-      slug,
       title: data.title,
       thumbnailUrl,
       description: data.description,
@@ -62,5 +60,8 @@ export const createRecipe = async (
     },
   });
 
-  return recipe;
+  return prisma.recipe.update({
+    where: { id: recipe.id },
+    data: { slug: generateSlug(recipe.title, recipe.id) },
+  });
 };

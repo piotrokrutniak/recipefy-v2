@@ -9,8 +9,18 @@ import { ForbiddenError } from "@/components/organisms/errors/ForbiddenError";
 import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
 import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
+import DBClient from "@/persistence/DBClient";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
+
+export async function generateStaticParams() {
+  const prisma = DBClient.getInstance().prisma;
+  const recipes = await prisma.recipe.findMany({
+    where: { visibility: Visibility.PUBLIC, slug: { not: null } },
+    select: { slug: true },
+  });
+  return recipes.map((r) => ({ slug: r.slug! }));
+}
 
 export const ViewRecipePage = async ({
   params,
