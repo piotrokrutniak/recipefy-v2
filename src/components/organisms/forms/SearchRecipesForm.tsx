@@ -47,16 +47,16 @@ export default function RecipeSearchForm({
         data.ingredients.length > 0 ? data.ingredients.join(",") : null,
     };
     const params = Object.entries(sanitizedData).map(([key, value]) =>
-      !!value ? `${key}=${value}` : ""
+      !!value ? `${key}=${value}` : "",
     );
 
     router.push(`/recipes?${params.filter(Boolean).join("&")}`);
   };
 
   return (
-    <PageContentSidebarLayout>
+    <PageContentSidebarLayout className="!gap-8">
       <Form {...form}>
-        <PageContentLayout className="flex-grow-0 w-80 hidden md:block">
+        <PageContentLayout className="flex-grow-0 w-80 hidden md:flex !gap-4">
           <PrepParamsSection form={form} />
           <IngredientsParamsSection form={form} ingredients={ingredients} />
         </PageContentLayout>

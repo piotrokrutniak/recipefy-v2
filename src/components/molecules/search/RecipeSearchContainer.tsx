@@ -12,9 +12,9 @@ export const RecipeSearchContainer = ({
   onSubmit: (data: RecipeSearchFormData) => void;
 }) => {
   return (
-    <div className="flex gap-2">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
       <Input {...form.register("query")} placeholder="Search recipes" />
-      <Button onClick={form.handleSubmit(onSubmit)}>Search</Button>
-    </div>
+      <Button type="submit">Search</Button>
+    </form>
   );
 };

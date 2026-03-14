@@ -13,6 +13,7 @@ import { getCurrentUser } from "@/app/api/users/current/route";
 import { LinkButton } from "../generic/LinkButton";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
+import Link from "next/link";
 
 export const LatestRecipesSection = async () => {
   const recipes = await getPublicRecipes({});
@@ -22,14 +23,17 @@ export const LatestRecipesSection = async () => {
     <section className="flex flex-col sm:px-5 py-4 gap-4 w-full">
       <div className="flex justify-between gap-2 px-3">
         <TextH3 className="">Recently Added Recipes</TextH3>
-        <RecipeTypeSelector />
+        {/* <RecipeTypeSelector /> */}
+        <LinkButton href={"/recipes"} variant={"outline"}>
+          Find more
+        </LinkButton>
       </div>
       {recipes.map((recipe) => (
         <RecipeListing
           key={recipe.id}
           recipe={recipe}
           isLiked={likedRecipes.some(
-            (likedRecipe) => likedRecipe.recipeId === recipe.id
+            (likedRecipe) => likedRecipe.recipeId === recipe.id,
           )}
           user={user}
         />
