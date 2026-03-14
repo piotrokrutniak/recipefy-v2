@@ -15,7 +15,7 @@ export const updateRecipeById = async (
   authorId: string
 ) => {
   const slug = await generateSlug(data.title, data.id);
-  let thumbnailUrl = data.thumbnailUrl;
+  let thumbnailUrl: string | null = data.thumbnailUrl ?? null;
 
   if (data.thumbnailBase64 && data.thumbnailBase64 !== data.thumbnailUrl) {
     thumbnailUrl = await uploadImageToCloudinary(data.thumbnailBase64);

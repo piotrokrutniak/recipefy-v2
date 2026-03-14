@@ -166,10 +166,15 @@ export const AddRecipeForm = ({
               <FormControl>
                 <UploadImageAssetInput
                   onChange={(file) => {
-                    field.onChange(file);
+                    if (file) {
+                      form.setValue("thumbnailBase64", file);
+                    } else {
+                      field.onChange(undefined);
+                      form.setValue("thumbnailBase64", undefined);
+                    }
                   }}
-                  uploadedThumbnailUrl={form.getValues("thumbnailUrl")}
-                  draftThumbnailBase64={form.getValues("thumbnailBase64")}
+                  uploadedThumbnailUrl={form.watch("thumbnailUrl")}
+                  draftThumbnailBase64={form.watch("thumbnailBase64")}
                 />
               </FormControl>
               <FormMessage />
