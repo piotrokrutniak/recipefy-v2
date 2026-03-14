@@ -1,5 +1,6 @@
 import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
+import type { Metadata } from "next";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
 import { SideBarRecipeSummary } from "@/components/features/recipes/view/SideBarRecipeSummary";
 import { LinkButton } from "@/components/generic/LinkButton";
@@ -12,6 +13,38 @@ import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCi
 import DBClient from "@/persistence/DBClient";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const recipe = await getRecipeBySlug(params.slug);
+
+  if (!recipe) {
+    return { title: "Recipe not found" };
+  }
+
+  const images = recipe.thumbnailUrl
+    ? [{ url: recipe.thumbnailUrl, width: 1200, height: 630, alt: recipe.title }]
+    : [];
+
+  return {
+    title: recipe.title,
+    description: recipe.description || undefined,
+    openGraph: {
+      title: recipe.title,
+      description: recipe.description || undefined,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: recipe.title,
+      description: recipe.description || undefined,
+      images: recipe.thumbnailUrl ? [recipe.thumbnailUrl] : undefined,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const prisma = DBClient.getInstance().prisma;
