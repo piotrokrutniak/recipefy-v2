@@ -100,6 +100,12 @@
   "visibility": {
     "changeSuccess": "Widoczność zmieniona"
   },
+  "likes": {
+    "added": "Dodano do polubionych",
+    "removed": "Usunięto z polubionych",
+    "like": "Lubię to",
+    "liked": "Lubię to"
+  },
   "circles": {
     "createTitle": "Utwórz koło",
     "createButton": "Utwórz koło",

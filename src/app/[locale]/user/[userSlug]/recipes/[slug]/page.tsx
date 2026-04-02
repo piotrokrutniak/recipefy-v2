@@ -1,5 +1,6 @@
 import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
+import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
 import { SideBarRecipeSummary } from "@/components/features/recipes/view/SideBarRecipeSummary";
 import { LinkButton } from "@/components/generic/LinkButton";
@@ -21,9 +22,13 @@ export default async function UserRecipePage({
 }) {
   const recipe = await getRecipeBySlug(params.slug);
   const user = await getCurrentUser();
-  const profileUser = await getUserPublicInfo(params.userSlug);
-  const userCircles = await getUserJoinedCircles();
-  const recipeNote = recipe ? await getRecipeNote(recipe.id) : null;
+  const [profileUser, userCircles, likedRecipes, recipeNote] = await Promise.all([
+    getUserPublicInfo(params.userSlug),
+    getUserJoinedCircles(),
+    user ? getLikedRecipes(user.id) : Promise.resolve([]),
+    recipe ? getRecipeNote(recipe.id) : Promise.resolve(null),
+  ]);
+  const isLiked = likedRecipes.some((r) => r.recipeId === recipe?.id);
 
   if (!recipe || !profileUser) {
     return <NotFoundError />;
@@ -56,6 +61,7 @@ export default async function UserRecipePage({
           recipe={recipe as RecipeFullInfoDto}
           initialNote={recipeNote?.note}
           user={user as User}
+          isLiked={isLiked}
         />
       </PageContentLayout>
       <PageContentLayout className="flex-1">

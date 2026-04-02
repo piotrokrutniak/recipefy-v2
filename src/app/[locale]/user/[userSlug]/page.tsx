@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/app/api/users/current/route";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { getUserRecipes } from "@/lib/server-actions/recipes/getUserRecipes";
 import { getUserPublicInfo } from "@/lib/server-actions/users/getUserPublicInfo";
@@ -8,6 +9,7 @@ import { Recipe } from "@prisma/client";
 import { Separator } from "@/components/ui/separator";
 import { getUserOwnedCirclesById } from "@/lib/server-actions/recipes/getUserOwnedCirclesById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
+import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { TextMedium } from "@/components/typography";
 
 export default async function UserPage({
@@ -21,11 +23,14 @@ export default async function UserPage({
     return <UserNotFound />;
   }
 
-  const [recipes, userOwnedCircles, currentUserJoinedCircles] = await Promise.all([
+  const currentUser = await getCurrentUser();
+  const [recipes, userOwnedCircles, currentUserJoinedCircles, likedRecipes] = await Promise.all([
     getUserRecipes({}, user.id),
     getUserOwnedCirclesById(user.id),
     getUserJoinedCircles(),
+    currentUser ? getLikedRecipes(currentUser.id) : Promise.resolve([]),
   ]);
+  const likedIds = new Set(likedRecipes.map((r) => r.recipeId));
 
   const joinedUserCirclesCount = currentUserJoinedCircles.filter((circle) =>
     userOwnedCircles.some((userCircle) => userCircle.id === circle.id)
@@ -45,7 +50,7 @@ export default async function UserPage({
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {recipes.map((recipe: Recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} userSlug={user.slug ?? params.userSlug} />
+          <RecipeCard key={recipe.id} recipe={recipe} userSlug={user.slug ?? params.userSlug} user={currentUser} isLiked={likedIds.has(recipe.id)} />
         ))}
       </div>
     </PageContentLayout>
