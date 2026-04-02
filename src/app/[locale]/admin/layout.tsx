@@ -1,5 +1,8 @@
+import { getCurrentUser } from "@/app/api/users/current/route";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { getTranslations } from "next-intl/server";
+import { UserRole } from "@prisma/client";
+import { redirect } from "next/navigation";
 import { FaList } from "react-icons/fa";
 
 export default async function AdminLayout({
@@ -7,6 +10,11 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getCurrentUser();
+  if (!user || user.role !== UserRole.ADMIN) {
+    redirect("/");
+  }
+
   const t = await getTranslations("admin.nav");
 
   return (

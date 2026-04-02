@@ -1,6 +1,7 @@
 "use server";
 
 import DBClient from "@/persistence/DBClient";
+import { requireAdmin } from "@/lib/server-actions/requireAdmin";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -9,6 +10,8 @@ export const createIngredient = async (
   vegan: boolean,
   vegetarian: boolean
 ) => {
+  await requireAdmin();
+
   if (!name || name.trim().length === 0) {
     throw new Error("Ingredient name cannot be empty");
   }

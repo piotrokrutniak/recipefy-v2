@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { FaShieldAlt, FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 
 export const UserPanelPopUp = ({ user }: { user: User }) => {
   return (
@@ -39,10 +39,12 @@ export const UserPanelPopUp = ({ user }: { user: User }) => {
           <FaUserFriends className="w-4 h-4" />
           Your circles
         </LinkButton>
-        <LinkButton href="/admin/ingredients" variant="link" className="gap-2">
-          <FaShieldAlt className="w-4 h-4" />
-          Admin
-        </LinkButton>
+        {user.role === UserRole.ADMIN && (
+          <LinkButton href="/admin/ingredients" variant="link" className="gap-2">
+            <FaShieldAlt className="w-4 h-4" />
+            Admin
+          </LinkButton>
+        )}
         <Button variant={"link"} onClick={() => signOut()} className="gap-2">
           <FaSignOutAlt className="w-4 h-4" />
           Sign out
