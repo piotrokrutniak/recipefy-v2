@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import {
   Popover,
   PopoverContent,
@@ -41,6 +44,7 @@ export const IngredientSearchCombobox = ({
   refreshIngredients,
   allowAddingUserIngredients = false,
 }: IngredientSearchComboboxProps) => {
+  const t = useTranslations("recipes.ingredients");
   const [open, setOpen] = useState(false);
   const [isAddingUserIngredient, setIsAddingUserIngredient] = useState(false);
 
@@ -75,7 +79,7 @@ export const IngredientSearchCombobox = ({
                 }
               </>
             ) : (
-              <>+ Select ingredient</>
+              <>{t("select")}</>
             )}
           </Button>
         </PopoverTrigger>

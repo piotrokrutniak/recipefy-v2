@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import {
   CommandEmpty,
   CommandInput,
@@ -30,10 +33,11 @@ export const IngredientSearchInput = ({
   onNewIngredientClick?: () => void;
   className?: string;
 }) => {
+  const t = useTranslations("recipes.ingredients");
   return (
     <Command shouldFilter>
       <CommandList>
-        <CommandInput placeholder="Search ingredients..." />
+        <CommandInput placeholder={t("search")} />
         {onNewIngredientClick && (
           <Button
             variant="ghost"
@@ -43,7 +47,7 @@ export const IngredientSearchInput = ({
             Create new ingredient
           </Button>
         )}
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>{t("noResults")}</CommandEmpty>
         {ingredients?.map((ingredient) => (
           <CommandItem
             key={ingredient.id}

@@ -21,6 +21,7 @@ import {
 } from "@/hooks/forms/useSearchRecipesForm";
 import { Ingredient } from "@prisma/client";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function RecipeSearchForm({
   formData,
@@ -31,6 +32,7 @@ export default function RecipeSearchForm({
   children?: React.ReactNode;
   ingredients: Ingredient[];
 }) {
+  const t = useTranslations("recipes.search");
   const form = useSearchRecipesForm({
     ...formData,
     vegan: Boolean(formData.vegan),
@@ -69,7 +71,7 @@ export default function RecipeSearchForm({
               className="w-full px-3 md:hidden"
             >
               <AccordionItem value="search-parameters">
-                <AccordionTrigger>Search parameters</AccordionTrigger>
+                <AccordionTrigger>{t("parameters")}</AccordionTrigger>
                 <AccordionContent>
                   <div className="md:hidden flex sm:flex-row flex-col gap-4">
                     <PrepParamsSection form={form} className="w-full" />

@@ -3,7 +3,21 @@
     "placeholder": "Szukaj przepisów",
     "button": "Szukaj",
     "parameters": "Parametry wyszukiwania",
-    "noResults": "Nie znaleziono przepisów"
+    "noResults": "Nie znaleziono przepisów",
+    "prepTimeTitle": "Czas przygotowania",
+    "prepTimeSubtitle": "Ile masz czasu?",
+    "cookTimeLabel": "Czas gotowania",
+    "cookTimePlaceholder": "Czas gotowania (minuty)",
+    "prepTimeLabel": "Czas przygotowania",
+    "prepTimePlaceholder": "Czas przygotowania (minuty)",
+    "ingredientsTitle": "Składniki",
+    "ingredientsSubtitle": "Co masz w lodówce?",
+    "includeBlacklisted": "Uwzględnij przepisy z wykluczonymi składnikami"
+  },
+  "ingredients": {
+    "select": "+ Wybierz składnik",
+    "search": "Szukaj składników...",
+    "noResults": "Nie znaleziono składników"
   },
   "form": {
     "title": "Tytuł",
@@ -13,8 +27,8 @@
     "cookTime": "Czas gotowania (min)",
     "prepTime": "Czas przygotowania (min)",
     "servings": "Porcje",
-    "vegan": "Wegański",
-    "vegetarian": "Wegetariański",
+    "vegan": "Dieta wegańska",
+    "vegetarian": "Dieta wegetariańska",
     "visibility": "Widoczność",
     "ingredients": "Składniki",
     "visibilityPublic": "Publiczny",

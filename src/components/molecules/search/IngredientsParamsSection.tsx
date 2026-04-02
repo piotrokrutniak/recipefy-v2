@@ -1,6 +1,9 @@
+"use client";
+
 import { OutlineContainer } from "@/components/atoms/OutlineContainer";
 import { TextMedium } from "@/components/typography/TextMedium";
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { RecipeSearchFormData } from "@/hooks/forms/useSearchRecipesForm";
 import { TextMuted } from "@/components/typography/TextMuted";
 import { Ingredient } from "@prisma/client";
@@ -52,12 +55,13 @@ export const IngredientsParamsSection = ({
     );
   }, [ingredients, selectedIngredients]);
 
+  const t = useTranslations("recipes.search");
   return (
     <OutlineContainer className={cn("flex flex-col gap-4 w-80", className)}>
       <div className="flex gap-1 items-center justify-between">
         <div className="flex flex-col gap-1">
-          <TextMedium className="font-medium">Ingredients</TextMedium>
-          <TextMuted>What's in your fridge?</TextMuted>
+          <TextMedium className="font-medium">{t("ingredientsTitle")}</TextMedium>
+          <TextMuted>{t("ingredientsSubtitle")}</TextMuted>
         </div>
         <Button size={"icon"} variant={"outline"} onClick={clearIngredients}>
           <EraserIcon />
@@ -97,10 +101,11 @@ const BlacklistedIngredientsToggle = ({
 }) => {
   const includeBlacklistedRecipes = form.watch("includeBlacklistedRecipes");
 
+  const t = useTranslations("recipes.search");
   return (
     <div className="flex gap-1 items-start justify-between">
       <TextSmall className="font-medium">
-        Include recipes with blacklisted ingredients
+        {t("includeBlacklisted")}
       </TextSmall>
       <Switch
         checked={includeBlacklistedRecipes}
@@ -151,17 +156,18 @@ const VeganVegetarianFilter = ({
     form.setValue("vegetarian", isVegetarian);
   };
 
+  const t = useTranslations("recipes.form");
   return (
     <div className="flex flex-col gap-2  w-full">
       <FilterCheckbox
         name="vegan"
-        label="Vegan"
+        label={t("vegan")}
         checked={form.watch("vegan") as boolean}
         onChange={toggleVegan}
       />
       <FilterCheckbox
         name="vegetarian"
-        label="Vegetarian"
+        label={t("vegetarian")}
         checked={form.watch("vegetarian") as boolean}
         onChange={toggleVegetarian}
       />
