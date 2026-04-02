@@ -33,7 +33,7 @@ export const AddRecipePageClientView = ({
 
   return (
     <ClientProvidersWrapper>
-      <PageContentLayout className="p-4">
+      <PageContentLayout className="p-4 items-center">
         <AddRecipeForm
           verifiedIngredients={ingredients}
           onSubmitAction={handleSubmit}

@@ -56,7 +56,7 @@ export default function RecipeSearchForm({
   };
 
   return (
-    <PageContentSidebarLayout className="!gap-8">
+    <PageContentSidebarLayout breadcrumbs={[{ label: "Przepisy" }]}>
       <Form {...form}>
         <PageContentLayout className="flex-grow-0 w-80 hidden md:flex !gap-4">
           <PrepParamsSection form={form} />

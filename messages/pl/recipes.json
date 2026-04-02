@@ -91,5 +91,12 @@
   },
   "visibility": {
     "changeSuccess": "Widoczność zmieniona"
+  },
+  "circles": {
+    "createTitle": "Utwórz koło",
+    "createButton": "Utwórz koło",
+    "creating": "Tworzenie...",
+    "namePlaceholder": "Nazwa koła",
+    "nameLabel": "Nazwa koła"
   }
 }

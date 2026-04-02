@@ -1,14 +1,5 @@
-"use client";
+import { redirect } from "@/i18n/server-navigation";
 
-import { CreateCircleForm } from "@/components/organisms/forms/CreateCircleForm";
-import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
-
-export const CreateCirclePage = () => {
-  return (
-    <ClientProvidersWrapper>
-      <CreateCircleForm />
-    </ClientProvidersWrapper>
-  );
-};
-
-export default CreateCirclePage;
+export default function CreateCirclePage() {
+  return redirect("/your-circles/create");
+}

@@ -18,12 +18,14 @@ import { createCircleSchema } from "@/lib/server-actions/circles/createCircle.sc
 import { createCircle } from "@/lib/server-actions/circles/createCircle";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export type CreateCircleFormData = z.infer<typeof createCircleSchema>;
 
-export const CreateCircleForm = () => {
+export const CreateCircleForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { toast } = useToast();
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
+  const t = useTranslations("recipes.circles");
 
   const form = useForm<CreateCircleFormData>({
     resolver: zodResolver(createCircleSchema),
@@ -43,7 +45,12 @@ export const CreateCircleForm = () => {
             description: "Your circle has been created",
             variant: "success",
           });
-          push("/profile");
+          if (onSuccess) {
+            refresh();
+            onSuccess();
+          } else {
+            push("/your-circles");
+          }
         } else {
           toast({
             title: "Circle creation failed",
@@ -61,7 +68,7 @@ export const CreateCircleForm = () => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [toast]
+    [toast, onSuccess]
   );
 
   return (
@@ -75,16 +82,16 @@ export const CreateCircleForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Circle name</FormLabel>
+              <FormLabel>{t("nameLabel")}</FormLabel>
               <FormControl>
-                <Input placeholder="Circle name" {...field} />
+                <Input placeholder={t("namePlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button disabled={form.formState.isSubmitting} type="submit">
-          {form.formState.isSubmitting ? "Creating..." : "Create Circle"}
+          {form.formState.isSubmitting ? t("creating") : t("createButton")}
         </Button>
       </form>
     </Form>

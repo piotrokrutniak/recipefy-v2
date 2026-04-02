@@ -2,19 +2,15 @@ import { AccountDetailsSection } from "@/components/features/profile/AccountDeta
 import { ProfileSideBarHeaderClient } from "@/components/features/profile/ProfileSideBarHeaderClient";
 import { ProfileSideBarNavigation } from "@/components/features/profile/ProfileSideBarNavigation";
 import { RecipeSuggestionsSection } from "@/components/features/profile/RecipeSuggestionsSection";
-import { CirclesSection } from "@/components/features/profile/TeamsSection";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper";
 import { getCurrentUser } from "@/app/api/users/current/route";
 
 import { redirect } from "@/i18n/server-navigation";
-import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
-import { UserPendingCircleInvites } from "@/components/molecules/info-display/UserPendingCircleInvites";
 
 export const ProfilePage = async () => {
   const user = await getCurrentUser();
-  const circles = await getCurrentUserOwnedCircles();
 
   if (!user) {
     return redirect("/auth");
@@ -30,8 +26,6 @@ export const ProfilePage = async () => {
         <PageContentLayout>
           <AccountDetailsSection />
           <RecipeSuggestionsSection />
-          <CirclesSection circles={circles} />
-          <UserPendingCircleInvites />
         </PageContentLayout>
       </PageContentSidebarLayout>
     </ClientProvidersWrapper>

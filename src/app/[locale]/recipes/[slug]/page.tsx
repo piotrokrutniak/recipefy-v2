@@ -28,7 +28,14 @@ export async function generateMetadata({
   }
 
   const images = recipe.thumbnailUrl
-    ? [{ url: recipe.thumbnailUrl, width: 1200, height: 630, alt: recipe.title }]
+    ? [
+        {
+          url: recipe.thumbnailUrl,
+          width: 1200,
+          height: 630,
+          alt: recipe.title,
+        },
+      ]
     : [];
 
   return {
@@ -82,14 +89,20 @@ export const ViewRecipePage = async ({
     user?.id !== recipe.authorId &&
     recipe.visibility === Visibility.UNLISTED &&
     !userCircles.some((circle) =>
-      recipe.circleRecipes.some((cr) => cr.circleId === circle.id)
+      recipe.circleRecipes.some((cr) => cr.circleId === circle.id),
     )
   ) {
     return <ForbiddenCircleError />;
   }
 
   return (
-    <PageContentSidebarLayout className="max-sm:flex-col max-sm:gap-4">
+    <PageContentSidebarLayout
+      className="max-sm:flex-col max-sm:gap-4"
+      breadcrumbs={[
+        { label: "Przepisy", href: "/recipes" },
+        { label: recipe.title },
+      ]}
+    >
       <PageContentLayout className="md:max-w-80">
         <SideBarRecipeSummary
           recipe={recipe as RecipeFullInfoDto}
