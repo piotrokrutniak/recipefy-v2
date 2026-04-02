@@ -20,8 +20,8 @@ export const LatestRecipesSection = async () => {
   const user = (await getCurrentUser()) ?? undefined;
   const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
-    <section className="flex flex-col sm:px-5 py-4 gap-4 w-full">
-      <div className="flex justify-between gap-2 px-3">
+    <section className="flex flex-col px-2 sm:px-5 py-4 gap-4 w-full">
+      <div className="flex justify-between gap-2 sm:px-3">
         <TextH3 className="">Recently Added Recipes</TextH3>
         {/* <RecipeTypeSelector /> */}
         <LinkButton href={"/recipes"} variant={"outline"}>

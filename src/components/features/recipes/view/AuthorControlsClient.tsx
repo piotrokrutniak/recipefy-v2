@@ -89,6 +89,7 @@ export const AuthorControls = ({
         recipeId={recipe.id}
         circleIds={recipe.circleRecipes.map((cr) => cr.circleId)}
         circles={circles}
+        visibility={recipe.visibility}
       />
     </div>
   );

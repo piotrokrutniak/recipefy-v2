@@ -2,7 +2,7 @@
   "search": {
     "placeholder": "Szukaj przepisów",
     "button": "Szukaj",
-    "parameters": "Parametry wyszukiwania",
+    "parameters": "Filtry",
     "noResults": "Nie znaleziono przepisów",
     "prepTimeTitle": "Czas przygotowania",
     "prepTimeSubtitle": "Ile masz czasu?",
@@ -46,6 +46,14 @@
     "cookTime": "Gotowanie",
     "servings": "Porcje"
   },
+  "mealTypes": {
+    "BREAKFAST": "Śniadanie",
+    "BRUNCH": "Brunch",
+    "LUNCH": "Lunch",
+    "DINNER": "Obiad",
+    "DESSERT": "Deser",
+    "SNACK": "Przekąska"
+  },
   "carousel": {
     "viewRecipe": "Zobacz przepis"
   },
@@ -76,11 +84,13 @@
     "deleteCancel": "Anuluj",
     "minutes": "min",
     "notFound": "Nie znaleziono przepisu",
-    "backToCircles": "Wróć do swoich kółek",
+    "backToCircles": "Wróć do swoich kół",
     "copiedToClipboard": "Skopiowano do schowka",
     "copiedToClipboardDesc": "Tekst został skopiowany do schowka",
     "manageAccess": "Zarządzaj dostępem",
-    "manageAccessDesc": "Zarządzaj kółkami, do których przypisany jest ten przepis. Jeśli widoczność przepisu jest ustawiona na niepubliczny, będzie widoczny tylko dla przypisanych kółek.",
+    "manageAccessDesc": "Zarządzaj kołami, do których przypisany jest ten przepis. Jeśli widoczność przepisu jest ustawiona na niepubliczny, będzie widoczny tylko dla przypisanych kół.",
+    "noCircles": "Nie masz jeszcze żadnych kół.",
+    "goToCircles": "Przejdź do kół",
     "availabilityUpdated": "Widoczność zaktualizowana",
     "availabilityUpdatedDesc": "Widoczność przepisu została zaktualizowana",
     "availabilityError": "Błąd aktualizacji widoczności",
@@ -89,5 +99,18 @@
   },
   "visibility": {
     "changeSuccess": "Widoczność zmieniona"
+  },
+  "likes": {
+    "added": "Dodano do polubionych",
+    "removed": "Usunięto z polubionych",
+    "like": "Lubię to",
+    "liked": "Lubię to"
+  },
+  "circles": {
+    "createTitle": "Utwórz koło",
+    "createButton": "Utwórz koło",
+    "creating": "Tworzenie...",
+    "namePlaceholder": "Nazwa koła",
+    "nameLabel": "Nazwa koła"
   }
 }

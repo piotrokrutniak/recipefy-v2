@@ -19,7 +19,7 @@ import {
   useSearchRecipesForm,
   RecipeSearchFormData,
 } from "@/hooks/forms/useSearchRecipesForm";
-import { Ingredient } from "@prisma/client";
+import { Ingredient, MealType } from "@prisma/client";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -38,15 +38,16 @@ export default function RecipeSearchForm({
     vegan: Boolean(formData.vegan),
     vegetarian: Boolean(formData.vegetarian),
     includeBlacklistedRecipes: Boolean(formData.includeBlacklistedRecipes),
-    ingredients: formData.ingredients?.split(",") || [],
+    ingredients: formData.ingredients?.split(",").filter(Boolean) || [],
+    mealTypes: (formData.mealTypes?.split(",").filter(Boolean) as MealType[]) || [],
   });
   const router = useRouter();
 
   const onSubmit = (data: RecipeSearchFormData) => {
     const sanitizedData = {
       ...data,
-      ingredients:
-        data.ingredients.length > 0 ? data.ingredients.join(",") : null,
+      ingredients: data.ingredients.length > 0 ? data.ingredients.join(",") : null,
+      mealTypes: data.mealTypes.length > 0 ? data.mealTypes.join(",") : null,
     };
     const params = Object.entries(sanitizedData).map(([key, value]) =>
       !!value ? `${key}=${value}` : "",
@@ -56,7 +57,7 @@ export default function RecipeSearchForm({
   };
 
   return (
-    <PageContentSidebarLayout className="!gap-8">
+    <PageContentSidebarLayout breadcrumbs={[{ label: "Przepisy" }]}>
       <Form {...form}>
         <PageContentLayout className="flex-grow-0 w-80 hidden md:flex !gap-4">
           <PrepParamsSection form={form} />

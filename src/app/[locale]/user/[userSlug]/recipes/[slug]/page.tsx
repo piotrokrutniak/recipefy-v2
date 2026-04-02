@@ -1,7 +1,6 @@
 import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
-import type { Metadata } from "next";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
 import { SideBarRecipeSummary } from "@/components/features/recipes/view/SideBarRecipeSummary";
 import { LinkButton } from "@/components/generic/LinkButton";
@@ -9,84 +8,33 @@ import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { PageContentSidebarLayout } from "@/components/layouts/PageContentSidebarLayout";
 import { ForbiddenError } from "@/components/organisms/errors/ForbiddenError";
 import { NotFoundError } from "@/components/organisms/errors/NotFoundError";
+import { getUserPublicInfo } from "@/lib/server-actions/users/getUserPublicInfo";
 import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
-import DBClient from "@/persistence/DBClient";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata({
+export default async function UserRecipePage({
   params,
 }: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const recipe = await getRecipeBySlug(params.slug);
-
-  if (!recipe) {
-    const t = await getTranslations("recipes.detail");
-    return { title: t("notFound") };
-  }
-
-  const images = recipe.thumbnailUrl
-    ? [
-        {
-          url: recipe.thumbnailUrl,
-          width: 1200,
-          height: 630,
-          alt: recipe.title,
-        },
-      ]
-    : [];
-
-  return {
-    title: recipe.title,
-    description: recipe.description || undefined,
-    openGraph: {
-      title: recipe.title,
-      description: recipe.description || undefined,
-      images,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: recipe.title,
-      description: recipe.description || undefined,
-      images: recipe.thumbnailUrl ? [recipe.thumbnailUrl] : undefined,
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const prisma = DBClient.getInstance().prisma;
-  const recipes = await prisma.recipe.findMany({
-    where: { visibility: Visibility.PUBLIC, slug: { not: null } },
-    select: { slug: true },
-  });
-  return recipes.map((r) => ({ slug: r.slug! }));
-}
-
-export const ViewRecipePage = async ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
+  params: { userSlug: string; slug: string };
+}) {
   const recipe = await getRecipeBySlug(params.slug);
   const user = await getCurrentUser();
-  const [userCircles, likedRecipes, recipeNote] = await Promise.all([
+  const [profileUser, userCircles, likedRecipes, recipeNote] = await Promise.all([
+    getUserPublicInfo(params.userSlug),
     getUserJoinedCircles(),
     user ? getLikedRecipes(user.id) : Promise.resolve([]),
     recipe ? getRecipeNote(recipe.id) : Promise.resolve(null),
   ]);
   const isLiked = likedRecipes.some((r) => r.recipeId === recipe?.id);
 
-  if (!recipe) {
+  if (!recipe || !profileUser) {
     return <NotFoundError />;
   }
 
-  if (
-    user?.id !== recipe.authorId &&
-    recipe.visibility === Visibility.PRIVATE
-  ) {
+  if (user?.id !== recipe.authorId && recipe.visibility === Visibility.PRIVATE) {
     return <ForbiddenCircleError />;
   }
 
@@ -104,7 +52,7 @@ export const ViewRecipePage = async ({
     <PageContentSidebarLayout
       className="max-sm:flex-col max-sm:gap-4"
       breadcrumbs={[
-        { label: "Przepisy", href: "/recipes" },
+        { label: profileUser.name ?? params.userSlug, href: `/user/${params.userSlug}` },
         { label: recipe.title },
       ]}
     >
@@ -121,9 +69,7 @@ export const ViewRecipePage = async ({
       </PageContentLayout>
     </PageContentSidebarLayout>
   );
-};
-
-export default ViewRecipePage;
+}
 
 const ForbiddenCircleError = async () => {
   const t = await getTranslations("recipes.detail");

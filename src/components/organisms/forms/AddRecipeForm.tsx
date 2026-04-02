@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Ingredient,
+  MealType,
   Recipe,
   RecipeIngredient,
   UserIngredient,
@@ -21,7 +22,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { FaLeaf, FaSeedling } from "react-icons/fa";
 import { useMutationCreateRecipe } from "@/hooks/api/recipes/mutations/useMutationCreateRecipe";
 import {
   Select,
@@ -49,6 +52,8 @@ export const AddRecipeForm = ({
   verifiedIngredients,
   onSubmitAction,
 }: AddRecipeFormProps) => {
+  const tBadges = useTranslations("recipes.badges");
+  const tMealTypes = useTranslations("recipes.mealTypes");
   const {
     mutate: createRecipe,
     data: createdRecipe,
@@ -66,10 +71,26 @@ export const AddRecipeForm = ({
       servings: 1,
       vegan: false,
       vegetarian: false,
+      mealTypes: [],
       visibility: Visibility.PRIVATE,
       recipeIngredients: [],
     },
   });
+  const vegan = form.watch("vegan");
+  const vegetarian = form.watch("vegetarian");
+  const mealTypes = form.watch("mealTypes");
+
+  const toggleDiet = (field: "vegan" | "vegetarian") => {
+    form.setValue(field, !form.getValues(field));
+  };
+
+  const toggleMealType = (type: MealType) => {
+    const current = form.getValues("mealTypes") ?? [];
+    const next = current.includes(type)
+      ? current.filter((t) => t !== type)
+      : [...current, type];
+    form.setValue("mealTypes", next);
+  };
 
   const [userIngredients, setUserIngredients] = useState<UserIngredient[]>([]);
 
@@ -282,38 +303,48 @@ export const AddRecipeForm = ({
           />
         </div>
 
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name="vegetarian"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel className="font-normal">Vegetarian</FormLabel>
-              </FormItem>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => toggleDiet("vegetarian")}
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm border transition-colors",
+              vegetarian
+                ? "bg-green-100 border-green-500 text-green-700"
+                : "border-input text-muted-foreground hover:border-green-400 hover:text-green-700"
             )}
-          />
-
-          <FormField
-            control={form.control}
-            name="vegan"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel className="font-normal">Vegan</FormLabel>
-              </FormItem>
+          >
+            <FaSeedling className="w-3 h-3" />
+            {tBadges("vegetarian")}
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleDiet("vegan")}
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm border transition-colors",
+              vegan
+                ? "bg-green-100 border-green-500 text-green-700"
+                : "border-input text-muted-foreground hover:border-green-400 hover:text-green-700"
             )}
-          />
+          >
+            <FaLeaf className="w-3 h-3" />
+            {tBadges("vegan")}
+          </button>
+          {Object.values(MealType).map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => toggleMealType(type)}
+              className={cn(
+                "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm border transition-colors",
+                (mealTypes ?? []).includes(type)
+                  ? "bg-orange-100 border-orange-500 text-orange-700"
+                  : "border-input text-muted-foreground hover:border-orange-400 hover:text-orange-700"
+              )}
+            >
+              {tMealTypes(type)}
+            </button>
+          ))}
         </div>
 
         <FormField

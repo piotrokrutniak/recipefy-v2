@@ -2,6 +2,7 @@
 
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import DBClient from "@/persistence/DBClient";
+import { MealType } from "@prisma/client";
 
 const prisma = DBClient.getInstance().prisma;
 
@@ -45,8 +46,11 @@ export const getPublicRecipes = async (params: Partial<RecipeSearchParams>) => {
             lte: Number(params.calories),
           }
         : undefined,
-      vegan: params.vegan !== undefined ? params.vegan : undefined,
-      vegetarian: params.vegetarian !== undefined ? params.vegetarian : undefined,
+      mealTypes: params.mealTypes
+        ? { hasSome: params.mealTypes.split(",") as MealType[] }
+        : undefined,
+      vegan: params.vegan !== undefined ? params.vegan === true || params.vegan === "true" : undefined,
+      vegetarian: params.vegetarian !== undefined ? params.vegetarian === true || params.vegetarian === "true" : undefined,
       visibility: "PUBLIC",
       recipeIngredients: {
         every: !params.includeBlacklistedRecipes

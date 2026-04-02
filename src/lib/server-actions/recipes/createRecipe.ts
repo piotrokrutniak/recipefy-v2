@@ -45,6 +45,7 @@ export const createRecipe = async (
       servings: data.servings,
       vegan: data.vegan,
       vegetarian: data.vegetarian,
+      mealTypes: data.mealTypes,
       visibility: data.visibility,
       calories: 0,
       verifiedIngredients: false,

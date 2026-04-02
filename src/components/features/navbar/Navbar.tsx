@@ -11,7 +11,8 @@ export const Navbar = async () => {
   const t = await getTranslations("navigation");
 
   return (
-    <nav className="flex flex-1 justify-between p-3 sticky top-0 z-40">
+    <nav className="flex flex-1 justify-center p-3 sticky top-0 z-40">
+      <div className="flex w-full max-w-7xl justify-between">
       <div className="absolute inset-0 bg-white/85 backdrop-blur-lg -z-10" />
 
       <Link href="/" passHref>
@@ -28,6 +29,7 @@ export const Navbar = async () => {
       <section className="sm:hidden">
         <MobileNavbarSheet user={user ?? undefined} />
       </section>
+      </div>
     </nav>
   );
 };

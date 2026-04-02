@@ -65,7 +65,7 @@ export const DynamicHeaderContentMobile = ({ user }: { user: User }) => {
       <Separator className="my-2" />
       <SheetClose asChild>
         <LinkButton
-          href={`/user/${user.id}`}
+          href={`/user/${user.slug ?? user.id}`}
           variant={"default"}
           className="gap-2 h-12"
         >
