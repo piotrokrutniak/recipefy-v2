@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 
 export type RecipeSearchFormData = {
   query: string;
-  cookTime: number;
-  prepTime: number;
-  calories: number;
+  cookTime: number | undefined;
+  prepTime: number | undefined;
+  calories: number | undefined;
   ingredients: string[];
   vegan: boolean;
   vegetarian: boolean;
@@ -33,9 +33,9 @@ export const useSearchRecipesForm = (defaultParams: DefaultParams) => {
     resolver: zodResolver(searchRecipesSchema),
     defaultValues: {
       query: "",
-      cookTime: 0,
-      prepTime: 0,
-      calories: 0,
+      cookTime: undefined,
+      prepTime: undefined,
+      calories: undefined,
       ingredients: [],
       vegan: false,
       vegetarian: false,
