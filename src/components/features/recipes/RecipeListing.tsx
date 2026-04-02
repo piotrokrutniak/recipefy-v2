@@ -1,17 +1,12 @@
 import { LikeButton } from "@/components/molecules/buttons/LikeButton";
+import { RecipeBadgesOverflow, OverflowBadge } from "@/components/molecules/recipe/RecipeBadgesOverflow";
 import { TextLarge } from "@/components/typography/TextLarge";
 import { TextP } from "@/components/typography/TextP";
 import { Badge } from "@/components/ui/badge";
 import { Recipe, User } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import {
-  FaClock,
-  FaConciergeBell,
-  FaLeaf,
-  FaSeedling,
-  FaUtensils,
-} from "react-icons/fa";
+import { FaClock, FaConciergeBell, FaUtensils } from "react-icons/fa";
 import { Link } from "@/i18n/navigation";
 
 export const RecipeListing = async ({
@@ -24,6 +19,20 @@ export const RecipeListing = async ({
   isLiked: boolean;
 }) => {
   const t = await getTranslations("recipes.badges");
+  const tMealTypes = await getTranslations("recipes.mealTypes");
+
+  const overflowBadges: OverflowBadge[] = [
+    ...(recipe.vegetarian && !recipe.vegan
+      ? [{ label: t("vegetarian"), color: "green" as const, icon: "seedling" as const }]
+      : []),
+    ...(recipe.vegan
+      ? [{ label: t("vegan"), color: "green" as const, icon: "leaf" as const }]
+      : []),
+    ...recipe.mealTypes.map((type) => ({
+      label: tMealTypes(type),
+      color: "orange" as const,
+    })),
+  ];
   // const recipe = {
   //   id: 1,
   //   title: "Recipe title",
@@ -61,18 +70,6 @@ export const RecipeListing = async ({
           {recipe.description}
         </TextP>
         <div className="flex flex-wrap gap-1.5 mt-2">
-          {recipe.vegan && (
-            <Badge variant="outline" className="gap-1 font-normal">
-              <FaLeaf className="w-3 h-3 text-green-600" />
-              {t("vegan")}
-            </Badge>
-          )}
-          {!recipe.vegan && recipe.vegetarian && (
-            <Badge variant="outline" className="gap-1 font-normal">
-              <FaSeedling className="w-3 h-3 text-green-500" />
-              {t("vegetarian")}
-            </Badge>
-          )}
           {!!recipe.prepTime && (
             <Badge variant="outline" className="gap-1 font-normal">
               <FaClock className="w-3 h-3" />
@@ -91,6 +88,7 @@ export const RecipeListing = async ({
               {t("servings")}: {recipe.servings}
             </Badge>
           )}
+          <RecipeBadgesOverflow badges={overflowBadges} />
         </div>
       </div>
     </div>

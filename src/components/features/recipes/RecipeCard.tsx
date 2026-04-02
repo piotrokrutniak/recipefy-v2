@@ -1,10 +1,11 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { RecipeBadgesOverflow } from "@/components/molecules/recipe/RecipeBadgesOverflow";
 import { Link } from "@/i18n/navigation";
 import { Recipe } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { FaClock, FaConciergeBell, FaLeaf, FaSeedling, FaUtensils } from "react-icons/fa";
+import { FaClock, FaConciergeBell, FaUtensils } from "react-icons/fa";
 
 export const RecipeCard = async ({
   recipe,
@@ -14,6 +15,7 @@ export const RecipeCard = async ({
   userSlug?: string;
 }) => {
   const t = await getTranslations("recipes.badges");
+  const tMealTypes = await getTranslations("recipes.mealTypes");
   const href = userSlug
     ? `/user/${userSlug}/recipes/${recipe.slug ?? recipe.id}`
     : `/recipes/${recipe.slug ?? recipe.id}`;
@@ -38,18 +40,6 @@ export const RecipeCard = async ({
             {recipe.title}
           </CardTitle>
           <div className="flex flex-wrap gap-1">
-            {recipe.vegan && (
-              <Badge variant="outline" className="gap-1 font-normal text-xs">
-                <FaLeaf className="w-2.5 h-2.5 text-green-600" />
-                {t("vegan")}
-              </Badge>
-            )}
-            {!recipe.vegan && recipe.vegetarian && (
-              <Badge variant="outline" className="gap-1 font-normal text-xs">
-                <FaSeedling className="w-2.5 h-2.5 text-green-500" />
-                {t("vegetarian")}
-              </Badge>
-            )}
             {!!recipe.prepTime && (
               <Badge variant="outline" className="gap-1 font-normal text-xs">
                 <FaClock className="w-2.5 h-2.5" />
@@ -68,6 +58,21 @@ export const RecipeCard = async ({
                 {recipe.servings}
               </Badge>
             )}
+            <RecipeBadgesOverflow
+              small
+              badges={[
+                ...(recipe.vegetarian && !recipe.vegan
+                  ? [{ label: t("vegetarian"), color: "green" as const, icon: "seedling" as const }]
+                  : []),
+                ...(recipe.vegan
+                  ? [{ label: t("vegan"), color: "green" as const, icon: "leaf" as const }]
+                  : []),
+                ...recipe.mealTypes.map((type) => ({
+                  label: tMealTypes(type),
+                  color: "orange" as const,
+                })),
+              ]}
+            />
           </div>
         </CardContent>
       </Card>

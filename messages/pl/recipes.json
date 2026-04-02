@@ -2,7 +2,7 @@
   "search": {
     "placeholder": "Szukaj przepisów",
     "button": "Szukaj",
-    "parameters": "Parametry wyszukiwania",
+    "parameters": "Filtry",
     "noResults": "Nie znaleziono przepisów",
     "prepTimeTitle": "Czas przygotowania",
     "prepTimeSubtitle": "Ile masz czasu?",
