@@ -67,28 +67,37 @@ export const IngredientsParamsSection = ({
           <EraserIcon />
         </Button>
       </div>
-      {selectedIngredients.map((ingredient) => (
-        <div
-          key={ingredient?.id}
-          className="flex gap-1 items-center justify-between"
-        >
-          {ingredient?.name}
-          <Button
-            size={"icon"}
-            variant={"ghost"}
-            onClick={() => toggleIngredient(ingredient!)}
+
+      <div className="flex flex-col gap-2">
+        {selectedIngredients.map((ingredient) => (
+          <div
+            key={ingredient?.id}
+            className="flex gap-1 items-center justify-between rounded-md bg-muted px-3 py-1"
           >
-            <Cross1Icon className="w-4 h-4" />
-          </Button>
-        </div>
-      ))}
-      <IngredientSearchCombobox
-        ingredients={selectableIngredients}
-        onIngredientClick={toggleIngredient}
-      />
+            <TextSmall>{ingredient?.name}</TextSmall>
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              className="h-6 w-6"
+              onClick={() => toggleIngredient(ingredient!)}
+            >
+              <Cross1Icon className="w-3 h-3" />
+            </Button>
+          </div>
+        ))}
+        <IngredientSearchCombobox
+          ingredients={selectableIngredients}
+          onIngredientClick={toggleIngredient}
+        />
+      </div>
+
       <Separator />
-      <VeganVegetarianFilter form={form} />
-      <BlacklistedIngredientsToggle form={form} />
+
+      <div className="flex flex-col gap-3">
+        <VeganVegetarianFilter form={form} />
+        <Separator />
+        <BlacklistedIngredientsToggle form={form} />
+      </div>
     </OutlineContainer>
   );
 };
