@@ -1,4 +1,4 @@
-import { Visibility, Recipe } from "@prisma/client";
+import { Visibility, MealType, Recipe } from "@prisma/client";
 import { z } from "zod";
 
 const createRecipeIngredientSchema = z.object({
@@ -20,6 +20,7 @@ export const createRecipeSchema = z.object({
   servings: z.number().min(1, "Must have at least 1 serving"),
   vegan: z.boolean(),
   vegetarian: z.boolean(),
+  mealTypes: z.array(z.nativeEnum(MealType)).default([]),
   visibility: z.nativeEnum(Visibility),
   recipeIngredients: z.array(createRecipeIngredientSchema),
 }) satisfies z.ZodType<Partial<Recipe>>;

@@ -142,6 +142,7 @@ export type RecipeSearchParams = {
   prepTime?: number;
   calories?: number;
   ingredients?: string;
+  mealTypes?: string;
   vegan?: boolean;
   vegetarian?: boolean;
   includeBlacklistedRecipes?: boolean;

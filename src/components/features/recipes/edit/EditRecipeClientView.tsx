@@ -43,7 +43,7 @@ export const ClientContent = ({
   return (
     <ClientProvidersWrapper>
       <PageContentLayout
-        className="p-4"
+        className="p-4 items-center"
         breadcrumbs={[
           { label: "Przepisy", href: "/recipes" },
           { label: recipe.title, href: `/recipes/${recipe.slug ?? recipe.id}` },

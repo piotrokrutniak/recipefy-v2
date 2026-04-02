@@ -46,6 +46,14 @@
     "cookTime": "Gotowanie",
     "servings": "Porcje"
   },
+  "mealTypes": {
+    "BREAKFAST": "Śniadanie",
+    "BRUNCH": "Brunch",
+    "LUNCH": "Lunch",
+    "DINNER": "Obiad",
+    "DESSERT": "Deser",
+    "SNACK": "Przekąska"
+  },
   "carousel": {
     "viewRecipe": "Zobacz przepis"
   },

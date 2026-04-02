@@ -177,6 +177,7 @@ model Recipe {
   prepTime  Int
   servings  Int
   calories  Int
+  mealTypes MealType[]
   vegan     Boolean
   vegetarian Boolean
   verifiedIngredients Boolean
@@ -293,6 +294,15 @@ model CircleInvite {
   invitingUser User @relation("inviting", fields: [invitingUserId], references: [id])
   invitee User? @relation("invitee", fields: [inviteeId], references: [id])
   circle Circle @relation(fields: [circleId], references: [id])
+}
+
+enum MealType {
+  BREAKFAST
+  BRUNCH
+  LUNCH
+  DINNER
+  DESSERT
+  SNACK
 }
 
 enum Visibility {
