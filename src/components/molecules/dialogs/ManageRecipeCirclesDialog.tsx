@@ -8,7 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { AssignCirclesToRecipeForm } from "@/components/organisms/forms/AssignCirclesToRecipeForm";
-import { Circle } from "@prisma/client";
+import { Circle, Visibility } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
@@ -18,16 +18,18 @@ export const ManageRecipeCirclesDialog = ({
   recipeId,
   circleIds,
   circles,
+  visibility,
 }: {
   recipeId: string;
   circleIds: string[];
   circles: Circle[];
+  visibility: Visibility;
 }) => {
   const t = useTranslations("recipes.detail");
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>{t("manageAccess")}</Button>
+        <Button disabled={visibility === Visibility.PUBLIC}>{t("manageAccess")}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
