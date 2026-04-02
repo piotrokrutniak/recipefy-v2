@@ -11,7 +11,7 @@ import { TextLarge } from "@/components/typography/TextLarge";
 import { TextSmall } from "@/components/typography/TextSmall";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { Separator } from "@/components/ui/separator";
-import { FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
+import { FaShieldAlt, FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import { User } from "@prisma/client";
@@ -38,6 +38,10 @@ export const UserPanelPopUp = ({ user }: { user: User }) => {
         <LinkButton href={`/your-circles`} variant={"link"} className="gap-2">
           <FaUserFriends className="w-4 h-4" />
           Your circles
+        </LinkButton>
+        <LinkButton href="/admin/ingredients" variant="link" className="gap-2">
+          <FaShieldAlt className="w-4 h-4" />
+          Admin
         </LinkButton>
         <Button variant={"link"} onClick={() => signOut()} className="gap-2">
           <FaSignOutAlt className="w-4 h-4" />

@@ -1,0 +1,27 @@
+{
+  "ingredients": {
+    "title": "Menadżer składników",
+    "search": "Szukaj składników...",
+    "add": "Dodaj składnik",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "deleteTitle": "Usuń składnik",
+    "deleteConfirm": "Czy na pewno chcesz usunąć ten składnik?",
+    "deleteCancel": "Anuluj",
+    "deleteSuccess": "Składnik usunięty",
+    "deleteError": "Nie można usunąć składnika używanego w przepisach",
+    "saveSuccess": "Składnik zapisany",
+    "name": "Nazwa",
+    "vegan": "Wegański",
+    "vegetarian": "Wegetariański",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "addTitle": "Dodaj składnik",
+    "editTitle": "Edytuj składnik",
+    "noResults": "Nie znaleziono składników",
+    "usedInRecipes": "Używany w przepisach"
+  },
+  "nav": {
+    "ingredients": "Składniki"
+  }
+}
