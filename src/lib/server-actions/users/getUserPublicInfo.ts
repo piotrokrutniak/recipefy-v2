@@ -5,21 +5,19 @@ const prisma = DBClient.getInstance().prisma;
 
 export type UserPublicInfo = Omit<
   User,
-  "email" | "password" | "createdAt" | "updatedAt" | "emailVerified"
+  "email" | "createdAt" | "updatedAt" | "emailVerified"
 >;
 
 export const getUserPublicInfo = async (
-  userId: string
+  slugOrId: string
 ): Promise<UserPublicInfo | null> => {
-  console.log("getUserPublicInfoId", userId);
-
-  if (!userId) {
-    throw new Error("User ID is required");
+  if (!slugOrId) {
+    throw new Error("User slug or ID is required");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: {
-      id: userId,
+      OR: [{ slug: slugOrId }, { id: slugOrId }],
     },
   });
 
@@ -29,6 +27,7 @@ export const getUserPublicInfo = async (
 
   return {
     id: user.id,
+    slug: user.slug,
     name: user.name,
     image: user.image,
     bio: user.bio,

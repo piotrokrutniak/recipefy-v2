@@ -22,7 +22,7 @@ export const RecipeViewBody = async ({
     <div className="flex flex-col gap-3 w-full">
       <TextH1>{recipe.title}</TextH1>
       <Link
-        href={`/user/${recipe.authorId}`}
+        href={`/user/${recipe.author?.slug ?? recipe.authorId}`}
         className="flex place-items-center w-fit gap-2"
       >
         <Avatar>

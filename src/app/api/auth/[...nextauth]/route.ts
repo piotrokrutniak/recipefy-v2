@@ -2,6 +2,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import DBClient from "@/persistence/DBClient";
+import { generateSlug } from "@/lib/server-actions/recipes/generateSlug";
 
 // https://github.com/prisma/prisma/issues/1983#issuecomment-686742774
 const prisma = DBClient.getInstance().prisma;
@@ -30,6 +31,14 @@ export const authOptions: AuthOptions = {
         session.user.id = token.userId as string;
       }
       return session;
+    },
+  },
+  events: {
+    async createUser({ user }) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { slug: generateSlug(user.name ?? user.email ?? "user", user.id) },
+      });
     },
   },
 };

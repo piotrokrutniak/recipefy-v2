@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { FaSignOutAlt, FaUser, FaUserFriends } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
-import { User } from "next-auth";
+import { User } from "@prisma/client";
 
 export const UserPanelPopUp = ({ user }: { user: User }) => {
   return (
@@ -28,7 +28,7 @@ export const UserPanelPopUp = ({ user }: { user: User }) => {
         <UserHeader user={user} />
         <Separator className="my-2" />
         <LinkButton
-          href={`/user/${user.id}`}
+          href={`/user/${user.slug ?? user.id}`}
           variant={"link"}
           className="gap-2"
         >
