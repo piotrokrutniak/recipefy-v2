@@ -27,7 +27,7 @@ export const PrepParamsSection = ({
   };
 
   return (
-    <OutlineContainer className={cn("flex flex-col gap-4 w-80", className)}>
+    <OutlineContainer className={cn("flex flex-col gap-4 w-80 max-md:outline-0 max-md:shadow-none", className)}>
       <div className="flex gap-1 items-center justify-between">
         <div className="flex flex-col gap-1">
           <TextMedium className="font-medium">{t("prepTimeTitle")}</TextMedium>
