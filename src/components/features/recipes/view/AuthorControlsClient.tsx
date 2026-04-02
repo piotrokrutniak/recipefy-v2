@@ -7,6 +7,7 @@ import { deleteRecipe } from "@/lib/server-actions/recipes/deleteRecipe";
 import { LinkButton } from "@/components/generic/LinkButton";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { ManageRecipeCirclesDialog } from "@/components/molecules/dialogs/ManageRecipeCirclesDialog";
 import { RecipeFullInfoDto } from "@/types/api";
 import { RecipeAvailabilitySelect } from "@/components/molecules/selects/RecipeAvailabilitySelect";
@@ -21,6 +22,7 @@ export const AuthorControls = ({
 }) => {
   const { toast } = useToast();
   const router = useRouter();
+  const t = useTranslations("recipes.detail");
 
   const handleDelete = async () => {
     let success;
@@ -29,8 +31,8 @@ export const AuthorControls = ({
     } catch (error) {
       console.error(error);
       toast({
-        title: "Error",
-        description: "Error deleting recipe",
+        title: t("deleteError"),
+        description: t("deleteError"),
         variant: "destructive",
       });
       return;
@@ -38,13 +40,13 @@ export const AuthorControls = ({
 
     if (success) {
       toast({
-        title: "Recipe deleted",
-        description: "Recipe successfully deleted",
+        title: t("deleteSuccess"),
+        description: t("deleteSuccessDesc"),
       });
     } else {
       toast({
-        title: "Error",
-        description: "Error deleting recipe",
+        title: t("deleteError"),
+        description: t("deleteError"),
         variant: "destructive",
       });
       return;
@@ -63,13 +65,13 @@ export const AuthorControls = ({
           className="w-full gap-2"
         >
           <FaEdit />
-          Edit
+          {t("edit")}
         </LinkButton>
         <ActionConfirmationDialog
-          title="Delete Recipe"
-          description="Are you sure you want to delete this recipe?"
-          confirmButtonText="Delete"
-          cancelButtonText="Cancel"
+          title={t("deleteTitle")}
+          description={t("deleteConfirm")}
+          confirmButtonText={t("delete")}
+          cancelButtonText={t("deleteCancel")}
           onConfirm={handleDelete}
           triggerButton={
             <Button
@@ -78,7 +80,7 @@ export const AuthorControls = ({
               className="w-full gap-2"
             >
               <FaTrash />
-              Delete
+              {t("delete")}
             </Button>
           }
         />

@@ -13,6 +13,7 @@ import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCi
 import DBClient from "@/persistence/DBClient";
 import { RecipeFullInfoDto } from "@/types/api";
 import { User, Visibility } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -22,7 +23,8 @@ export async function generateMetadata({
   const recipe = await getRecipeBySlug(params.slug);
 
   if (!recipe) {
-    return { title: "Recipe not found" };
+    const t = await getTranslations("recipes.detail");
+    return { title: t("notFound") };
   }
 
   const images = recipe.thumbnailUrl
@@ -104,10 +106,13 @@ export const ViewRecipePage = async ({
 
 export default ViewRecipePage;
 
-const ForbiddenCircleError = () => (
-  <ForbiddenError>
-    <LinkButton href="/your-circles" className="mt-4">
-      Go back to your circles
-    </LinkButton>
-  </ForbiddenError>
-);
+const ForbiddenCircleError = async () => {
+  const t = await getTranslations("recipes.detail");
+  return (
+    <ForbiddenError>
+      <LinkButton href="/your-circles" className="mt-4">
+        {t("backToCircles")}
+      </LinkButton>
+    </ForbiddenError>
+  );
+};

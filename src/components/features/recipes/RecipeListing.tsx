@@ -1,8 +1,17 @@
 import { LikeButton } from "@/components/molecules/buttons/LikeButton";
 import { TextLarge } from "@/components/typography/TextLarge";
 import { TextP } from "@/components/typography/TextP";
+import { Badge } from "@/components/ui/badge";
 import { Recipe, User } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import {
+  FaClock,
+  FaConciergeBell,
+  FaLeaf,
+  FaSeedling,
+  FaUtensils,
+} from "react-icons/fa";
 import { Link } from "@/i18n/navigation";
 
 export const RecipeListing = async ({
@@ -14,6 +23,7 @@ export const RecipeListing = async ({
   recipe: Recipe;
   isLiked: boolean;
 }) => {
+  const t = await getTranslations("recipes.badges");
   // const recipe = {
   //   id: 1,
   //   title: "Recipe title",
@@ -47,9 +57,41 @@ export const RecipeListing = async ({
           </Link>
           {user && <LikeButton recipe={recipe} isLikedInitial={isLiked} />}
         </div>
-        <TextP className="line-clamp-4" noLeading>
+        <TextP className="line-clamp-4 min-h-[6rem]" noLeading>
           {recipe.description}
         </TextP>
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {recipe.vegan && (
+            <Badge variant="outline" className="gap-1 font-normal">
+              <FaLeaf className="w-3 h-3 text-green-600" />
+              {t("vegan")}
+            </Badge>
+          )}
+          {!recipe.vegan && recipe.vegetarian && (
+            <Badge variant="outline" className="gap-1 font-normal">
+              <FaSeedling className="w-3 h-3 text-green-500" />
+              {t("vegetarian")}
+            </Badge>
+          )}
+          {!!recipe.prepTime && (
+            <Badge variant="outline" className="gap-1 font-normal">
+              <FaClock className="w-3 h-3" />
+              {t("prepTime")}: {recipe.prepTime} min
+            </Badge>
+          )}
+          {!!recipe.cookTime && (
+            <Badge variant="outline" className="gap-1 font-normal">
+              <FaUtensils className="w-3 h-3" />
+              {t("cookTime")}: {recipe.cookTime} min
+            </Badge>
+          )}
+          {!!recipe.servings && (
+            <Badge variant="outline" className="gap-1 font-normal">
+              <FaConciergeBell className="w-3 h-3" />
+              {t("servings")}: {recipe.servings}
+            </Badge>
+          )}
+        </div>
       </div>
     </div>
   );

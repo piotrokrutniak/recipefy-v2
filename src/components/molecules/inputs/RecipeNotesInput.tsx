@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { putRecipeNote } from "@/lib/server-actions/recipes/putRecipeNote";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export const RecipeNotesInput = ({
@@ -18,26 +19,18 @@ export const RecipeNotesInput = ({
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { refresh } = useRouter();
+  const t = useTranslations("recipes.detail");
 
   const handleSave = async (note: string) => {
     setIsLoading(true);
     try {
-      toast({
-        title: "Saving note...",
-        description: "Your note is being saved",
-      });
+      toast({ title: t("notesSaving"), description: t("notesSavingDesc") });
       await putRecipeNote(recipeId, note);
-      toast({
-        title: "Note saved",
-        description: "Your note has been saved",
-      });
+      toast({ title: t("notesSaved"), description: t("notesSavedDesc") });
       refresh();
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Error saving note",
-        description: `There was an error saving your note`,
-      });
+      toast({ title: t("notesSaveError"), description: t("notesSaveErrorDesc") });
     } finally {
       setIsLoading(false);
     }
@@ -45,15 +38,15 @@ export const RecipeNotesInput = ({
 
   return (
     <OutlineContainer className="flex flex-col gap-4">
-      <TextH4>Notes</TextH4>
+      <TextH4>{t("notes")}</TextH4>
       <Textarea
         defaultValue={initialNote}
         onBlur={(e) => handleSave(e.currentTarget.value)}
         disabled={isLoading}
-        placeholder="Enter your notes here..."
+        placeholder={t("notesPlaceholder")}
         className="w-full min-h-64"
       />
-      <TextMuted>Only you can see this note</TextMuted>
+      <TextMuted>{t("notesPrivacy")}</TextMuted>
     </OutlineContainer>
   );
 };

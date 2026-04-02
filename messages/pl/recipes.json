@@ -25,6 +25,13 @@
     "savedSuccess": "Przepis zapisany",
     "createdSuccess": "Przepis utworzony"
   },
+  "badges": {
+    "vegan": "Wegański",
+    "vegetarian": "Wegetariański",
+    "prepTime": "Przygotowanie",
+    "cookTime": "Gotowanie",
+    "servings": "Porcje"
+  },
   "carousel": {
     "viewRecipe": "Zobacz przepis"
   },
@@ -36,12 +43,35 @@
     "calories": "Kalorie",
     "ingredients": "Składniki",
     "notes": "Notatki",
+    "notesPlaceholder": "Wpisz swoje notatki tutaj...",
+    "notesPrivacy": "Tylko Ty możesz zobaczyć tę notatkę",
+    "notesSaving": "Zapisywanie notatki...",
+    "notesSavingDesc": "Twoja notatka jest zapisywana",
+    "notesSaved": "Notatka zapisana",
+    "notesSavedDesc": "Twoja notatka została zapisana",
+    "notesSaveError": "Błąd zapisu notatki",
+    "notesSaveErrorDesc": "Wystąpił błąd podczas zapisu notatki",
     "addNote": "Dodaj notatkę",
-    "edit": "Edytuj przepis",
+    "edit": "Edytuj",
     "delete": "Usuń przepis",
+    "deleteTitle": "Usuń przepis",
     "deleteConfirm": "Czy na pewno chcesz usunąć ten przepis?",
     "deleteSuccess": "Przepis usunięty",
-    "minutes": "min"
+    "deleteSuccessDesc": "Przepis został pomyślnie usunięty",
+    "deleteError": "Błąd usuwania przepisu",
+    "deleteCancel": "Anuluj",
+    "minutes": "min",
+    "notFound": "Nie znaleziono przepisu",
+    "backToCircles": "Wróć do swoich kółek",
+    "copiedToClipboard": "Skopiowano do schowka",
+    "copiedToClipboardDesc": "Tekst został skopiowany do schowka",
+    "manageAccess": "Zarządzaj dostępem",
+    "manageAccessDesc": "Zarządzaj kółkami, do których przypisany jest ten przepis. Jeśli widoczność przepisu jest ustawiona na niepubliczny, będzie widoczny tylko dla przypisanych kółek.",
+    "availabilityUpdated": "Widoczność zaktualizowana",
+    "availabilityUpdatedDesc": "Widoczność przepisu została zaktualizowana",
+    "availabilityError": "Błąd aktualizacji widoczności",
+    "availabilityErrorDesc": "Wystąpił błąd podczas aktualizacji widoczności",
+    "selectAvailability": "Wybierz widoczność"
   },
   "visibility": {
     "changeSuccess": "Widoczność zmieniona"

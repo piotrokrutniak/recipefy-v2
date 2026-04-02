@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { updateRecipeAvailability } from "@/lib/server-actions/recipes/updateRecipeAvailability";
 import { RecipeFullInfoDto } from "@/types/api";
 import { Visibility } from "@prisma/client";
+import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 
 export const RecipeAvailabilitySelect = ({

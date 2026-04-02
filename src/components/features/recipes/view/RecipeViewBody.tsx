@@ -7,15 +7,17 @@ import { RecipeFullInfoDto } from "@/types/api";
 import { User } from "@prisma/client";
 import { Link } from "@/i18n/navigation";
 import { AuthorControls } from "./AuthorControlsClient";
+import { getTranslations } from "next-intl/server";
 
 // TODO: Add mobile layout with foldable sections
-export const RecipeViewBody = ({
+export const RecipeViewBody = async ({
   recipe,
   user,
 }: {
   recipe: RecipeFullInfoDto;
   user: User | null;
 }) => {
+  const t = await getTranslations("recipes.detail");
   return (
     <div className="flex flex-col gap-3 w-full">
       <TextH1>{recipe.title}</TextH1>
@@ -31,10 +33,10 @@ export const RecipeViewBody = ({
       </Link>
       <div className="flex flex-col">
         {!!recipe.prepTime && (
-          <TextP noLeading>{`Prep Time: ${recipe.prepTime} minutes`}</TextP>
+          <TextP noLeading>{`${t("prepTime")}: ${recipe.prepTime} ${t("minutes")}`}</TextP>
         )}
         {!!recipe.cookTime && (
-          <TextP noLeading>{`Cook Time: ${recipe.cookTime} minutes`}</TextP>
+          <TextP noLeading>{`${t("cookTime")}: ${recipe.cookTime} ${t("minutes")}`}</TextP>
         )}
       </div>
       <TextP noLeading className="mb-4">{`${recipe.description}`}</TextP>
