@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <TextH2>1. Introduction</TextH2>
             <TextP>
-              Recipefy ("we," "our," or "us") is committed to protecting your
+              Saucy ("we," "our," or "us") is committed to protecting your
               privacy. This Privacy Policy explains how we collect, use,
               disclose, and safeguard your information when you use our recipe
               sharing and discovery platform.
@@ -136,7 +136,7 @@ export default function PrivacyPolicyPage() {
             </ul>
             <TextP>
               To exercise these rights, please contact us at
-              privacy@recipefy.com
+              privacy@saucy.com
             </TextP>
           </section>
 
@@ -201,8 +201,8 @@ export default function PrivacyPolicyPage() {
               practices, please contact us at:
             </TextP>
             <div className="bg-gray-50 p-4 rounded-lg mt-4">
-              <TextP className="font-medium">Recipefy</TextP>
-              <TextP>Email: privacy@recipefy.com</TextP>
+              <TextP className="font-medium">Saucy</TextP>
+              <TextP>Email: privacy@saucy.com</TextP>
               <TextP>Address: [Your Business Address]</TextP>
             </div>
           </section>

@@ -6,9 +6,9 @@ export const getApiDocs = () => {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'Recipefy API',
+        title: 'Saucy API',
         version: '1.0.0',
-        description: 'API documentation for Recipefy - Recipe sharing and management platform',
+        description: 'API documentation for Saucy - Recipe sharing and management platform',
       },
       servers: [
         {

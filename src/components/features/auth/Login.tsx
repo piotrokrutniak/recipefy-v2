@@ -28,7 +28,7 @@ export const Login = () => {
     <div className="flex flex-col gap-2 p-3">
       <TextH2>Sign In</TextH2>
       <TextMedium>
-        Sign in to enjoy the full experience of Recipefy and create your own
+        Sign in to enjoy the full experience of Saucy and create your own
         recipes!
       </TextMedium>
       <TextSmall className="text-gray-500 mt-2">

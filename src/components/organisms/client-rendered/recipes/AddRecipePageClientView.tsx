@@ -28,12 +28,18 @@ export const AddRecipePageClientView = ({
         router.push(`/recipes/${data.slug ?? data.id}`);
       }, 1000);
     },
-    [toast, router]
+    [toast, router],
   );
 
   return (
     <ClientProvidersWrapper>
-      <PageContentLayout className="p-4 items-center">
+      <PageContentLayout
+        className="p-4 px-3 items-center"
+        breadcrumbs={[
+          { label: "Przepisy", href: "/recipes" },
+          { label: "Dodaj przepis" },
+        ]}
+      >
         <AddRecipeForm
           verifiedIngredients={ingredients}
           onSubmitAction={handleSubmit}

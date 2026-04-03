@@ -23,7 +23,7 @@ export const Footer = () => {
 
           <div className="text-center md:text-right">
             <TextSmall className="text-gray-500">
-              © {new Date().getFullYear()} Recipefy. All rights reserved.
+              © {new Date().getFullYear()} Saucy. All rights reserved.
             </TextSmall>
           </div>
         </div>

@@ -30,7 +30,7 @@ export const PageContentLayout = ({
         sizes[size],
       ])}
     >
-      {breadcrumbs && <AppBreadcrumbs items={breadcrumbs} />}
+      {breadcrumbs && <AppBreadcrumbs items={breadcrumbs} className="self-start" />}
       {children}
     </div>
   );

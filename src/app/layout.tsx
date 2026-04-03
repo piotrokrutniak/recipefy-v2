@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Recipefy",
-  description: "Recipify your life with Recipefy",
+  title: "Saucy",
+  description: "Get saucy with Saucy",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

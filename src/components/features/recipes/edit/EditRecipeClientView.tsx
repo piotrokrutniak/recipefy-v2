@@ -37,13 +37,13 @@ export const ClientContent = ({
     // These dependencies are not needed for the callback to be memoized
     // Prevents unnecessary re-renders
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   return (
     <ClientProvidersWrapper>
       <PageContentLayout
-        className="p-4 items-center"
+        className="py-4 px-3 items-center"
         breadcrumbs={[
           { label: "Przepisy", href: "/recipes" },
           { label: recipe.title, href: `/recipes/${recipe.slug ?? recipe.id}` },

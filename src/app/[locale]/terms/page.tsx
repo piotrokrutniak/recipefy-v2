@@ -14,7 +14,7 @@ export default function TermsOfServicePage() {
           <section>
             <TextH2>1. Acceptance of Terms</TextH2>
             <TextP>
-              By accessing and using Recipefy ("the Service"), you accept and
+              By accessing and using Saucy ("the Service"), you accept and
               agree to be bound by the terms and provision of this agreement. If
               you do not agree to abide by the above, please do not use this
               service.
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
           <section>
             <TextH2>2. Description of Service</TextH2>
             <TextP>
-              Recipefy is a recipe sharing and discovery platform that allows
+              Saucy is a recipe sharing and discovery platform that allows
               users to create, share, and discover recipes, join cooking
               circles, and connect with other food enthusiasts.
             </TextP>
@@ -106,7 +106,7 @@ export default function TermsOfServicePage() {
             <TextH3>6.1 Service Ownership</TextH3>
             <TextP>
               The Service and its original content, features, and functionality
-              are owned by Recipefy and are protected by international
+              are owned by Saucy and are protected by international
               copyright, trademark, patent, trade secret, and other intellectual
               property laws.
             </TextP>
@@ -167,7 +167,7 @@ export default function TermsOfServicePage() {
           <section>
             <TextH2>9. Limitation of Liability</TextH2>
             <TextP>
-              IN NO EVENT SHALL RECIPEFY BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+              IN NO EVENT SHALL SAUCY BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
               SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT
               LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER
               INTANGIBLE LOSSES.
@@ -177,7 +177,7 @@ export default function TermsOfServicePage() {
           <section>
             <TextH2>10. Indemnification</TextH2>
             <TextP>
-              You agree to defend, indemnify, and hold harmless Recipefy and its
+              You agree to defend, indemnify, and hold harmless Saucy and its
               officers, directors, employees, and agents from and against any
               claims, damages, obligations, losses, liabilities, costs, or debt
               arising from your use of the Service.
@@ -209,8 +209,8 @@ export default function TermsOfServicePage() {
               contact us at:
             </TextP>
             <div className="bg-gray-50 p-4 rounded-lg mt-4">
-              <TextP className="font-medium">Recipefy</TextP>
-              <TextP>Email: legal@recipefy.com</TextP>
+              <TextP className="font-medium">Saucy</TextP>
+              <TextP>Email: legal@saucy.com</TextP>
               <TextP>Address: [Your Business Address]</TextP>
             </div>
           </section>

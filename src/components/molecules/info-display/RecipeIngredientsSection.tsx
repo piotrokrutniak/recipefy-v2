@@ -34,17 +34,15 @@ export const RecipeIngredientsSection = ({
         />
       </div>
       <ul className="ml-4">
-        {memoizedIngredients.map((recipeIngredient) => (
-          <li className="flex gap-1 items-center" key={recipeIngredient.id}>
-            <TextP noLeading>{`• ${
-              recipeIngredient.ingredient?.name ||
-              recipeIngredient.userIngredient?.name
-            }`}</TextP>
-            {recipeIngredient.amount && (
-              <TextP noLeading>{` - ${recipeIngredient.amount}`}</TextP>
-            )}
-          </li>
-        ))}
+        {memoizedIngredients.map((recipeIngredient) => {
+          const name = recipeIngredient.ingredient?.name || recipeIngredient.userIngredient?.name;
+          const amount = recipeIngredient.amount;
+          return (
+            <li key={recipeIngredient.id}>
+              <TextP noLeading>{`• ${name}${amount ? ` - ${amount}` : ""}`}</TextP>
+            </li>
+          );
+        })}
       </ul>
     </OutlineContainer>
   );

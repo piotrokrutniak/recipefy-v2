@@ -1,4 +1,4 @@
-# Recipefy API Documentation
+# Saucy API Documentation
 
 ## Swagger/OpenAPI Documentation
 

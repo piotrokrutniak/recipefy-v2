@@ -40,7 +40,7 @@ export const CookieConsentBanner = () => {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
           <div className="flex-1 max-w-2xl">
             <TextP className="text-gray-800 mb-2">
-              We use cookies to enhance your experience on Recipefy. By
+              We use cookies to enhance your experience on Saucy. By
               continuing to use our site, you agree to our use of cookies.
             </TextP>
             <TextSmall className="text-gray-600">
