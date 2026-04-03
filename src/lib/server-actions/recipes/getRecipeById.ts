@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;

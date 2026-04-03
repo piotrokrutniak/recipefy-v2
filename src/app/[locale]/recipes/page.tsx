@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import RecipeSearchForm from "@/components/organisms/forms/SearchRecipesForm";
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";

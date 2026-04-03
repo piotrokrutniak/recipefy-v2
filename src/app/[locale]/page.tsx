@@ -3,16 +3,18 @@ import { HighlightedRecipesCarousel } from "@/components/server-components/Highl
 import { LatestRecipesSection } from "@/components/server-components/LatestRecipesSection";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 
+export const revalidate = 60;
+
 const Home = async () => {
-  const recipes = await getPublicRecipes({
-    skip: 0,
-    take: 3,
-  });
+  const [carouselRecipes, latestRecipes] = await Promise.all([
+    getPublicRecipes({ skip: 0, take: 3 }),
+    getPublicRecipes({ skip: 0, take: 25 }),
+  ]);
 
   return (
     <PageContentLayout className="pt-0">
-      <HighlightedRecipesCarousel recipes={recipes} />
-      <LatestRecipesSection />
+      <HighlightedRecipesCarousel recipes={carouselRecipes} />
+      <LatestRecipesSection recipes={latestRecipes} />
     </PageContentLayout>
   );
 };

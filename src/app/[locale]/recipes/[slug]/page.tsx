@@ -1,6 +1,9 @@
+export const revalidate = 3600;
+
 import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
 import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
+import { getUserOwnedCirclesById } from "@/lib/server-actions/recipes/getUserOwnedCirclesById";
 import type { Metadata } from "next";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
 import { SideBarRecipeSummary } from "@/components/features/recipes/view/SideBarRecipeSummary";
@@ -72,10 +75,11 @@ export const ViewRecipePage = async ({
 }) => {
   const recipe = await getRecipeBySlug(params.slug);
   const user = await getCurrentUser();
-  const [userCircles, likedRecipes, recipeNote] = await Promise.all([
+  const [userCircles, likedRecipes, recipeNote, authorCircles] = await Promise.all([
     getUserJoinedCircles(),
     user ? getLikedRecipes(user.id) : Promise.resolve([]),
     recipe ? getRecipeNote(recipe.id) : Promise.resolve(null),
+    user ? getUserOwnedCirclesById(user.id) : Promise.resolve([]),
   ]);
   const isLiked = likedRecipes.some((r) => r.recipeId === recipe?.id);
 
@@ -114,6 +118,7 @@ export const ViewRecipePage = async ({
           initialNote={recipeNote?.note}
           user={user as User}
           isLiked={isLiked}
+          circles={authorCircles}
         />
       </PageContentLayout>
       <PageContentLayout className="flex-1">

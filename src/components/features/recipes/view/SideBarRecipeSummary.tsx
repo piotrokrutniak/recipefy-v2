@@ -8,20 +8,21 @@ import { ClientProvidersWrapper } from "@/components/providers/ProvidersWrapper"
 import { RecipeFullInfoDto } from "@/types/api";
 import { User } from "@prisma/client";
 import { AuthorControls } from "./AuthorControlsClient";
-import { getCurrentUserOwnedCircles } from "@/lib/server-actions/recipes/getCurrentUserOwnedCircles";
+import { Circle } from "@prisma/client";
 
 export const SideBarRecipeSummary = async ({
   recipe,
   initialNote,
   user,
   isLiked,
+  circles = [],
 }: {
   recipe: RecipeFullInfoDto;
   initialNote?: string;
   user?: User;
   isLiked?: boolean;
+  circles?: Circle[];
 }) => {
-  const circles = await getCurrentUserOwnedCircles();
 
   return (
     <div className="flex flex-col gap-8 md:max-w-80 w-full">

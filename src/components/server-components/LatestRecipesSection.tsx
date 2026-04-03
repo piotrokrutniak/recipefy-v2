@@ -1,29 +1,13 @@
-import { SelectValue } from "@radix-ui/react-select";
 import { TextH3 } from "../typography/TextH3";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-} from "../ui/select";
 import { RecipeListing } from "../features/recipes/RecipeListing";
-import { getCurrentUser } from "@/app/api/users/current/route";
 import { LinkButton } from "../generic/LinkButton";
-import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
-import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
-import { Link } from "@/i18n/navigation";
+import { Recipe } from "@prisma/client";
 
-export const LatestRecipesSection = async () => {
-  const recipes = await getPublicRecipes({});
-  const user = (await getCurrentUser()) ?? undefined;
-  const likedRecipes = await getLikedRecipes(user?.id || "");
+export const LatestRecipesSection = ({ recipes }: { recipes: Recipe[] }) => {
   return (
     <section className="flex flex-col px-2 sm:px-5 py-4 gap-4 w-full">
       <div className="flex justify-between gap-2 sm:px-3">
         <TextH3 className="">Recently Added Recipes</TextH3>
-        {/* <RecipeTypeSelector /> */}
         <LinkButton href={"/recipes"} variant={"outline"}>
           Find more
         </LinkButton>
@@ -32,10 +16,8 @@ export const LatestRecipesSection = async () => {
         <RecipeListing
           key={recipe.id}
           recipe={recipe}
-          isLiked={likedRecipes.some(
-            (likedRecipe) => likedRecipe.recipeId === recipe.id,
-          )}
-          user={user}
+          isLiked={false}
+          user={undefined}
         />
       ))}
       <div className="px-3">
@@ -44,27 +26,5 @@ export const LatestRecipesSection = async () => {
         </LinkButton>
       </div>
     </section>
-  );
-};
-
-const RecipeTypeSelector = () => {
-  return (
-    <Select>
-      <SelectTrigger className="w-44">
-        <SelectValue placeholder="Select Recipe Type" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Meals</SelectLabel>
-          <SelectItem value="breakfast">Breakfast</SelectItem>
-          <SelectItem value="lunch">Lunch</SelectItem>
-          <SelectItem value="dinner">Dinner</SelectItem>
-          <SelectLabel>Diets</SelectLabel>
-          <SelectItem value="vegetarian">Vegetarian</SelectItem>
-          <SelectItem value="vegan">Vegan</SelectItem>
-          <SelectItem value="keto">Keto</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
   );
 };
