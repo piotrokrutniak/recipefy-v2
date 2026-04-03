@@ -14,7 +14,7 @@ export const getIngredients = async (
     where: query
       ? { name: { contains: query, mode: "insensitive" } }
       : undefined,
-    orderBy: { name: "desc" },
+    orderBy: { name: "asc" },
   });
 
   return ingredients;
