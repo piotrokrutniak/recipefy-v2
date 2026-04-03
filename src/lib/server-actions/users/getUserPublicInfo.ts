@@ -5,7 +5,7 @@ const prisma = DBClient.getInstance().prisma;
 
 export type UserPublicInfo = Omit<
   User,
-  "email" | "createdAt" | "updatedAt" | "emailVerified"
+  "email" | "updatedAt" | "emailVerified"
 >;
 
 export const getUserPublicInfo = async (
@@ -33,5 +33,7 @@ export const getUserPublicInfo = async (
     bio: user.bio,
     firstName: user.firstName,
     lastName: user.lastName,
+    role: user.role,
+    createdAt: user.createdAt,
   };
 };

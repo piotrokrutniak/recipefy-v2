@@ -29,6 +29,7 @@ export async function generateMetadata({
 import { UserHeaderServer } from "@/components/features/profile/UserHeaderServer";
 import { RecipeCard } from "@/components/features/recipes/RecipeCard";
 import { UserNotFound } from "@/components/molecules/info-display/UserNotFound";
+import { getUserOwnedCirclesById } from "@/lib/server-actions/recipes/getUserOwnedCirclesById";
 import { Recipe } from "@prisma/client";
 import { Separator } from "@/components/ui/separator";
 
@@ -43,12 +44,15 @@ export default async function UserPage({
     return <UserNotFound />;
   }
 
-  const recipes = await getUserRecipes({}, user.id);
+  const [recipes, circles] = await Promise.all([
+    getUserRecipes({}, user.id),
+    getUserOwnedCirclesById(user.id),
+  ]);
 
   return (
     <PageContentLayout size="lg">
       <div className="flex flex-col w-full justify-start">
-        <UserHeaderServer user={user} />
+        <UserHeaderServer user={user} recipesCount={recipes.length} circlesCount={circles.length} />
         <Separator className="my-2" />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
