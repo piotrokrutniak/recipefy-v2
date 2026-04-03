@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { getCurrentUser } from "@/app/api/users/current/route";
+
+export const metadata: Metadata = {
+  title: "Liked Recipes | Saucy",
+  description: "Your liked recipes on Saucy",
+};
 import { EmptyResultsIndicator } from "@/components/atoms/EmptyResultsIndicator";
 import { RecipeCard } from "@/components/features/recipes/RecipeCard";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";

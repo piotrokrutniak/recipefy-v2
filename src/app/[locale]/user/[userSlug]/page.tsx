@@ -1,8 +1,31 @@
 export const revalidate = 3600;
 
+import type { Metadata } from "next";
 import { PageContentLayout } from "@/components/layouts/PageContentLayout";
 import { getUserRecipes } from "@/lib/server-actions/recipes/getUserRecipes";
 import { getUserPublicInfo } from "@/lib/server-actions/users/getUserPublicInfo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { userSlug: string };
+}): Promise<Metadata> {
+  const user = await getUserPublicInfo(params.userSlug);
+
+  if (!user) {
+    return { title: "User not found" };
+  }
+
+  return {
+    title: `${user.name ?? user.slug} | Saucy`,
+    description: user.bio ?? `Recipes by ${user.name}`,
+    openGraph: {
+      title: `${user.name ?? user.slug} | Saucy`,
+      description: user.bio ?? `Recipes by ${user.name}`,
+      images: user.image ? [{ url: user.image }] : [],
+    },
+  };
+}
 import { UserHeaderServer } from "@/components/features/profile/UserHeaderServer";
 import { RecipeCard } from "@/components/features/recipes/RecipeCard";
 import { UserNotFound } from "@/components/molecules/info-display/UserNotFound";

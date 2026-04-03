@@ -1,6 +1,12 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from "next";
 import RecipeSearchForm from "@/components/organisms/forms/SearchRecipesForm";
+
+export const metadata: Metadata = {
+  title: "Recipes | Saucy",
+  description: "Browse and search recipes on Saucy",
+};
 import { RecipeSearchParams } from "@/app/api/recipes/route";
 import { RecipeListing } from "@/components/features/recipes/RecipeListing";
 import { getCurrentUser } from "@/app/api/users/current/route";
