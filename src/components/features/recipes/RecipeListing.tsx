@@ -12,11 +12,9 @@ import { Link } from "@/i18n/navigation";
 export const RecipeListing = async ({
   user,
   recipe,
-  isLiked,
 }: {
   user?: User;
   recipe: Recipe;
-  isLiked: boolean;
 }) => {
   const t = await getTranslations("recipes.badges");
   const tMealTypes = await getTranslations("recipes.mealTypes");
@@ -64,7 +62,7 @@ export const RecipeListing = async ({
               {recipe.title}
             </TextLarge>
           </Link>
-          {user && <LikeButton recipe={recipe} isLikedInitial={isLiked} />}
+          {user && <LikeButton recipe={recipe} />}
         </div>
         <TextP className="line-clamp-4 min-h-[6rem]" noLeading>
           {recipe.description}

@@ -12,12 +12,10 @@ export const RecipeCard = async ({
   recipe,
   userSlug,
   user,
-  isLiked,
 }: {
   recipe: Recipe;
   userSlug?: string;
   user?: User | null;
-  isLiked?: boolean;
 }) => {
   const t = await getTranslations("recipes.badges");
   const tMealTypes = await getTranslations("recipes.mealTypes");
@@ -85,7 +83,7 @@ export const RecipeCard = async ({
       </Link>
       {user && (
         <div className="absolute top-2 right-2">
-          <LikeButton recipe={recipe} isLikedInitial={isLiked ?? false} />
+          <LikeButton recipe={recipe} />
         </div>
       )}
     </div>

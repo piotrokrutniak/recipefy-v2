@@ -1,8 +1,6 @@
 export const revalidate = 3600;
 
-import { getRecipeNote } from "@/app/api/recipes/[id]/add-note/route";
 import { getCurrentUser } from "@/app/api/users/current/route";
-import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { getUserOwnedCirclesById } from "@/lib/server-actions/recipes/getUserOwnedCirclesById";
 import type { Metadata } from "next";
 import { RecipeViewBody } from "@/components/features/recipes/view/RecipeViewBody";
@@ -16,7 +14,7 @@ import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import DBClient from "@/persistence/DBClient";
 import { RecipeFullInfoDto } from "@/types/api";
-import { User, Visibility } from "@prisma/client";
+import { Visibility } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -32,14 +30,7 @@ export async function generateMetadata({
   }
 
   const images = recipe.thumbnailUrl
-    ? [
-        {
-          url: recipe.thumbnailUrl,
-          width: 1200,
-          height: 630,
-          alt: recipe.title,
-        },
-      ]
+    ? [{ url: recipe.thumbnailUrl, width: 1200, height: 630, alt: recipe.title }]
     : [];
 
   return {
@@ -74,34 +65,32 @@ export const ViewRecipePage = async ({
   params: { slug: string };
 }) => {
   const recipe = await getRecipeBySlug(params.slug);
-  const user = await getCurrentUser();
-  const [userCircles, likedRecipes, recipeNote, authorCircles] = await Promise.all([
-    getUserJoinedCircles(),
-    user ? getLikedRecipes(user.id) : Promise.resolve([]),
-    recipe ? getRecipeNote(recipe.id) : Promise.resolve(null),
-    user ? getUserOwnedCirclesById(user.id) : Promise.resolve([]),
-  ]);
-  const isLiked = likedRecipes.some((r) => r.recipeId === recipe?.id);
 
   if (!recipe) {
     return <NotFoundError />;
   }
 
-  if (
-    user?.id !== recipe.authorId &&
-    recipe.visibility === Visibility.PRIVATE
-  ) {
-    return <ForbiddenCircleError />;
-  }
+  // Fetch author circles without cookies — safe for ISR
+  const authorCircles = await getUserOwnedCirclesById(recipe.authorId);
 
-  if (
-    user?.id !== recipe.authorId &&
-    recipe.visibility === Visibility.UNLISTED &&
-    !userCircles.some((circle) =>
-      recipe.circleRecipes.some((cr) => cr.circleId === circle.id),
-    )
-  ) {
-    return <ForbiddenCircleError />;
+  // Only read cookies for access control on non-public recipes
+  if (recipe.visibility !== Visibility.PUBLIC) {
+    const user = await getCurrentUser();
+    const userCircles = await getUserJoinedCircles();
+
+    if (user?.id !== recipe.authorId && recipe.visibility === Visibility.PRIVATE) {
+      return <ForbiddenCircleError />;
+    }
+
+    if (
+      user?.id !== recipe.authorId &&
+      recipe.visibility === Visibility.UNLISTED &&
+      !userCircles.some((circle) =>
+        recipe.circleRecipes.some((cr) => cr.circleId === circle.id),
+      )
+    ) {
+      return <ForbiddenCircleError />;
+    }
   }
 
   return (
@@ -115,14 +104,11 @@ export const ViewRecipePage = async ({
       <PageContentLayout className="md:max-w-80">
         <SideBarRecipeSummary
           recipe={recipe as RecipeFullInfoDto}
-          initialNote={recipeNote?.note}
-          user={user as User}
-          isLiked={isLiked}
           circles={authorCircles}
         />
       </PageContentLayout>
       <PageContentLayout className="flex-1">
-        <RecipeViewBody recipe={recipe as RecipeFullInfoDto} user={user} />
+        <RecipeViewBody recipe={recipe as RecipeFullInfoDto} user={null} />
       </PageContentLayout>
     </PageContentSidebarLayout>
   );

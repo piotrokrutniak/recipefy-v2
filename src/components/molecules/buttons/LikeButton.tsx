@@ -6,21 +6,26 @@ import { cn } from "@/lib/utils";
 import { Recipe } from "@prisma/client";
 import { Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 
 export const LikeButton = ({
   recipe,
-  isLikedInitial,
   full,
 }: {
   recipe: Recipe;
-  isLikedInitial: boolean;
   full?: boolean;
 }) => {
-  const [isLiked, setIsLiked] = useState(isLikedInitial);
+  const [isLiked, setIsLiked] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const t = useTranslations("recipes.likes");
+
+  useEffect(() => {
+    fetch(`/api/users/current/liked-recipes/${recipe.id}`)
+      .then((res) => res.json())
+      .then((data) => setIsLiked(data.isLiked))
+      .catch(() => {});
+  }, [recipe.id]);
 
   const handleClick = () => {
     const next = !isLiked;

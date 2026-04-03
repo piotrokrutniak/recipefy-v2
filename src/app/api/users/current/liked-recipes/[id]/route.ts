@@ -4,6 +4,20 @@ import DBClient from "@/persistence/DBClient";
 
 const prisma = DBClient.getInstance().prisma;
 
+export const GET = async (
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ isLiked: false });
+
+  const liked = await prisma.userRecipeFavorite.findFirst({
+    where: { userId: user.id, recipeId: params.id },
+  });
+
+  return NextResponse.json({ isLiked: !!liked });
+};
+
 export const PUT = async (
   req: NextRequest,
   { params }: { params: { id: string } }
