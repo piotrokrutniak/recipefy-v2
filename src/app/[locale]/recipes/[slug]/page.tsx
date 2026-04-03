@@ -14,13 +14,14 @@ import { getRecipeBySlug } from "@/lib/server-actions/recipes/getRecipeById";
 import { getUserJoinedCircles } from "@/lib/server-actions/users/getUserJoinedCircles";
 import { RecipeFullInfoDto } from "@/types/api";
 import { Visibility } from "@prisma/client";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }): Promise<Metadata> {
+  setRequestLocale(params.locale);
   const recipe = await getRecipeBySlug(params.slug);
 
   if (!recipe) {
@@ -53,8 +54,9 @@ export async function generateMetadata({
 export const ViewRecipePage = async ({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }) => {
+  setRequestLocale(params.locale);
   const recipe = await getRecipeBySlug(params.slug);
 
   if (!recipe) {
