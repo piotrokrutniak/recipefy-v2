@@ -19,8 +19,8 @@ export const LatestRecipesSection = async ({ recipes }: { recipes: Recipe[] }) =
         <RecipeListing
           key={recipe.id}
           recipe={recipe}
-          isLiked={false}
           user={undefined}
+          showOverflowBadges={false}
         />
       ))}
       <div className="px-3">

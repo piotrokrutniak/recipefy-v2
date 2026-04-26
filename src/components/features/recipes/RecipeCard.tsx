@@ -33,6 +33,8 @@ export const RecipeCard = async ({
                 src={recipe.thumbnailUrl}
                 alt={recipe.title}
                 fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                quality={64}
                 className="object-cover transition-transform group-hover:scale-105"
               />
             ) : (

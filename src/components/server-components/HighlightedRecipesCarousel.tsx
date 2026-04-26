@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import {
   Carousel,
@@ -31,7 +31,20 @@ export const HighlightedRecipesCarousel = ({
 }: {
   recipes: Recipe[];
 }) => {
-  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+  const plugin = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, playOnInit: false })
+  );
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      plugin.current.play();
+    }, 1200);
+
+    return () => {
+      window.clearTimeout(timer);
+      plugin.current.stop();
+    };
+  }, []);
 
   return (
     <Carousel
@@ -41,8 +54,8 @@ export const HighlightedRecipesCarousel = ({
       className="w-full h-screen-2/3 min-h-96 max-h-screen"
     >
       <CarouselContent>
-        {recipes.map((recipe) => (
-          <Slide data={recipe} key={recipe.id} />
+        {recipes.map((recipe, index) => (
+          <Slide data={recipe} key={recipe.id} prioritizeImage={index === 0} />
         ))}
       </CarouselContent>
       <CarouselPrevious className="max-sm:hidden left-auto right-14 top-8" />
@@ -51,7 +64,13 @@ export const HighlightedRecipesCarousel = ({
   );
 };
 
-const Slide = ({ data }: { data: Recipe }) => {
+const Slide = ({
+  data,
+  prioritizeImage,
+}: {
+  data: Recipe;
+  prioritizeImage: boolean;
+}) => {
   const t = useTranslations("recipes.carousel");
   return (
     <CarouselItem>
@@ -61,6 +80,11 @@ const Slide = ({ data }: { data: Recipe }) => {
           alt={data.title}
           width={1280}
           height={720}
+          priority={prioritizeImage}
+          fetchPriority={prioritizeImage ? "high" : "auto"}
+          loading={prioritizeImage ? "eager" : "lazy"}
+          sizes="100vw"
+          quality={68}
           className="object-cover h-full w-full opacity-60"
         />
         <div className="absolute bottom-0 left-0 p-4 sm:p-12 sm:w-2/3 lg:w-1/2 flex flex-col gap-4 text-white">

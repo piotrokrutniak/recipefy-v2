@@ -12,9 +12,11 @@ import { Link } from "@/i18n/navigation";
 export const RecipeListing = async ({
   user,
   recipe,
+  showOverflowBadges = true,
 }: {
   user?: User;
   recipe: Recipe;
+  showOverflowBadges?: boolean;
 }) => {
   const t = await getTranslations("recipes.badges");
   const tMealTypes = await getTranslations("recipes.mealTypes");
@@ -48,8 +50,10 @@ export const RecipeListing = async ({
             <Image
               src={recipe.thumbnailUrl}
               alt={recipe.title}
-              width={200}
-              height={160}
+              width={320}
+              height={320}
+              sizes="(max-width: 640px) 100vw, 192px"
+              quality={62}
               className="w-full h-full object-cover"
             />
           )}
@@ -86,7 +90,7 @@ export const RecipeListing = async ({
               {t("servings")}: {recipe.servings}
             </Badge>
           )}
-          <RecipeBadgesOverflow badges={overflowBadges} />
+          {showOverflowBadges && <RecipeBadgesOverflow badges={overflowBadges} />}
         </div>
       </div>
     </div>

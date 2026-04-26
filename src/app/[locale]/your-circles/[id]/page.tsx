@@ -14,7 +14,6 @@ import { redirect } from "@/i18n/server-navigation";
 import { isForbiddenError, isNotFoundError } from "@/lib/errors";
 import { getCircleRecipes } from "@/lib/server-actions/circles/getCircleRecipes";
 import { getCircleById } from "@/lib/server-actions/recipes/getCircleById";
-import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { CircleFullInfoDto } from "@/types/api";
 
 export default async function CirclePage({
@@ -38,10 +37,7 @@ export default async function CirclePage({
     throw error;
   }
 
-  const [likedRecipes, circleRecipes] = await Promise.all([
-    getLikedRecipes(user.id),
-    getCircleRecipes(params.id),
-  ]);
+  const circleRecipes = await getCircleRecipes(params.id);
 
   const isOwner = user.id === circle?.circleOwnerId;
 
@@ -65,9 +61,6 @@ export default async function CirclePage({
             <RecipeListing
               key={circleRecipe.recipe.id}
               recipe={circleRecipe.recipe}
-              isLiked={likedRecipes.some(
-                (liked) => liked.recipeId === circleRecipe.recipe.id
-              )}
               user={user}
             />
           ))}

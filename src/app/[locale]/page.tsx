@@ -8,7 +8,7 @@ export const revalidate = 60;
 const Home = async () => {
   const [carouselRecipes, latestRecipes] = await Promise.all([
     getPublicRecipes({ skip: 0, take: 3 }),
-    getPublicRecipes({ skip: 0, take: 25 }),
+    getPublicRecipes({ skip: 0, take: 12 }),
   ]);
 
   return (

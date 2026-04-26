@@ -14,7 +14,6 @@ import { getIngredients } from "@/app/api/ingredients/route";
 import { getBlacklistedIngredients } from "@/app/api/users/current/blacklisted-ingredients/route";
 import { getPublicRecipes } from "@/lib/server-actions/recipes/getPublicRecipes";
 import { getPublicRecipesCount } from "@/lib/server-actions/recipes/getPublicRecipesCount";
-import { getLikedRecipes } from "@/lib/server-actions/recipes/getLikedRecipes";
 import { RecipesPagination } from "@/components/molecules/RecipesPagination";
 
 export default async function RecipeSearchPage({
@@ -33,14 +32,12 @@ export default async function RecipeSearchPage({
     getIngredients(),
     getCurrentUser(),
   ]);
-  const likedRecipes = await getLikedRecipes(user?.id || "");
   return (
     <RecipeSearchForm formData={searchParams} ingredients={ingredients}>
       {recipes.map((recipe) => (
         <RecipeListing
           key={recipe.id}
           recipe={recipe}
-          isLiked={likedRecipes.some((lr) => lr.recipeId === recipe.id)}
           user={user ?? undefined}
         />
       ))}
